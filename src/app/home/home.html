@@ -26,30 +26,11 @@
   <link rel="stylesheet" href="../../css/flaticon.css">
   <link rel="stylesheet" href="../../css/icomoon.css">
   <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="./home.css">
 </head>
 
 <body>
-
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="home.html">Most<span>Wanted</span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-        aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="oi oi-menu"></span> Menu
-      </button>
-
-      <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active"><a href="home.html" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-          <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-          <li class="nav-item"><a href="car.html" class="nav-link">Cars</a></li>
-          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <div id="nav-placeholder"></div>
 
   <div class="hero-wrap ftco-degree-bg" style="background-image: url('../../images/bg_1.jpg');"
     data-stellar-background-ratio="0.5">
@@ -61,14 +42,11 @@
             <h1 class="mb-4">Fast &amp; Easy Way To Rent A Car</h1>
             <p style="font-size: 18px;">A small river named Duden flows by their place and supplies it with the
               necessary regelialia. It is a paradisematic country, in which roasted parts</p>
-            <a href="https://vimeo.com/45830194"
-              class="icon-wrap popup-vimeo d-flex align-items-center mt-4 justify-content-center">
-              <div class="icon d-flex align-items-center justify-content-center">
-                <span class="ion-ios-play"></span>
+            <a data-protected href="../cars/cars.html"
+              class="icon-wrap d-flex align-items-center mt-4 justify-content-center">
+              <div class="icon d-flex align-items-center justify-content-center"><span class="ion-ios-play"></span>
               </div>
-              <div class="heading-title ml-5">
-                <span>Easy steps for renting a car</span>
-              </div>
+              <div class="heading-title ml-5"><span>Easy steps for renting a car</span></div>
             </a>
           </div>
         </div>
@@ -78,43 +56,79 @@
 
   <section class="ftco-section ftco-no-pt bg-light">
     <div class="container">
-      <div class="row no-gutters">
-        <div class="col-md-12 featured-top">
-          <div class="row no-gutters">
-            <div class="col-md-12 d-flex align-items-center">
-              <div class="services-wrap rounded-right w-100">
-                <h3 class="heading-section mb-4">Welcome to Our Car Rental Service</h3>
-                <div class="row d-flex mb-4">
-                  <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                    <div class="services w-100 text-center">
-                      <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-route"></span>
-                      </div>
-                      <div class="text w-100">
-                        <h3 class="heading mb-2">Wide Range of Vehicles</h3>
-                      </div>
-                    </div>
+      <div class="row justify-content-center">
+        <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          <span class="subheading">What we offer</span>
+          <h2 class="mb-2">Top Rented Vehicles</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="carousel-car owl-carousel">
+            <div class="item">
+              <div class="car-wrap rounded ftco-animate">
+                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/car-1.jpg);">
+                </div>
+                <div class="text">
+                  <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+                  <div class="d-flex mb-3">
+                    <span class="cat">Chevrolet</span>
+                    <p class="price ml-auto">$120 <span>/day</span></p>
                   </div>
-                  <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                    <div class="services w-100 text-center">
-                      <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-handshake"></span>
-                      </div>
-                      <div class="text w-100">
-                        <h3 class="heading mb-2">Best Deals Available</h3>
-                      </div>
-                    </div>
+                  <p class="d-flex mb-0 d-block details-btn"><a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="car-wrap rounded ftco-animate" data-name="Range Rover" data-category="crossover SUV"
+                data-price="$95 /day" data-img="../../images/car-2.jpg" data-mileage="30,000"
+                data-transmission="Automatic" data-seats="5 Adults" data-luggage="3 Bags" data-fuel="Diesel"
+                data-features='["Air conditions","GPS","Bluetooth","Sunroof"]'>
+                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/car-2.jpg);">
+                </div>
+                <div class="text">
+                  <h2 class="mb-0"><a href="#">Range Rover</a></h2>
+                  <div class="d-flex mb-3">
+                    <span class="cat">crossover SUV</span>
+                    <p class="price ml-auto">$95 <span>/day</span></p>
                   </div>
-                  <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                    <div class="services w-100 text-center">
-                      <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="flaticon-rent"></span>
-                      </div>
-                      <div class="text w-100">
-                        <h3 class="heading mb-2">Easy Online Booking</h3>
-                      </div>
-                    </div>
+                  <p class="d-flex mb-0 d-block details-btn">
+                    <a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="car-wrap rounded ftco-animate">
+                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/ford.jpeg);">
+                </div>
+                <div class="text">
+                  <h2 class="mb-0"><a href="#">Ford</a></h2>
+                  <div class="d-flex mb-3">
+                    <span class="cat">Fusion</span>
+                    <p class="price ml-auto">$70 <span>/day</span></p>
                   </div>
+                  <p class="d-flex mb-0 d-block details-btn"><a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="car-wrap rounded ftco-animate" data-name="BMW M3 GTR" data-category="GTR"
+                data-price="$300 /day" data-img="../../images/bmw-m3.jpg" data-mileage="200,000"
+                data-transmission="Manual" data-seats="2 Adults" data-luggage="4 Bags" data-fuel="Petrol"
+                data-features='["Airconditions","GPS","Bluetooth", "Music"]'>
+                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/bmw-m3.jpg);">
+                </div>
+                <div class="text">
+                  <h2 class="mb-0"><a href="#">BMW M3</a></h2>
+                  <div class="d-flex mb-3">
+                    <span class="cat">GTR</span>
+                    <p class="price ml-auto">$300 <span>/day</span></p>
+                  </div>
+                  <p class="d-flex mb-0 d-block details-btn"><a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -123,6 +137,75 @@
       </div>
     </div>
   </section>
+
+
+  <section class="ftco-section ftco-about">
+    <div class="container">
+      <div class="row no-gutters">
+        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center"
+          style="background-image: url(../../images/about-us.jpeg);">
+        </div>
+        <div class="col-md-6 wrap-about ftco-animate">
+          <div class="heading-section heading-section-white pl-md-5">
+            <span class="subheading">Our Story &amp; Vision</span>
+            <h2 class="mb-4"><em>Most Wanted</em></h2>
+
+            <p>Founded in 2025 by a small team of car-enthusiasts in Amman, <strong>MostWanted</strong> set out to
+              reshape
+              the way people rent vehicles. What began as a single-office operation with three sedans has grown into
+              Jordan’s leading online car rental platform, offering over 500 cars across 20+ branches.</p>
+            <p>Our mission is simple: <em>make car rental fast, transparent and stress-free.</em> From streamlined
+              online
+              booking to 24/7 roadside assistance, we handle the details so you can focus on the journey ahead. We
+              believe in putting you—our customer—first, which is why we innovate constantly to bring you new features
+              like contactless pickup, real-time fleet tracking, and flexible drop-off options</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ftco-counter ftco-section img bg-light" id="section-counter">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+          <div class="block-18">
+            <div class="text text-border d-flex align-items-center">
+              <strong class="number" data-number="60">0</strong>
+              <span>Year <br>Experienced</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+          <div class="block-18">
+            <div class="text text-border d-flex align-items-center">
+              <strong class="number" data-number="1090">0</strong>
+              <span>Total <br>Cars</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+          <div class="block-18">
+            <div class="text text-border d-flex align-items-center">
+              <strong class="number" data-number="2590">0</strong>
+              <span>Happy <br>Customers</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+          <div class="block-18">
+            <div class="text d-flex align-items-center">
+              <strong class="number" data-number="67">0</strong>
+              <span>Total <br>Branches</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
 
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
@@ -145,7 +228,27 @@
   <script src="../../js/jquery.timepicker.min.js"></script>
   <script src="../../js/scrollax.min.js"></script>
   <script src="../../js/main.js"></script>
-  <script src="../../home/home.js"></script>
+
+  <script src="./home.js"></script>
+  <script src="../partials/nav.js"></script>
+
+  <script>
+    fetch('/src/app/partials/nav.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('nav-placeholder').innerHTML = html;
+        initNav();
+      });
+  </script>
+
+  <script>
+    fetch('../partials/footer/footer.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Footer load failed:', err));
+  </script>
 </body>
 
 </html>
