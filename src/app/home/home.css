@@ -2,3 +2,10 @@
     display: flex;
     justify-content: end;
 }
+
+.test {
+    background-image: none !important;
+    background-color: gray;
+}
+
+.about-container {}
