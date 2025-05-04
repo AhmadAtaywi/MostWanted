@@ -1,11 +1,14 @@
 .details-btn {
-    display: flex;
-    justify-content: end;
+  display: flex;
+  justify-content: end;
 }
 
 .test {
-    background-image: none !important;
-    background-color: gray;
+  background-color: gray;
+  background-image: none !important;
 }
 
-.about-container {}
+.ftco-animate {
+  opacity: 1;
+  visibility: visible;
+}

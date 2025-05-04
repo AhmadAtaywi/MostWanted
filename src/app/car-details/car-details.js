@@ -1,55 +1,101 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const raw = sessionStorage.getItem('selectedCar');
-    if (!raw) return window.location.replace('../home/home.html');
-    const car = JSON.parse(raw);
-    console.log(car);
+document.addEventListener("DOMContentLoaded", () => {
+  const raw = sessionStorage.getItem("selectedCar");
+  if (!raw) {
+    return window.location.replace("../home/home.html");
+  }
+  const car = JSON.parse(raw);
+  console.log("Loaded car:", car);
 
-    const imgEl = document.getElementById('car-img');
-    imgEl.style.backgroundImage = `url(${car.imgUrl})`;
-    document.getElementById('car-category').textContent = car.category;
-    document.getElementById('car-name').textContent     = car.name;
-    document.getElementById('car-price').textContent    = car.price;
+  document.getElementById("car-img").style.backgroundImage = `url(${car.img})`;
+  document.getElementById("car-category").textContent = car.category;
+  document.getElementById("car-name").textContent = car.name;
+  document.getElementById("car-price").textContent = `$${car.price} /day`;
 
-    const statMap = {
-      'flaticon-dashboard': car.mileage,
-      'flaticon-pistons':   car.transmission,
-      'flaticon-car-seat':  car.seats,
-      'flaticon-backpack':  car.luggage,
-      'flaticon-diesel':    car.fuel
-    };
-
-    Object.entries(statMap).forEach(([iconClass, value]) => {
-      const iconEl = document.querySelector(`.${iconClass}`);
-      if (!iconEl) return;
-      const span = iconEl
-        .closest('.media')
-        .querySelector('h3.heading span');
-      if (span) span.textContent = value;
-    });
-
-    const columns = document.querySelectorAll('#pills-description .features');
-    if (Array.isArray(car.features) && car.features.length) {
-      columns.forEach(ul => ul.innerHTML = '');
-      car.features.forEach((feat, i) => {
-        const li = document.createElement('li');
-        li.className = 'check';
-        li.innerHTML = `<span class="ion-ios-checkmark"></span>${feat}`;
-        columns[i % columns.length].appendChild(li);
-      });
-    }
+  const stats = {
+    "car-mileage": car.mileage || "",
+    "car-transmission": car.transmission || "",
+    "car-seats": car.seats || "",
+    "car-luggage": car.luggage || "",
+    "car-fuel": car.fuel || "",
+  };
+  Object.entries(stats).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
   });
 
-  fetch('../partials/nav.html')
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById('nav-placeholder').innerHTML = html;
+  const features = Array.isArray(car.features) ? car.features : [];
+  features.forEach((feat, i) => {
+    const ul = document.getElementById(`feat-col-${i % 3}`);
+    if (!ul) return;
+    const li = document.createElement("li");
+    li.className = "check";
+    li.innerHTML = `<span class="ion-ios-checkmark"></span> ${feat}`;
+    ul.appendChild(li);
+  });
+
+  const isLoggedIn = !!localStorage.getItem("authToken");
+  const bookBtn = document.getElementById("bookNowBtn");
+  if (bookBtn) {
+    bookBtn.addEventListener("click", (e) => {
+      if (!isLoggedIn) {
+        e.preventDefault();
+        const here = window.location.pathname + window.location.search;
+        window.location.href = `../login/login.html?redirect=${encodeURIComponent(
+          here
+        )}`;
+      }
+    });
+  }
+  const cancelBtn = document.getElementById('bookingCancelBtn');
+cancelBtn.addEventListener('click', () => {
+  form.reset();
+  uploadGroup.style.display = 'none';
+});
+
+  const form = document.getElementById("bookingForm");
+  const uploadGroup = document.getElementById("uploadGroup");
+  if (form) {
+    form.querySelectorAll('input[name="service"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        uploadGroup.style.display = radio.value === "s5" ? "block" : "none";
+      });
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = {
+        carId:          car.id,
+        fullName:       form.fullName.value,
+        email:          form.emailAddr.value,
+        phone:          form.phoneNum.value,
+        pickupDate:     form.pickupDate.value,
+        dropoffDate:    form.dropoffDate.value,
+        pickupTime:     form.pickupTime.value,
+        pickupLocation: form.pickupLocation.value,
+        service:        form.service.value,
+        imageFile:      form.uploadImg.files[0] || null,
+      };
+      console.log("Booking payload:", data);
+      $("#bookingModal").modal("hide");
+      $('#thankYouModal').modal('show');
+
+    });
+  }
+});
+
+
+
+fetch("../partials/nav.html")
+  .then((r) => r.text())
+  .then((html) => {
+    document.getElementById("nav-placeholder").innerHTML = html;
     initNav();
   })
-  .catch(err => console.error('Nav load failed:', err));
+  .catch(console.error);
 
-  fetch('../partials/footer/footer.html')
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById('footer-placeholder').innerHTML = html;
+fetch("../partials/footer/footer.html")
+  .then((r) => r.text())
+  .then((html) => {
+    document.getElementById("footer-placeholder").innerHTML = html;
   })
-  .catch(err => console.error('Footer load failed:', err));
+  .catch(console.error);
