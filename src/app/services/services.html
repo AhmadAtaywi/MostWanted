@@ -25,6 +25,19 @@
     <link rel="stylesheet" href="../../css/flaticon.css">
     <link rel="stylesheet" href="../../css/icomoon.css">
     <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+      section{
+       background-color: #1f2029;
+      }
+      h3{
+        color:  #ffeba7;
+      }
+      p{
+        color: #d8e2dc;
+      }
+      
+   </style>
   </head>
   <body>
     
@@ -68,8 +81,8 @@
 			<div class="container">
 				<div class="row justify-content-center mb-5">
           <div class="col-md-7 text-center heading-section ftco-animate">
-          	<span class="subheading">Services</span>
-            <h2 class="mb-3">Our Latest Services</h2>
+          	<span  style="color:  #d8e2dc; color: ;">Services</span>
+            <h2 class="mb-3" style="color: #ffeba7;">Our Latest Services</h2>
           </div>
         </div>
 				<div class="row">
@@ -207,6 +220,8 @@
   <script src="../../js/jquery.timepicker.min.js"></script>
   <script src="../../js/scrollax.min.js"></script>
   <script src="../../js/main.js"></script>
+
+  <script src="../partials/nav.js"></script>
   <script>
     fetch('/src/app/partials/nav.html')
       .then(r => r.text())
