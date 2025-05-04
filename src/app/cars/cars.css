@@ -1,0 +1,9 @@
+.ftco-animate {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mt-3 {
+    display: flex;
+    justify-content: center;
+}
