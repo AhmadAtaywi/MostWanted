@@ -81,9 +81,31 @@ cancelBtn.addEventListener('click', () => {
 
     });
   }
+
+  const basePrice = Number(car.price);
+
+  const surchargeMap = {
+    s1: 0.04,
+    s2: 0.05,
+    s3: 0.07,
+    s4: 0.15,
+    s5: 0.18,
+  };
+
+  const priceGroup     = document.getElementById('priceGroup');
+  const computedPrice  = document.getElementById('computedPrice');
+
+  form.querySelectorAll('input[name="service"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      uploadGroup.style.display = (radio.value === 's5') ? 'block' : 'none';
+
+      const extraPct = surchargeMap[radio.value] || 0;
+      const total    = basePrice * (1 + extraPct);
+      computedPrice.value = `$${total.toFixed(2)}`;
+      priceGroup.style.display = 'block';
+    });
+  });
 });
-
-
 
 fetch("../partials/nav.html")
   .then((r) => r.text())
