@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const paramRedirect = params.get('redirect');
 
-  const fallback = 'MostWanted/src/app/home/home.php';
+  const fallback = '/MostWanted/src/app/home/home.php';
 
   const redirectUrl = paramRedirect || fallback;
 
