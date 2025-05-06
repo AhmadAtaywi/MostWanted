@@ -19,7 +19,7 @@ function initNav() {
       if (!isLoggedIn) {
         e.preventDefault();
         const intended = a.getAttribute("href");
-        window.location.href = `/src/app/login/login.html?redirect=${encodeURIComponent(
+        window.location.href = `/src/app/login/login.php?redirect=${encodeURIComponent(
           intended
         )}`;
       }

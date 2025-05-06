@@ -1,3 +1,47 @@
+<?php
+require '../../configDataBase/userDataBaseConnection.php';
+?>
+
+<?php
+  $userEmail = $_GET['user_email'] ?? null;
+
+  $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email");
+  $stmt->bindParam(':email', $userEmail);
+  $stmt->execute();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+  $data = array();
+  if ($user){
+  // store user data in an array and convert it to JSON
+  $data['name'] = $user['name'];
+  $data['email'] = $user['email'];
+  $data['phone'] = $user['phone'];
+  echo json_encode($data); // Output user data as JSON
+
+  // Store user data in local storage
+  echo "<script>
+        localStorage.setItem('userName', '" . $user['name'] . "');
+        localStorage.setItem('userEmail', '" . $user['email'] . "');
+        localStorage.setItem('userPhone', '" . $user['phone'] . "');                        
+        </script>";
+}
+
+// fetch user data from the local storage
+// $userName = "<script>document.write(localStorage.getItem('userName'));</script>";
+// $userEmail = "<script>document.write(localStorage.getItem('userEmail'));</script>"; 
+// $userPhone = "<script>document.write(localStorage.getItem('userPhone'));</script>";
+
+// Display user information
+// echo "<p>Welcome, " . $userName . "!</p>";
+// echo "<p>Your email: " . $userEmail . "</p>";
+// echo "<p>Your phone: " . $userPhone . "</p>";
+
+// Close the database connection
+$conn = null;
+  
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +74,9 @@
 </head>
 
 <body>
+
   <div id="nav-placeholder"></div>
+
 
   <div class="hero-wrap ftco-degree-bg test" style="background-image: url('../../images/bg_1.jpg');"
     data-stellar-background-ratio="0.5">
@@ -41,7 +87,7 @@
           <div class="text w-100 text-center mb-md-5 pb-md-5">
             <h1 class="mb-4">Fast &amp; Easy Way To Rent A Car</h1>
             <p style="font-size: 18px;">Wide Selection of Cars: From economy to luxury, find the perfect ride.</p>
-            <a data-protected href="../cars/cars.html"
+            <a data-protected href="/MostWanted/src/app/car-details/car-details.php"
               class="icon-wrap d-flex align-items-center mt-4 justify-content-center">
               <div class="icon d-flex align-items-center justify-content-center"><span class="ion-ios-play"></span>
               </div>
@@ -232,12 +278,13 @@
   <script src="../partials/nav.js"></script>
 
   <script>
-    fetch('/src/app/partials/nav.html')
+    fetch('../partials/nav.html')
       .then(r => r.text())
       .then(html => {
         document.getElementById('nav-placeholder').innerHTML = html;
         initNav();
-      });
+      })
+      .catch(err => console.error('Navbar load failed:', err));
   </script>
 
   <script>
