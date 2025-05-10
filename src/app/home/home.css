@@ -12,3 +12,8 @@
   opacity: 1;
   visibility: visible;
 }
+
+.test1 {
+  display: flex;
+  justify-content: center;
+}

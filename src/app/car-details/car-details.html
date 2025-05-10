@@ -156,23 +156,6 @@
 
       <div class="row">
         <div class="col-md-12 pills">
-          <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#pills-description">Features</a>
-            </li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-manufacturer">Description</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-review">Review</a></li>
-          </ul> -->
-
-          <!-- <div class="tab-content">
-            <div class="tab-pane fade show active" id="pills-description" role="tabpanel">
-              <div class="row">
-                <ul class="features col-md-4"></ul>
-                <ul class="features col-md-4"></ul>
-                <ul class="features col-md-4"></ul>
-              </div>
-            </div>
-
-          </div> -->
           <div class="test d-flex justify-content-end">
             <button id="bookNowBtn" type="button" class="btn btn-primary py-2 mr-1" data-toggle="modal"
               data-target="#bookingModal">
@@ -229,25 +212,21 @@
             <input type="tel" class="form-control" id="phoneNum" required>
           </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="pickupDate">Pick-up Date</label>
-              <input type="date" class="form-control" id="pickupDate" required>
+          <fieldset class="form-group">
+            <legend>Pickup Option</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="pickupType" id="pickupStore" value="store" checked>
+              <label class="form-check-label" for="pickupStore">Pick up at Store</label>
             </div>
-            <div class="form-group col-md-6">
-              <label for="dropoffDate">Drop-off Date</label>
-              <input type="date" class="form-control" id="dropoffDate" required>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="pickupType" id="pickupDelivery" value="delivery">
+              <label class="form-check-label" for="pickupDelivery">Deliver to my Location</label>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="pickupTime">Pick-up Time</label>
-              <input type="time" class="form-control" id="pickupTime" required>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="pickupLocation">Pick-up Location</label>
-              <input type="text" class="form-control" id="pickupLocation" required>
-            </div>
+          </fieldset>
+
+          <div class="form-group" id="pickupLocationGroup" style="display:none">
+            <label for="pickupLocation">Pickup Location</label>
+            <input type="text" class="form-control" id="pickupLocation">
           </div>
 
           <div class="form-group" id="priceGroup" style="display:none">
