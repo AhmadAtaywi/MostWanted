@@ -7,16 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Loaded car:", car);
 
   document.getElementById("car-img").style.backgroundImage = `url(${car.img})`;
-  document.getElementById("car-category").textContent = car.category;
-  document.getElementById("car-name").textContent = car.name;
+  document.getElementById("car-city").textContent = car.city_name;
+  document.getElementById(
+    "car-name"
+  ).textContent = `${car.car_type} ${car.car_model} (${car.model_year})`;
   document.getElementById("car-price").textContent = `$${car.price} /day`;
+  document.getElementById("car-description").textContent = car.description;
 
   const stats = {
-    "car-mileage": car.mileage || "",
-    "car-transmission": car.transmission || "",
-    "car-seats": car.seats || "",
-    "car-luggage": car.luggage || "",
-    "car-fuel": car.fuel || "",
+    "car-color": car.color,
+    "car-fuel": car.fuel,
+    "car-seats": car.seats,
   };
   Object.entries(stats).forEach(([id, val]) => {
     const el = document.getElementById(id);
@@ -46,13 +47,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-  const cancelBtn = document.getElementById('bookingCancelBtn');
-cancelBtn.addEventListener('click', () => {
-  form.reset();
-  uploadGroup.style.display = 'none';
-});
+  const cancelBtn = document.getElementById("bookingCancelBtn");
+  cancelBtn.addEventListener("click", () => {
+    form.reset();
+    uploadGroup.style.display = "none";
+  });
 
   const form = document.getElementById("bookingForm");
+  const pickupLocationGroup = document.getElementById("pickupLocationGroup");
+
+  form.querySelectorAll('input[name="pickupType"]').forEach((radio) => {
+    radio.addEventListener("change", () => {
+      pickupLocationGroup.style.display =
+        radio.value === "delivery" ? "block" : "none";
+    });
+  });
+
   const uploadGroup = document.getElementById("uploadGroup");
   if (form) {
     form.querySelectorAll('input[name="service"]').forEach((radio) => {
@@ -64,21 +74,19 @@ cancelBtn.addEventListener('click', () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const data = {
-        carId:          car.id,
-        fullName:       form.fullName.value,
-        email:          form.emailAddr.value,
-        phone:          form.phoneNum.value,
-        pickupDate:     form.pickupDate.value,
-        dropoffDate:    form.dropoffDate.value,
-        pickupTime:     form.pickupTime.value,
-        pickupLocation: form.pickupLocation.value,
-        service:        form.service.value,
-        imageFile:      form.uploadImg.files[0] || null,
+        carId: car.id,
+        fullName: form.fullName.value,
+        email: form.emailAddr.value,
+        phone: form.phoneNum.value,
+    pickupLocation:
+      form.pickupType.value === "delivery" ? form.pickupLocation.value : null,
+    bookingDate: form.availableDate.value,
+        service: form.service.value,
+        imageFile: form.uploadImg.files[0] || null,
       };
       console.log("Booking payload:", data);
       $("#bookingModal").modal("hide");
-      $('#thankYouModal').modal('show');
-
+      $("#thankYouModal").modal("show");
     });
   }
 
@@ -92,17 +100,30 @@ cancelBtn.addEventListener('click', () => {
     s5: 0.18,
   };
 
-  const priceGroup     = document.getElementById('priceGroup');
-  const computedPrice  = document.getElementById('computedPrice');
+  const priceGroup = document.getElementById("priceGroup");
+  const computedPrice = document.getElementById("computedPrice");
 
-  form.querySelectorAll('input[name="service"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      uploadGroup.style.display = (radio.value === 's5') ? 'block' : 'none';
+
+  const dateSelect = document.getElementById("availableDate");
+if (dateSelect && Array.isArray(car.available_time)) {
+  car.available_time.forEach(dateStr => {
+    const opt = document.createElement("option");
+    opt.value = dateStr;
+    opt.textContent = new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "2-digit", month: "2-digit", year: "numeric"
+    });
+    dateSelect.appendChild(opt);
+  });
+}
+
+  form.querySelectorAll('input[name="service"]').forEach((radio) => {
+    radio.addEventListener("change", () => {
+      uploadGroup.style.display = radio.value === "s5" ? "block" : "none";
 
       const extraPct = surchargeMap[radio.value] || 0;
-      const total    = basePrice * (1 + extraPct);
+      const total = basePrice * (1 + extraPct);
       computedPrice.value = `$${total.toFixed(2)}`;
-      priceGroup.style.display = 'block';
+      priceGroup.style.display = "block";
     });
   });
 });
