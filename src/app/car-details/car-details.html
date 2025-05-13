@@ -27,48 +27,58 @@
   <link rel="stylesheet" href="./car-details.css">
 </head>
 <style>
+  .ftco-car-details {
+    background-color: #1f2029;
+  }
 
-.ftco-car-details{
-   background-color: #1f2029;
-}
-.btn.btn-primary {
+  .btn.btn-primary {
     background: #ffeba7 !important;
-    border: 1px solid  #ffeba7 !important;
+    border: 1px solid #ffeba7 !important;
     color: #1f2029 !important;
-}
-.ftco-car-details .services .media-body .text h3 {
+  }
+
+  .ftco-car-details .services .media-body .text h3 {
     font-size: 14px !important;
     color: #ffeba7;
-}
-.ftco-car-details .services .media-body .text h3 span {
+  }
+
+  .ftco-car-details .services .media-body .text h3 span {
     display: block;
     color: #d8e2dc;
-}
-h2{
-  color:  #d8e2dc;
-}
- .car-details span.subheading {
+  }
+
+  h2 {
+    color: #d8e2dc;
+  }
+
+  .services .icon {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .car-details span.subheading {
     font-size: 12px;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 2px;
-    color:#ffeba7;
+    color: #ffeba7;
     display: block;
-}
-.slider-text h1 {
+  }
+
+  .slider-text h1 {
     font-size: 44px;
-    color:#ffeba7;
+    color: #ffeba7;
     line-height: 1.1;
     font-weight: 700;
-}
-.btn.btn-secondary {
+  }
+
+  .btn.btn-secondary {
     color: #1f2029 !important;
     background: #ffeba7 !important;
     border-width: 1px !important;
     border-style: solid !important;
-    border-color:#ffeba7 !important;
+    border-color: #ffeba7 !important;
     border-image: initial !important;
-}
+  }
 </style>
 
 <body>
@@ -98,9 +108,10 @@ h2{
           <div class="car-details">
             <div id="car-img" class="img rounded"></div>
             <div class="text text-center">
-              <span id="car-category" class="subheading"></span>
+              <span id="car-city" class="subheading"></span>
               <h2 id="car-name"></h2>
               <p id="car-price" class="price"></p>
+              <p id="car-description" class="mb-4"></p>
             </div>
           </div>
         </div>
@@ -112,66 +123,12 @@ h2{
             <div class="media-body py-md-4">
               <div class="d-flex mb-3 align-items-center">
                 <div class="icon d-flex align-items-center justify-content-center">
-                  <span class="flaticon-dashboard"></span>
-                </div>
-                <div class="text">
-                  <h3 class="heading mb-0 pl-3">
-                    Mileage
-                    <span id="car-mileage"></span>
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md d-flex ftco-animate">
-          <div class="media block-6 services">
-            <div class="media-body py-md-4">
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon d-flex align-items-center justify-content-center">
                   <span class="flaticon-pistons"></span>
                 </div>
                 <div class="text">
                   <h3 class="heading mb-0 pl-3">
-                    Transmission
-                    <span id="car-transmission"></span>
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md d-flex ftco-animate">
-          <div class="media block-6 services">
-            <div class="media-body py-md-4">
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon d-flex align-items-center justify-content-center">
-                  <span class="flaticon-car-seat"></span>
-                </div>
-                <div class="text">
-                  <h3 class="heading mb-0 pl-3">
-                    Seats
-                    <span id="car-seats"></span>
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md d-flex ftco-animate">
-          <div class="media block-6 services">
-            <div class="media-body py-md-4">
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon d-flex align-items-center justify-content-center">
-                  <span class="flaticon-backpack"></span>
-                </div>
-                <div class="text">
-                  <h3 class="heading mb-0 pl-3">
-                    Luggage
-                    <span id="car-luggage"></span>
+                    Color
+                    <span id="car-color"></span>
                   </h3>
                 </div>
               </div>
@@ -190,6 +147,24 @@ h2{
                   <h3 class="heading mb-0 pl-3">
                     Fuel
                     <span id="car-fuel"></span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md d-flex ftco-animate">
+          <div class="media block-6 services">
+            <div class="media-body py-md-4">
+              <div class="d-flex mb-3 align-items-center">
+                <div class="icon d-flex align-items-center justify-content-center">
+                  <span class="flaticon-car-seat"></span>
+                </div>
+                <div class="text">
+                  <h3 class="heading mb-0 pl-3">
+                    Seats
+                    <span id="car-seats"></span>
                   </h3>
                 </div>
               </div>
@@ -254,6 +229,12 @@ h2{
           <div class="form-group">
             <label for="phoneNum">Phone number</label>
             <input type="tel" class="form-control" id="phoneNum" required>
+          </div>
+
+          <div class="form-group">
+            <label for="availableDate">Available Date</label>
+            <select id="availableDate" name="availableDate" class="form-control" required>
+            </select>
           </div>
 
           <fieldset class="form-group">

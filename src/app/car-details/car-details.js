@@ -7,16 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Loaded car:", car);
 
   document.getElementById("car-img").style.backgroundImage = `url(${car.img})`;
-  document.getElementById("car-category").textContent = car.category;
-  document.getElementById("car-name").textContent = car.name;
+  document.getElementById("car-city").textContent = car.city_name;
+  document.getElementById(
+    "car-name"
+  ).textContent = `${car.car_type} ${car.car_model} (${car.model_year})`;
   document.getElementById("car-price").textContent = `$${car.price} /day`;
+  document.getElementById("car-description").textContent = car.description;
 
   const stats = {
-    "car-mileage": car.mileage || "",
-    "car-transmission": car.transmission || "",
-    "car-seats": car.seats || "",
-    "car-luggage": car.luggage || "",
-    "car-fuel": car.fuel || "",
+    "car-color": car.color,
+    "car-fuel": car.fuel,
+    "car-seats": car.seats,
   };
   Object.entries(stats).forEach(([id, val]) => {
     const el = document.getElementById(id);
@@ -77,10 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
         fullName: form.fullName.value,
         email: form.emailAddr.value,
         phone: form.phoneNum.value,
-        pickupLocation:
-          form.pickupType.value === "delivery"
-            ? form.pickupLocation.value
-            : null,
+    pickupLocation:
+      form.pickupType.value === "delivery" ? form.pickupLocation.value : null,
+    bookingDate: form.availableDate.value,
         service: form.service.value,
         imageFile: form.uploadImg.files[0] || null,
       };
@@ -102,6 +102,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const priceGroup = document.getElementById("priceGroup");
   const computedPrice = document.getElementById("computedPrice");
+
+
+  const dateSelect = document.getElementById("availableDate");
+if (dateSelect && Array.isArray(car.available_time)) {
+  car.available_time.forEach(dateStr => {
+    const opt = document.createElement("option");
+    opt.value = dateStr;
+    opt.textContent = new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "2-digit", month: "2-digit", year: "numeric"
+    });
+    dateSelect.appendChild(opt);
+  });
+}
 
   form.querySelectorAll('input[name="service"]').forEach((radio) => {
     radio.addEventListener("change", () => {

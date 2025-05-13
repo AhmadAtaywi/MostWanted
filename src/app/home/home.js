@@ -40,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Amman", img: "../../images/amman.png" },
     { name: "Irbid", img: "../../images/irbid.jpg" },
     { name: "Aqaba", img: "../../images/aqaba.jpg" },
+    { name: "Zarqa", img: "../../images/zarqa.jpg" },
+    { name: "Salt", img: "../../images/salt.jpeg" },
   ];
 
   const container = document.getElementById("region-list");
@@ -47,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   regions.forEach((region) => {
     const col = document.createElement("div");
-    col.className = "col-md-4";
+    col.className = "col-md-4 location";
     col.innerHTML = `
       <div class="location-card ftco-animate" style="cursor:pointer">
         <div class="img rounded"
@@ -82,18 +84,6 @@ document.querySelectorAll(".details-btn a").forEach((link) => {
     }
 
     e.preventDefault();
-    const car = {
-      name: wrap.dataset.name,
-      category: wrap.dataset.category,
-      price: wrap.dataset.price,
-      imgUrl: wrap.dataset.img,
-      mileage: wrap.dataset.mileage,
-      transmission: wrap.dataset.transmission,
-      seats: wrap.dataset.seats,
-      luggage: wrap.dataset.luggage,
-      fuel: wrap.dataset.fuel,
-      features: JSON.parse(wrap.dataset.features || "[]"),
-    };
     sessionStorage.setItem("selectedCar", JSON.stringify(car));
     window.location.href = "../car-details/car-details.html";
   });
