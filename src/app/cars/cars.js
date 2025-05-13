@@ -1,70 +1,77 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const regions = [
     { name: "Amman", img: "../../images/amman.png" },
     { name: "Irbid", img: "../../images/irbid.jpg" },
     { name: "Aqaba", img: "../../images/aqaba.jpg" },
+    { name: "Zarqa", img: "../../images/zarqa.jpg" },
+    { name: "Salt", img: "../../images/salt.jpeg" },
   ];
   const cars = [
     {
-      id: "c1",
-      name: "Merc Grand Sedan",
-      category: "Cheverolet",
+      car_type: "Toyota",
+      car_model: "camry",
+      model_year: 2023,
+      city_name: "Amman",
+      description:
+        "The Toyota Camry is a popular family sedan known for excellent reliability …",
+      color: "gray",
+      fuel: "hybrid",
+      seats: 5,
       price: 120,
-      img: "../../images/car-1.jpg",
-      location: "Amman",
-      mileage: "40,000",
-      transmission: "Automatic",
-      seats: "2 Adults",
-      luggage: "3 Bags",
-      fuel: "Petrol",
-      features: ["Air Conditioning", "GPS", "Bluetooth"],
+      img: "../../images/camry2023.jpg",
       detailsLink: "../car-details/car-details.html",
+      available_time: [
+        "2025-05-15",
+        "2025-05-16",
+        "2025-05-17",
+        "2025-05-18",
+        "2025-05-19",
+        "2025-05-20",
+        "2025-05-21",
+        "2025-05-22",
+        "2025-05-23",
+        "2025-05-24",
+      ],
     },
     {
-      id: "c2",
-      name: "Range Rover",
-      category: "Crossover SUV",
-      price: 95,
-      img: "../../images/car-2.jpg",
-      location: "Irbid",
-      mileage: "30,000",
-      transmission: "Automatic",
-      seats: "5 Adults",
-      luggage: "2 Bags",
-      fuel: "Diesel",
-      features: ["Sunroof", "Parking Sensors", "Heated Seats"],
-      detailsLink: "../car-details/car-details.html",
-    },
-    {
-      id: "c3",
-      name: "Ford Fusion",
-      category: "Fusion",
-      price: 70,
+      car_type: "ford",
+      car_model: "fusion",
+      model_year: 2014,
+      city_name: "Amman",
+      description:
+        "The test test test is a popular family sedan known for excellent reliability …",
+      color: "black",
+      fuel: "hybrid",
+      seats: 5,
+      price: 130,
       img: "../../images/ford.jpeg",
-      location: "Aqaba",
-      mileage: "25,000",
-      transmission: "Manual",
-      seats: "5 Adults",
-      luggage: "4 Bags",
-      fuel: "Petrol",
-      features: ["Bluetooth", "USB Charger", "Cruise Control"],
       detailsLink: "../car-details/car-details.html",
+      available_time: [
+        "2025-05-15",
+        "2025-05-16",
+        "2025-05-17",
+        "2025-05-18",
+        "2025-05-19",
+        "2025-05-20",
+        "2025-05-21",
+        "2025-05-22",
+        "2025-05-23",
+        "2025-05-24",
+      ],
     },
     {
-      id: "c4",
-      name: "BMW M3 ",
-      category: "GTR",
+      car_type: "BMW",
+      car_model: "M3",
+      model_year: 2001,
+      city_name: "Zarqa",
+      description: "3.2-liter inline-6 (S54 engine) with 333 hp at 7,900 rpm …",
+      color: "gray & blue",
+      fuel: "petrol",
+      seats: 5,
       price: 150,
       img: "../../images/bmw-m3.jpg",
-      location: "Aqaba",
-      mileage: "200,000",
-      transmission: "Manual",
-      seats: "2 Adults",
-      luggage: "4 Bags",
-      fuel: "Petrol",
-      features: ["Bluetooth", "USB Charger", "Cruise Control"],
       detailsLink: "../car-details/car-details.html",
+      available_time: ["2025-05-16", "2025-05-17"],
     },
   ];
 
@@ -81,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!selectedRegion) {
     regions.forEach((region) => {
       const col = document.createElement("div");
-      col.className = "col-md-4";
+      col.className = "col-md-4 location";
       col.innerHTML = `
           <div class="location-card ftco-animate" style="cursor:pointer">
             <div class="img rounded"
@@ -98,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     document.querySelector(".bread").textContent = `Cars in ${selectedRegion}`;
 
-    const filtered = cars.filter((c) => c.location === selectedRegion);
+    const filtered = cars.filter((c) => c.city_name === selectedRegion);
     if (filtered.length === 0) {
       container.innerHTML = `<p>No cars found in ${selectedRegion}.</p>`;
       return;
@@ -106,24 +113,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     filtered.forEach((car) => {
       const col = document.createElement("div");
-      col.className = "col-md-4";
+      col.className = "col-md-4 cars";
       col.innerHTML = `
-          <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end"
-                  style="background-image:url(${car.img});height:200px;background-size:cover">
-            </div>
-            <div class="text">
-              <h2 class="mb-0">${car.name}</h2>
-              <div class="d-flex mb-3">
-                <span class="cat">${car.category}</span>
-                <p class="price ml-auto">$${car.price} <span>/day</span></p>
-              </div>
-              <p class="d-flex mb-0 d-block justify-content-end">
-                <a href="#" class="btn btn-secondary py-2 ml-1 details-btn">Details</a>
-              </p>
-            </div>
-          </div>
-        `;
+    <div class="car-wrap rounded ftco-animate">
+      <div class="img rounded d-flex align-items-end"
+           style="background-image:url(${car.img});height:200px;background-size:cover">
+      </div>
+      <div class="text">
+        <h2 class="mb-0">
+          ${car.car_type} ${car.car_model} <small>(${car.model_year})</small>
+        </h2>
+        <p class="mb-2">${car.description}</p>
+        <div class="d-flex mb-3">
+          <span class="cat">
+            ${car.color} &bull; ${car.fuel} &bull; ${car.seats} seats
+          </span>
+          <p class="price ml-auto">
+            $${car.price} <span>/day</span>
+          </p>
+        </div>
+        <p class="d-flex mb-0 d-block justify-content-end">
+          <a href="#" class="btn btn-secondary py-2 ml-1 details-btn">Details</a>
+        </p>
+      </div>
+    </div>
+  `;
       container.appendChild(col);
 
       col.querySelector(".details-btn").addEventListener("click", (e) => {

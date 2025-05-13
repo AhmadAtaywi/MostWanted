@@ -26,6 +26,60 @@
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="./car-details.css">
 </head>
+<style>
+  .ftco-car-details {
+    background-color: #1f2029;
+  }
+
+  .btn.btn-primary {
+    background: #ffeba7 !important;
+    border: 1px solid #ffeba7 !important;
+    color: #1f2029 !important;
+  }
+
+  .ftco-car-details .services .media-body .text h3 {
+    font-size: 14px !important;
+    color: #ffeba7;
+  }
+
+  .ftco-car-details .services .media-body .text h3 span {
+    display: block;
+    color: #d8e2dc;
+  }
+
+  h2 {
+    color: #d8e2dc;
+  }
+
+  .services .icon {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .car-details span.subheading {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #ffeba7;
+    display: block;
+  }
+
+  .slider-text h1 {
+    font-size: 44px;
+    color: #ffeba7;
+    line-height: 1.1;
+    font-weight: 700;
+  }
+
+  .btn.btn-secondary {
+    color: #1f2029 !important;
+    background: #ffeba7 !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: #ffeba7 !important;
+    border-image: initial !important;
+  }
+</style>
 
 <body>
 
@@ -54,9 +108,10 @@
           <div class="car-details">
             <div id="car-img" class="img rounded"></div>
             <div class="text text-center">
-              <span id="car-category" class="subheading"></span>
+              <span id="car-city" class="subheading"></span>
               <h2 id="car-name"></h2>
               <p id="car-price" class="price"></p>
+              <p id="car-description" class="mb-4"></p>
             </div>
           </div>
         </div>
@@ -68,66 +123,12 @@
             <div class="media-body py-md-4">
               <div class="d-flex mb-3 align-items-center">
                 <div class="icon d-flex align-items-center justify-content-center">
-                  <span class="flaticon-dashboard"></span>
-                </div>
-                <div class="text">
-                  <h3 class="heading mb-0 pl-3">
-                    Mileage
-                    <span id="car-mileage"></span>
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md d-flex ftco-animate">
-          <div class="media block-6 services">
-            <div class="media-body py-md-4">
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon d-flex align-items-center justify-content-center">
                   <span class="flaticon-pistons"></span>
                 </div>
                 <div class="text">
                   <h3 class="heading mb-0 pl-3">
-                    Transmission
-                    <span id="car-transmission"></span>
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md d-flex ftco-animate">
-          <div class="media block-6 services">
-            <div class="media-body py-md-4">
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon d-flex align-items-center justify-content-center">
-                  <span class="flaticon-car-seat"></span>
-                </div>
-                <div class="text">
-                  <h3 class="heading mb-0 pl-3">
-                    Seats
-                    <span id="car-seats"></span>
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md d-flex ftco-animate">
-          <div class="media block-6 services">
-            <div class="media-body py-md-4">
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon d-flex align-items-center justify-content-center">
-                  <span class="flaticon-backpack"></span>
-                </div>
-                <div class="text">
-                  <h3 class="heading mb-0 pl-3">
-                    Luggage
-                    <span id="car-luggage"></span>
+                    Color
+                    <span id="car-color"></span>
                   </h3>
                 </div>
               </div>
@@ -152,27 +153,28 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md d-flex ftco-animate">
+          <div class="media block-6 services">
+            <div class="media-body py-md-4">
+              <div class="d-flex mb-3 align-items-center">
+                <div class="icon d-flex align-items-center justify-content-center">
+                  <span class="flaticon-car-seat"></span>
+                </div>
+                <div class="text">
+                  <h3 class="heading mb-0 pl-3">
+                    Seats
+                    <span id="car-seats"></span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="row">
         <div class="col-md-12 pills">
-          <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#pills-description">Features</a>
-            </li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-manufacturer">Description</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-review">Review</a></li>
-          </ul> -->
-
-          <!-- <div class="tab-content">
-            <div class="tab-pane fade show active" id="pills-description" role="tabpanel">
-              <div class="row">
-                <ul class="features col-md-4"></ul>
-                <ul class="features col-md-4"></ul>
-                <ul class="features col-md-4"></ul>
-              </div>
-            </div>
-
-          </div> -->
           <div class="test d-flex justify-content-end">
             <button id="bookNowBtn" type="button" class="btn btn-primary py-2 mr-1" data-toggle="modal"
               data-target="#bookingModal">
@@ -209,7 +211,7 @@
   <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <form id="bookingForm" class="modal-content">
+      <form id="bookingForm" class="modal-content" style="background-color: #5e5f7b;color:#ffeba7;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -229,25 +231,27 @@
             <input type="tel" class="form-control" id="phoneNum" required>
           </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="pickupDate">Pick-up Date</label>
-              <input type="date" class="form-control" id="pickupDate" required>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="dropoffDate">Drop-off Date</label>
-              <input type="date" class="form-control" id="dropoffDate" required>
-            </div>
+          <div class="form-group">
+            <label for="availableDate">Available Date</label>
+            <select id="availableDate" name="availableDate" class="form-control" required>
+            </select>
           </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="pickupTime">Pick-up Time</label>
-              <input type="time" class="form-control" id="pickupTime" required>
+
+          <fieldset class="form-group">
+            <legend>Pickup Option</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="pickupType" id="pickupStore" value="store" checked>
+              <label class="form-check-label" for="pickupStore">Pick up at Store</label>
             </div>
-            <div class="form-group col-md-6">
-              <label for="pickupLocation">Pick-up Location</label>
-              <input type="text" class="form-control" id="pickupLocation" required>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="pickupType" id="pickupDelivery" value="delivery">
+              <label class="form-check-label" for="pickupDelivery">Deliver to my Location</label>
             </div>
+          </fieldset>
+
+          <div class="form-group" id="pickupLocationGroup" style="display:none">
+            <label for="pickupLocation">Pickup Location</label>
+            <input type="text" class="form-control" id="pickupLocation">
           </div>
 
           <div class="form-group" id="priceGroup" style="display:none">
