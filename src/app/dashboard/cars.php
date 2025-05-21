@@ -1,0 +1,310 @@
+<?php
+require '../../configDataBase/userDataBaseConnection.php';
+$clearData = new ClearData();
+?>
+
+<?php
+// fetch User
+$userEmail = $_GET['userEmail'];
+$userEmail = json_encode($userEmail);
+
+$stmt = $conn->prepare("SELECT * FROM Users where role_id = 2 And email = :email ");
+$stmt->bindParam(':email', json_decode($userEmail));
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $carType = $_POST['carType'];
+    $carModel = $_POST['carModel'];
+    $modelYear = $_POST['modelYear'];
+    $plateNumber = $_POST['plateNumber'];
+    $cityName = $_POST['cityName'];
+    $description = $_POST['description'];
+    $color = $_POST['color'];
+    $fuel = $_POST['fuel'];
+    $seats = $_POST['seats'];
+    $price = $_POST['price'];
+    $availableDate = $_POST['availableDate'];
+
+    try {
+        // First insert into Cars table
+        $stmt = $conn->prepare("INSERT INTO Cars (user_name, car_type, car_model, model_year, plate_number, price, available_time, available, count, city_name) 
+        VALUES (:user_name, :car_type, :car_model, :model_year, :plate_number, :price, :available_time, 'true', 0, :city_name)");
+
+        $stmt->bindParam(':user_name', json_decode($userEmail));
+        $stmt->bindParam(':car_type', $carType);
+        $stmt->bindParam(':car_model', $carModel);
+        $stmt->bindParam(':model_year', $modelYear);
+        $stmt->bindParam(':plate_number', $plateNumber);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':available_time', $availableDate);
+        $stmt->bindParam(':city_name', $cityName);
+
+        $stmt->execute();
+        $carId = $conn->lastInsertId(); // Get the auto-incremented ID
+
+        // Then insert into CarDetails
+        $stmt = $conn->prepare("INSERT INTO CarDetails (description, color, fuel, seats, img, car_id) 
+        VALUES (:description, :color, :fuel, :seats, null, :car_id)");
+
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':color', $color);
+        $stmt->bindParam(':fuel', $fuel);
+        $stmt->bindParam(':seats', $seats);
+        $stmt->bindParam(':car_id', $carId);
+
+        $stmt->execute();
+        header("Location: /MostWanted/src/app/dashboard/cars.php?userEmail=" . json_decode($userEmail));
+        exit;
+    } catch (PDOException $e) {
+        echo "<script>console.log({$e->getMessage()});</script>";
+    }
+}
+?>
+
+<?php if (isset($_SESSION['message'])): ?>
+    <div class="alert alert-success"><?= $_SESSION['message'] ?></div>
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Cars Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard-style.css">
+    <style>
+        body {
+            background-color: #495057;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Sidebar (Same Sidebar as the Dashboard) -->
+    <div class="sidebar bg-dark vh-100 p-3 position-fixed">
+        <h3 class="text-center py-4 text-white">Admin Panel</h3>
+        <nav class="nav flex-column">
+            <a class="nav-link text-white" href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a class="nav-link text-white" href="/MostWanted/src/app/dashboard/cars.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-car"></i>Cars</a>
+            <a class="nav-link text-white" href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users"></i>Users</a>
+            <a class="nav-link text-white" onclick="backToHomePage()"><i class="fas fa-users"></i>Logout</a>
+        </nav>
+    </div>
+
+    <!-- Content -->
+    <div class="content" style="padding:20px;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4">
+            <a class="navbar-brand" style='color:#FFB22C'>Cars: <?= json_decode($userEmail); ?></a>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Available Cars</h3>
+            <button id="addCarBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Car
+            </button>
+        </div>
+
+        <table class="table table-dark table-hover table-bordered shadow-sm">
+            <thead>
+                <tr>
+                    <th>Added By Merchant</th>
+                    <th>Cars</th>
+                    <th>Plate Number</th>
+                    <th>Price Per Day</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            </tbody>
+            <tbody>
+                <?php
+                $stmt = $conn->prepare("SELECT * FROM Cars");
+                $stmt->execute();
+                $cars = $stmt->fetchAll(); // fetchAll: to get all rows 
+                foreach ($cars as $row) {
+                    $data = [
+                        'id' => json_encode($row['car_id']),
+                        'userEmail' => json_decode($userEmail)
+                    ];
+                    $data = json_encode($data);
+                    echo "<tr>";
+                    echo "<td style = 'color:#129990'>{$row['user_name']}</td>";
+                    echo "<td>{$row['car_type']}, {$row['car_model']}</td>";
+                    echo "<td style = 'color:#FFB22C'>{$row['plate_number']}</td>";
+                    echo "<td>{$row['price']} JD</td>";
+                    echo "<td style = 'color:#FFB22C'>{$row['available']}</td>";
+                    echo "<td>                            
+                            <a href='/MostWanted/src/app/dashboard/update.php?car_id={$data}' class='btn btn-warning btn-sm'>Edit</a>
+                            <a href='/MostWanted/src/app/dashboard/delete.php?car_id={$data}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
+                          </td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="carModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="post" id="carForm">
+                    <input type="hidden" name="action" id="formAction" value="add">
+                    <input type="hidden" name="carId" id="carId">
+                    <input type="hidden" name="userEmail" value="<?= htmlspecialchars($userEmail) ?>">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Add New Car</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Car Type</label>
+                                <input type="text" class="form-control" id="carType" name="carType" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Car Model</label>
+                                <input type="text" class="form-control" id="carModel" name="carModel" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Model Year</label>
+                                <input type="number" class="form-control" id="modelYear" min="1900" max="2099" name="modelYear" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Plate Number</label>
+                                <input type="number" class="form-control" id="plateNumber" name="plateNumber" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">City Name</label>
+                                <input type="text" class="form-control" id="cityName" name="cityName" required>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Color</label>
+                                <input type="text" class="form-control" id="color" name="color" placeholder="e.g. White">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Fuel</label>
+                                <select class="form-select" id="fuel" name="fuel">
+                                    <option>Hybrid</option>
+                                    <option>Diesel</option>
+                                    <option>Electric</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Seats</label>
+                                <input type="number" class="form-control" id="seats" name="seats" min="1" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Price Per Day ($)</label>
+                                <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Available Dates</label>
+                                <div class="input-group mb-2">
+                                    <input type="date" class="form-control" id="availableDateInput" name="availableDate">
+                                    <button class="btn btn-outline-secondary" type="button" id="addDateBtn">
+                                        <i class="fas fa-calendar-plus"></i> Add Date
+                                    </button>
+                                </div>
+                                <ul class="list-group" id="datesList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">Save Car</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        function backToHomePage() {
+            alert("successfully Sign out");
+            window.location.href = "/MostWanted/src/app/home/home.php";
+        }
+
+        let availableDatesTemp = [];
+        let editingIndex = null;
+        const bsModal = new bootstrap.Modal(document.getElementById('carModal'));
+
+        function renderTable() {
+            const tbody = document.getElementById('carsTableBody');
+            tbody.innerHTML = '';
+            cars.forEach((c, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${c.car_type}</td>
+          <td>${c.car_model}</td>
+          <td>$${c.price.toFixed(2)}</td>
+          <td>${c.available_time.length > 0 ? 'Yes' : 'No'}</td>
+          <td>
+            <button class="btn btn-sm btn-light me-1" onclick="editCar(${i})">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCar(${i})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Add new car
+        document.getElementById('addCarBtn').addEventListener('click', () => {
+            editingIndex = null;
+            document.getElementById('modalTitle').textContent = 'Add New Car';
+            document.getElementById('carForm').reset();
+            availableDatesTemp = [];
+            updateDatesList();
+            bsModal.show();
+        });
+
+        document.getElementById('addDateBtn').addEventListener('click', () => {
+            const dt = document.getElementById('availableDateInput').value;
+            if (!dt) return;
+            availableDatesTemp.push(dt);
+            updateDatesList();
+            document.getElementById('availableDateInput').value = '';
+        });
+
+        function updateDatesList() {
+            const ul = document.getElementById('datesList');
+            ul.innerHTML = '';
+            availableDatesTemp.forEach((d, i) => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.textContent = d;
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-sm btn-danger';
+                btn.innerHTML = '<i class="fas fa-times"></i>';
+                btn.onclick = () => {
+                    availableDatesTemp.splice(i, 1);
+                    updateDatesList();
+                };
+                li.appendChild(btn);
+                ul.appendChild(li);
+            });
+        }
+
+        renderTable();
+    </script>
+</body>
+
+</html>

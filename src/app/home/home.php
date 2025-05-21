@@ -3,43 +3,42 @@ require '../../configDataBase/userDataBaseConnection.php';
 ?>
 
 <?php
-  $userEmail = $_GET['user_email'] ?? null;
-
-  $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email");
-  $stmt->bindParam(':email', $userEmail);
-  $stmt->execute();
-  $user = $stmt->fetch(PDO::FETCH_ASSOC);
-  $data = array();
-  if ($user){
-  // store user data in an array and convert it to JSON
-  $data['name'] = $user['name'];
-  $data['email'] = $user['email'];
-  $data['phone'] = $user['phone'];
-  echo json_encode($data); // Output user data as JSON
-
-  // Store user data in local storage
-  echo "<script>
-        localStorage.setItem('userName', '" . $user['name'] . "');
-        localStorage.setItem('userEmail', '" . $user['email'] . "');
-        localStorage.setItem('userPhone', '" . $user['phone'] . "');                        
-        </script>";
+// fetch existed city names from the database
+// and store them in local storage
+// to use them in the cars.js file
+// to filter the cars by city name
+// and to show the cars in the selected city
+$stmt = $conn->prepare("SELECT city_name FROM City"); // CityNames table as a view table
+$stmt->execute();
+// Set the fetch mode ensures that each row of the result is
+// returned as an associative array, where the column names.
+// are the keys of the array and the values are the corresponding
+$stmt->setFetchMode(PDO::FETCH_ASSOC);
+$cities = $stmt->fetchAll();
+$uniqueCities = [];
+foreach ($cities as $city) {
+  $cityName = $city['city_name'];
+  if (!in_array($cityName, $uniqueCities)) {
+    $uniqueCities[] = $cityName;
+  }
 }
+$cityCount = count($uniqueCities);
+$cityNames = json_encode($uniqueCities);
+$cityCount = json_encode($cityCount);
 
-// fetch user data from the local storage
-// $userName = "<script>document.write(localStorage.getItem('userName'));</script>";
-// $userEmail = "<script>document.write(localStorage.getItem('userEmail'));</script>"; 
-// $userPhone = "<script>document.write(localStorage.getItem('userPhone'));</script>";
+echo "<script>var cities = $cityNames; var cityCount = $cityCount;</script>";
+echo "<script>
+                localStorage.setItem('cityNames',  cities);
+                </script>";
+?>
 
-// Display user information
-// echo "<p>Welcome, " . $userName . "!</p>";
-// echo "<p>Your email: " . $userEmail . "</p>";
-// echo "<p>Your phone: " . $userPhone . "</p>";
-
-// Close the database connection
-$conn = null;
-  
-
-
+<?php
+$stmt = $conn->prepare("SELECT * FROM FullCarDetails");
+$stmt->execute();
+$stmt->setFetchMode(PDO::FETCH_ASSOC);
+$carsDetails = $stmt->fetchAll();
+$carsDetails = json_encode($carsDetails, JSON_HEX_APOS | JSON_HEX_QUOT);
+echo "<script>var carsDetails = " . $carsDetails . ";</script>";
 ?>
 
 <!DOCTYPE html>
@@ -71,12 +70,13 @@ $conn = null;
   <link rel="stylesheet" href="../../css/icomoon.css">
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="./home.css">
+  <style>
+
+  </style>
 </head>
 
 <body>
-
   <div id="nav-placeholder"></div>
-
 
   <div class="hero-wrap ftco-degree-bg test" style="background-image: url('../../images/bg_1.jpg');"
     data-stellar-background-ratio="0.5">
@@ -86,12 +86,17 @@ $conn = null;
         <div class="col-lg-8 ftco-animate">
           <div class="text w-100 text-center mb-md-5 pb-md-5">
             <h1 class="mb-4">Fast &amp; Easy Way To Rent A Car</h1>
-            <p style="font-size: 18px;">Wide Selection of Cars: From economy to luxury, find the perfect ride.</p>
-            <a data-protected href="/MostWanted/src/app/car-details/car-details.php"
-              class="icon-wrap d-flex align-items-center mt-4 justify-content-center">
+            <p style="font-size: 18px; color:#d8e2dc;">Wide Selection of Cars: From economy to luxury, find the perfect
+              ride.</p>
+            <a href="/MostWanted/src/app/cars/cars.php" class="icon-wrap d-flex align-items-center mt-4 justify-content-center">
               <div class="icon d-flex align-items-center justify-content-center"><span class="ion-ios-play"></span>
               </div>
-              <div class="heading-title ml-5"><span>Easy steps for renting a car</span></div>
+              <div class="heading-title ml-5"><span style="color:#d8e2dc ;">Easy steps for renting a car</span></div>
+            </a>
+            <a href="/MostWanted/src/app/login/merchant-login.php" class="icon-wrap d-flex align-items-center mt-4 justify-content-center">
+              <div class="icon d-flex align-items-center justify-content-center"><span class="ion-ios-play"></span>
+              </div>
+              <div class="heading-title ml-5"><span>Easy steps to Sign Up as Branch dealer</span></div>
             </a>
           </div>
         </div>
@@ -99,111 +104,45 @@ $conn = null;
     </div>
   </div>
 
-  <section class="ftco-section ftco-no-pt bg-light">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-          <span class="subheading">What we offer</span>
-          <h2 class="mb-2">Top Rented Vehicles</h2>
+  <section class="ftco-section ftco-no-pt bg-light" style="background-color:  #1f2029;">
+    <div class="container col-12">
+      <div class="row justify-content-center mb-5">
+        <div class="col-md-12 heading-section text-center ftco-animate">
+          <span class="subheading" style="color:  #d8e2dc;">Where We Operate</span>
+          <h2 class="mb-2" style="color:  #ffeba7;">Choose Your Region</h2>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="carousel-car owl-carousel">
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate">
-                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/car-1.jpg);">
-                </div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat">Chevrolet</span>
-                    <p class="price ml-auto">$120 <span>/day</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block details-btn"><a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate" data-name="Range Rover" data-category="crossover SUV"
-                data-price="$95 /day" data-img="../../images/car-2.jpg" data-mileage="30,000"
-                data-transmission="Automatic" data-seats="5 Adults" data-luggage="3 Bags" data-fuel="Diesel"
-                data-features='["Air conditions","GPS","Bluetooth","Sunroof"]'>
-                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/car-2.jpg);">
-                </div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">Range Rover</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat">crossover SUV</span>
-                    <p class="price ml-auto">$95 <span>/day</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block details-btn">
-                    <a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate">
-                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/ford.jpeg);">
-                </div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">Ford</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat">Fusion</span>
-                    <p class="price ml-auto">$70 <span>/day</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block details-btn"><a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate" data-name="BMW M3 GTR" data-category="GTR"
-                data-price="$300 /day" data-img="../../images/bmw-m3.jpg" data-mileage="200,000"
-                data-transmission="Manual" data-seats="2 Adults" data-luggage="4 Bags" data-fuel="Petrol"
-                data-features='["Airconditions","GPS","Bluetooth", "Music"]'>
-                <div class="img rounded d-flex align-items-end" style="background-image: url(../../images/bmw-m3.jpg);">
-                </div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">BMW M3</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat">GTR</span>
-                    <p class="price ml-auto">$300 <span>/day</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block details-btn"><a href="#" class="btn btn-secondary py-2 ml-1">Details</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="row" id="region-list">
       </div>
     </div>
   </section>
+
+  <section class="ftco-section bg-light">
+    <div class="container">
+      <div class="row" id="car-list"></div>
+    </div>
+  </section>
+
 
 
   <section class="ftco-section ftco-about">
     <div class="container about-container">
       <div class="row no-gutters">
-        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center"
-          style="background-image: url(../../images/about-us.jpeg);">
+        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(../../images/about-us.jpeg); width: 400px;  
+          height: 400px; border-radius: 50%;object-fit: cover;">
         </div>
         <div class="col-md-6 wrap-about ftco-animate">
           <div class="heading-section heading-section-white pl-md-5">
-            <span class="subheading">Our Story &amp; Vision</span>
-            <h2 class="mb-4"><em>MostWanted</em></h2>
+            <span class="subheading" style="color:  #ffeba7;">Our Story &amp; Vision</span>
+            <h2 class="mb-4" style="color:fad643"><em>Most Wanted</em></h2>
+            <p style="color:  #ffeba7;">we are passionate about providing a seamless, reliable, and comfortable car
+              rental experience.</p>
+            <p style="color:  #ffeba7;"> Founded with the goal of meeting the needs of all types of customers, we offer
+              a wide range of vehicles—from luxury and economy cars to SUVs—at competitive prices and with top-quality
+              service. We believe that customer satisfaction comes first, which is why we offer flexible booking
+              options, continuous support, and a fleet of modern, fully equipped vehicles. With us, your journey begins
+              with safety and peace of mind.</p>
 
-            <p>Founded in 2025 by a small team of car-enthusiasts in Amman, <strong>MostWanted</strong> set out to
-              reshape
-              the way people rent vehicles. What began as a single-office operation with three sedans has grown into
-              Jordan’s leading online car rental platform, offering over 500 cars across 20+ branches.</p>
-            <p>Our mission is simple: <em>make car rental fast, transparent and stress-free.</em> From streamlined
-              online
-              booking to 24/7 roadside assistance, we handle the details so you can focus on the journey ahead. We
-              believe in putting you—our customer—first, which is why we innovate constantly to bring you new features
-              like contactless pickup, real-time fleet tracking, and flexible drop-off options</p>
           </div>
         </div>
       </div>
@@ -283,8 +222,7 @@ $conn = null;
       .then(html => {
         document.getElementById('nav-placeholder').innerHTML = html;
         initNav();
-      })
-      .catch(err => console.error('Navbar load failed:', err));
+      });
   </script>
 
   <script>

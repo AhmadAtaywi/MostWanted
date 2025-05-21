@@ -1,55 +1,178 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const raw = sessionStorage.getItem('selectedCar');
-    if (!raw) return window.location.replace('../home/home.html');
-    const car = JSON.parse(raw);
-    console.log(car);
+document.addEventListener("DOMContentLoaded", () => {
+  // Get car data from session storage
+  const raw = sessionStorage.getItem("selectedCar");
+  if (!raw) {
+    return window.location.replace("/MostWanted/src/app/home/home.php");
+  }
 
-    const imgEl = document.getElementById('car-img');
-    imgEl.style.backgroundImage = `url(${car.imgUrl})`;
-    document.getElementById('car-category').textContent = car.category;
-    document.getElementById('car-name').textContent     = car.name;
-    document.getElementById('car-price').textContent    = car.price;
+  const car = JSON.parse(raw);
+  // console.log("Loaded raw JS-line-9:", raw); // as string
+  // console.log("Loaded car JS-line-9:", car); // as object
 
-    const statMap = {
-      'flaticon-dashboard': car.mileage,
-      'flaticon-pistons':   car.transmission,
-      'flaticon-car-seat':  car.seats,
-      'flaticon-backpack':  car.luggage,
-      'flaticon-diesel':    car.fuel
-    };
+  // Set basic car information
+  document.getElementById("car-img").style.backgroundImage = `url(${
+    car.img || "../../images/default-car.jpg"
+  })`;
+  document.getElementById("car-city").textContent =
+    car.city_name || "Unknown City";
+  document.getElementById("car-name").textContent = `${car.car_type || ""} ${
+    car.car_model || ""
+  } (${car.model_year || ""})`;
+  document.getElementById("car-price").textContent = `$${car.price || 0} /day`;
+  document.getElementById("car-description").textContent =
+    car.description || "No description available";
 
-    Object.entries(statMap).forEach(([iconClass, value]) => {
-      const iconEl = document.querySelector(`.${iconClass}`);
-      if (!iconEl) return;
-      const span = iconEl
-        .closest('.media')
-        .querySelector('h3.heading span');
-      if (span) span.textContent = value;
+  // Set car specifications
+  document.getElementById("car-color").textContent = car.color || "Unknown";
+  document.getElementById("car-fuel").textContent = car.fuel || "Unknown";
+  document.getElementById("car-seats").textContent = car.seats || "N/A";
+
+  // Check if user is logged in
+  const isLoggedIn = !!localStorage.getItem("userEmail");
+  const bookBtn = document.getElementById("bookNowBtn");
+
+  if (bookBtn) {
+    bookBtn.addEventListener("click", (e) => {
+      if (!isLoggedIn) {
+        e.preventDefault();
+        const here = window.location.pathname + window.location.search;
+        window.location.href = `/MostWanted/src/app/login/login.php?redirect=${encodeURIComponent(
+          here
+        )}`;
+      } else if (car.available == "false") {
+        // message popup this car is unavailable
+        alert("This car is currently unavailable for booking.");
+        e.preventDefault();
+        const here = window.location.pathname + window.location.search;
+        window.location.href = `/MostWanted/src/app/cars/cars.php?redirect=${encodeURIComponent(
+          here
+        )}`;
+      }
+    });
+  }
+
+  // Populate available dates dropdown
+  const availableDateSelect = document.getElementById("availableDate");
+  if (availableDateSelect && car.available_time && car.available == "true") {
+    // Ensure available_time is an array
+    const availableTimes = Array.isArray(car.available_time)
+      ? car.available_time
+      : [car.available_time]; // Convert string to array if necessary
+
+    availableTimes.forEach((time) => {
+      const option = document.createElement("option");
+      option.value = time;
+      option.textContent = new Date(time).toISOString().split("T")[0]; // Format as YYYY-MM-DD
+      availableDateSelect.appendChild(option);
+    });
+  } else {
+    // Fallback if no available times are specified
+    const option = document.createElement("option");
+    option.value = "not available";
+    option.textContent = "Not available";
+    availableDateSelect.appendChild(option);
+  }
+
+  // Setup pickup location toggle
+  const pickupStore = document.getElementById("pickupStore");
+  const pickupDelivery = document.getElementById("pickupDelivery");
+  const pickupLocationGroup = document.getElementById("pickupLocationGroup");
+
+  if (pickupStore && pickupDelivery && pickupLocationGroup) {
+    pickupStore.addEventListener("change", () => {
+      pickupLocationGroup.style.display = "none";
     });
 
-    const columns = document.querySelectorAll('#pills-description .features');
-    if (Array.isArray(car.features) && car.features.length) {
-      columns.forEach(ul => ul.innerHTML = '');
-      car.features.forEach((feat, i) => {
-        const li = document.createElement('li');
-        li.className = 'check';
-        li.innerHTML = `<span class="ion-ios-checkmark"></span>${feat}`;
-        columns[i % columns.length].appendChild(li);
+    pickupDelivery.addEventListener("change", () => {
+      pickupLocationGroup.style.display = "block";
+    });
+  }
+
+  // Setup price calculation
+  const basePrice = Number(car.price) || 0;
+  const surchargeMap = {
+    WeddingCeremony: 0.04, // Wedding Ceremony
+    CityTransfer: 0.05, // City Transfer
+    AirportTransfer: 0.07, // Airport Transfer
+    WholeCityTour: 0.15, // Whole City Tour
+    RentACar: 0.18, // Rent A Car
+  };
+
+  const priceGroup = document.getElementById("priceGroup");
+  const computedPrice = document.getElementById("computedPrice");
+  const uploadGroup = document.getElementById("uploadGroup");
+  const form = document.getElementById("bookingForm");
+
+  if (form) {
+    form.querySelectorAll('input[name="service"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        uploadGroup.style.display =
+          radio.value === "RentACar" ? "block" : "none";
+
+        const extraPct = surchargeMap[radio.value] || 0;
+        const total = basePrice * (1 + extraPct);
+        if (computedPrice) computedPrice.value = `$${total.toFixed(2)}`;
+        if (priceGroup) priceGroup.style.display = "block";
       });
-    }
-  });
+    });
 
-  fetch('../partials/nav.html')
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById('nav-placeholder').innerHTML = html;
-    initNav();
-  })
-  .catch(err => console.error('Nav load failed:', err));
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-  fetch('../partials/footer/footer.html')
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById('footer-placeholder').innerHTML = html;
-  })
-  .catch(err => console.error('Footer load failed:', err));
+      const bookingData = {
+        carId: car.car_id || null,
+        carType: car.car_type,
+        carModel: car.car_model,
+        fullName: form.fullName.value,
+        email: form.emailAddr.value,
+        phone: form.phoneNum.value,
+        date: form.availableDate.value,
+        pickupType: form.pickupType.value,
+        pickupLocation: form.pickupLocation.value || null,
+        service: form.service.value,
+        price: computedPrice ? computedPrice.value : basePrice,
+        drivingLicense: form.uploadImg.files[0]
+          ? form.uploadImg.files[0].name
+          : null,
+      };
+
+      console.log("Booking data JS-line-140:", bookingData);
+
+      setTimeout(() => {
+        window.location.href = `/MostWanted/src/app/car-details/car-details.php?bookingData=${JSON.stringify(
+          bookingData
+        )}`;
+        // setTimeout(() => {
+        //   window.location.href = `/MostWanted/src/app/cars/cars.php`;
+        // }, 2000);
+      }, 2000);
+
+      // const params = new URLSearchParams(window.location.search);
+      // if (!params.has("bookingData")) {
+      //   const target = `/MostWanted/src/app/cars/cars.php`;
+      //   window.location.href = target;
+      //   return; // stop running any further code on this page
+      // }
+
+      // Here you would typically send the data to your backend
+      // For now, we'll just show the thank you modal
+      $("#bookingModal").modal("hide");
+      $("#thankYouModal").modal("show");
+
+      // Reset form
+      form.reset();
+      if (uploadGroup) uploadGroup.style.display = "none";
+      if (priceGroup) priceGroup.style.display = "none";
+    });
+  }
+
+  // Cancel button handler
+  const cancelBtn = document.getElementById("bookingCancelBtn");
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", () => {
+      if (form) form.reset();
+      if (uploadGroup) uploadGroup.style.display = "none";
+      if (priceGroup) priceGroup.style.display = "none";
+    });
+  }
+});

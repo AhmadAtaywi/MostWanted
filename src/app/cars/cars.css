@@ -1,0 +1,44 @@
+.ftco-animate {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mt-3 {
+    display: flex;
+    justify-content: center;
+}
+
+#car-list {
+    width: 100%;
+    gap: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.location {
+    width: 380px;
+    flex: none;
+}
+
+.cars {
+    max-width: 380px;
+}
+
+.test {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.text {
+    width: 100% !important;
+}
+
+.car-description {
+  display: -webkit-box;            
+  -webkit-box-orient: vertical;   
+  -webkit-line-clamp: 2;          
+  overflow: hidden;  
+  min-height: 66px;              
+}

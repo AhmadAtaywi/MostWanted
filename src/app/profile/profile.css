@@ -1,0 +1,16 @@
+.container123 {
+    margin-top: 100px;
+}
+.form__container123 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button__container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cancel {
+    padding: 0 25px;
+}

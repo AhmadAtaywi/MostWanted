@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const isLoggedIn = !!localStorage.getItem("authToken");
+  const isLoggedIn = !!localStorage.getItem("userEmail");
 
   ["nav-pricing", "nav-cars"].forEach((id) => {
     const li = document.getElementById(id);
@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isLoggedIn) {
         e.preventDefault();
         const targetPage = link.getAttribute("href");
-        const redirectPath = `../home/${targetPage}`;
-        window.location.href = `../login/login.html?redirect=${encodeURIComponent(
+        const redirectPath = `/MostWanted/src/app/home/${targetPage}`;
+        window.location.href = `/MostWanted/src/app/login/login.php?redirect=${encodeURIComponent(
           redirectPath
         )}`;
       }
@@ -31,10 +31,59 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutEl) {
     logoutEl.addEventListener("click", (e) => {
       e.preventDefault();
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("userEmail");
       window.location.reload();
     });
   }
+  
+
+  // Safely get data from PHP variables with fallbacks
+  const regions =
+    typeof cities !== "undefined" && Array.isArray(cities)
+      ? cities.map((city) => ({
+          name: city,
+          img: `../../images/${city.toLowerCase()}.jpg`,
+        }))
+      : [
+          { name: "Amman", img: "../../images/amman.jpg" },
+          { name: "Zarqa", img: "../../images/zarqa.jpg" },
+          { name: "Irbid", img: "../../images/irbid.jpg" },
+          { name: "Aqaba", img: "../../images/aqaba.jpg" },
+          { name: "Salt", img: "../../images/salt.jpg" },
+          { name: "Karak", img: "../../images/karak.jpg" },
+          { name: "Mafraq", img: "../../images/mafraq.jpg" },
+        ];
+
+  const container = document.getElementById("region-list");
+  container.innerHTML = "";
+
+  regions.forEach((region) => {
+    const col = document.createElement("div");
+    col.className = "col-md-4 location";
+    col.innerHTML = `
+      <div class="location-card ftco-animate" style="cursor:pointer">
+        <div class="img rounded"
+             style="background-image:url(${region.img});
+                    height:200px;
+                    background-size:cover">
+        </div>
+        <h3 class="mt-3 test1">${region.name}</h3>
+      </div>
+    `;
+    col.querySelector(".location-card").addEventListener("click", () => {
+      const href = `/MostWanted/src/app/cars/cars.php?location=${encodeURIComponent(
+        region.name
+      )}`;
+      if (!isLoggedIn) {
+        window.location.href = `/MostWanted/src/app/login/login.php?redirect=${encodeURIComponent(
+          href
+        )}`;
+      } else {
+        window.location.href = href;
+      }
+    });
+    container.appendChild(col);
+  });
 });
 
 document.querySelectorAll(".details-btn a").forEach((link) => {
@@ -45,19 +94,7 @@ document.querySelectorAll(".details-btn a").forEach((link) => {
     }
 
     e.preventDefault();
-    const car = {
-      name: wrap.dataset.name,
-      category: wrap.dataset.category,
-      price: wrap.dataset.price,
-      imgUrl: wrap.dataset.img,
-      mileage: wrap.dataset.mileage,
-      transmission: wrap.dataset.transmission,
-      seats: wrap.dataset.seats,
-      luggage: wrap.dataset.luggage,
-      fuel: wrap.dataset.fuel,
-      features: JSON.parse(wrap.dataset.features || "[]"),
-    };
     sessionStorage.setItem("selectedCar", JSON.stringify(car));
-    window.location.href = "../car-details/car-details.html";
+    window.location.href = "/MostWanted/src/app/car-details/car-details.php";
   });
 });
