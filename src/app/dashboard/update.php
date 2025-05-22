@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $color = $clearData->cleanInput($_POST['color']);
     $fuel = $clearData->cleanInput($_POST['fuel']);
     $seats = $clearData->cleanInput($_POST['seats']);
+    $urlImage = $clearData->cleanInput($_POST['img']);
 
     try {
         // Update Cars table
@@ -76,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':color', $color);
         $stmt->bindParam(':fuel', $fuel);
         $stmt->bindParam(':seats', $seats);
+        $stmt->bindParam(':img', $urlImage);
         $stmt->execute();
 
         header("Location: /MostWanted/src/app/dashboard/cars.php?userEmail={$id['userEmail']}");
@@ -148,6 +150,10 @@ if (!$car) {
             <div class="mb-3">
                 <label class="form-label">Description</label>
                 <input type="text" step="0.01" class="form-control" name="description" value="<?= $carDetails['description'] ?>" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Image</label>
+                <input type="text" step="0.01" class="form-control" name="img" value="<?= $carDetails['img'] ?>" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Color</label>

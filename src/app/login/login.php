@@ -62,7 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </script>";
             } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['role_id'] == 1) {
                 echo "<script>                            
-                            localStorage.setItem('userEmail', '" . $user['email'] . "');                                                      
+                            localStorage.setItem('userEmail', '" . $user['email'] . "'); 
+                            localStorage.setItem('userName', '" . $user['name'] . "');                                                      
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/home/home.php';
                             }, 100);

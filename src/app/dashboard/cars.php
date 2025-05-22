@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $seats = $_POST['seats'];
     $price = $_POST['price'];
     $availableDate = $_POST['availableDate'];
+    $urlImage = $_POST['image'];
 
     try {
         // First insert into Cars table
@@ -47,13 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Then insert into CarDetails
         $stmt = $conn->prepare("INSERT INTO CarDetails (description, color, fuel, seats, img, car_id) 
-        VALUES (:description, :color, :fuel, :seats, null, :car_id)");
+        VALUES (:description, :color, :fuel, :seats, :img, :car_id)");
 
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':color', $color);
         $stmt->bindParam(':fuel', $fuel);
         $stmt->bindParam(':seats', $seats);
         $stmt->bindParam(':car_id', $carId);
+        $stmt->bindParam(':img', $urlImage);
 
         $stmt->execute();
         header("Location: /MostWanted/src/app/dashboard/cars.php?userEmail=" . json_decode($userEmail));
@@ -183,11 +185,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">City Name</label>
-                                <input type="text" class="form-control" id="cityName" name="cityName" required>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+                                <select class="form-select" name="cityName" id="cityName">
+                                    <option>zarqa</option>
+                                    <option>amman</option>
+                                    <option>irbid</option>
+                                    <option>mafraq</option>
+                                    <option>maan</option>
+                                    <option>ajloun</option>
+                                    <option>aqaba</option>
+                                    <option>salt</option>
+                                    <option>madaba</option>
+                                    <option>karak</option>
+                                    <option>tafilah</option>
+                                    <option>jarash</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Color</label>
@@ -208,6 +219,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="col-md-4">
                                 <label class="form-label">Price Per Day ($)</label>
                                 <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Image</label>
+                                <textarea class="form-control" id="image" name="image" rows="2" placeholder="add url image only!!"></textarea>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Available Dates</label>

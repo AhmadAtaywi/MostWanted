@@ -1,39 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Safely get data from PHP variables with fallbacks
-    const regions =
-      typeof cities !== "undefined" && Array.isArray(cities)
-        ? cities.map((city) => ({
-            name: city,
-            img: `../../images/${city.toLowerCase()}.jpg`,
-          }))
-        : [
-            { name: "Amman", img: "../../images/amman.jpg" },
-            { name: "Zarqa", img: "../../images/zarqa.jpg" },
-            { name: "Irbid", img: "../../images/irbid.jpg" },
-            { name: "Aqaba", img: "../../images/aqaba.jpg" },
-            { name: "Salt", img: "../../images/salt.jpg" },
-            { name: "Karak", img: "../../images/karak.jpg" },
-            { name: "Mafraq", img: "../../images/mafraq.jpg" },
-          ];
+  // Safely get data from PHP variables with fallbacks
+  const regions =
+    typeof cities !== "undefined" && Array.isArray(cities)
+      ? cities.map((city) => ({
+          name: city,
+          img: `../../images/${city.toLowerCase()}.jpg`,
+        }))
+      : [
+          { name: "Amman", img: "../../images/amman.jpg" },
+          { name: "Zarqa", img: "../../images/zarqa.jpg" },
+          { name: "Irbid", img: "../../images/irbid.jpg" },
+          { name: "Aqaba", img: "../../images/aqaba.jpg" },
+          { name: "Salt", img: "../../images/salt.jpg" },
+          { name: "Madaba", img: "../../images/madaba.jpg" },
+          { name: "Karak", img: "../../images/karak.jpg" },
+          { name: "Tafilah", img: "../../images/tafilah.jpg" },
+          { name: "maan", img: "../../images/maan.jpg" },
+          { name: "Jarash", img: "../../images/jarash.jpg" },
+          { name: "ajloun", img: "../../images/ajloun.jpg" },          
+        ];
 
-    const cars =
-      typeof carsDetails !== "undefined" && Array.isArray(carsDetails)
-        ? carsDetails.map((car) => ({
-            car_id: car.car_id || "N/A",
-            car_type: car.car_type || "Unknown",
-            car_model: car.car_model || "Unknown",
-            model_year: car.model_year || "N/A",
-            city_name: car.city_name || "Unknown",
-            description: car.description || "No description available",
-            color: car.color || "Unknown",
-            fuel: car.fuel || "Unknown",
-            seats: car.seats || 0,
-            price: car.price || 0,
-            img: car.img = `/MostWanted/src/images/${car.img}.jpg` || "../../images/default.jpg",            
-            available_time: car.available_time || [],
-            available : car.available,
-          }))
-        : []; // Fallback empty array if no data
+  const cars =
+    typeof carsDetails !== "undefined" && Array.isArray(carsDetails)
+      ? carsDetails.map((car) => ({
+          car_id: car.car_id || "N/A",
+          car_type: car.car_type || "Unknown",
+          car_model: car.car_model || "Unknown",
+          model_year: car.model_year || "N/A",
+          city_name: car.city_name || "Unknown",
+          description: car.description || "No description available",
+          color: car.color || "Unknown",
+          fuel: car.fuel || "Unknown",
+          seats: car.seats || 0,
+          price: car.price || 0,
+          img: processImageUrl(car.img) || "../../images/default.jpg",
+          available_time: car.available_time || [],
+          available: car.available,
+        }))
+      : []; // Fallback empty array if no data
+
+  function processImageUrl(imgUrl) {
+    // If empty, return default image
+    if (!imgUrl) return "../../images/default-car.jpg";
+
+    try {
+      // Handle Google Images redirect URLs
+      if (imgUrl.includes("google.com/imgres")) {
+        const extractedUrl = new URL(imgUrl).searchParams.get("imgurl");
+        if (extractedUrl) return extractedUrl;
+      }
+
+      // Handle direct URLs
+      new URL(imgUrl); // This will throw if invalid URL
+      return imgUrl;
+    } catch (e) {
+      // If URL is invalid, return default
+      return "../../images/default-car.jpg";
+    }
+  }
 
   const container = document.getElementById("car-list");
   if (!container) {
@@ -87,13 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const carList = document.createElement("div");
     carList.className = "row test";
-    container.appendChild(carList);    
+    container.appendChild(carList);
 
     const renderCars = (list) => {
+      console.log("inside renderCars");
       carList.innerHTML = "";
       list.forEach((car) => {
         const col = document.createElement("div");
-        col.className = "col-md-4 cars";      
+        col.className = "col-md-4 cars";
         col.innerHTML = `
       <div class="car-wrap rounded ftco-animate">
         <div class="img rounded d-flex align-items-end" style="background-image:url(${
@@ -126,7 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
         col.querySelector(".details-btn").addEventListener("click", (e) => {
           e.preventDefault();
           sessionStorage.setItem("selectedCar", JSON.stringify(car));
-          window.location.href = "/MostWanted/src/app/car-details/car-details.php";
+          window.location.href =
+            "/MostWanted/src/app/car-details/car-details.php";
         });
         carList.appendChild(col);
       });

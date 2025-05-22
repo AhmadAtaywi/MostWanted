@@ -1,6 +1,7 @@
 function initNav() {
   const isLoggedIn = !!localStorage.getItem("userEmail");
-  const userEmail = localStorage.getItem("userEmail") || "";
+  const userName = localStorage.getItem("userName") || "";
+
 
   ["nav-login", "nav-register"].forEach((id) => {
     document.getElementById(id)?.classList.toggle("d-none", isLoggedIn);
@@ -16,12 +17,13 @@ function initNav() {
   document.getElementById("nav-logout")?.addEventListener("click", (e) => {
     e.preventDefault();
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
     window.location.reload();
   });
 
   const welcomeSpan = document.querySelector("#nav-welcome .nav-link");
   if (welcomeSpan) {
-    welcomeSpan.textContent = `welcome ${userEmail}`;
+    welcomeSpan.textContent = `welcome ${userName}`;
   }
 
   document.querySelectorAll("a[data-protected]").forEach((a) => {
@@ -53,13 +55,10 @@ function initNav() {
       li.classList.remove("active");
     }
   });
-  console.log(4);
   const profileAnchor = document.querySelector("#nav-profile a");
   if (profileAnchor) {
-    console.log(1);
     profileAnchor.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log(2);
       const email = localStorage.getItem("userEmail");
       if (!email) {
         window.location.href = "/src/app/login/login.php";

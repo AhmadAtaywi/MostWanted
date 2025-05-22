@@ -6,13 +6,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const car = JSON.parse(raw);
-  // console.log("Loaded raw JS-line-9:", raw); // as string
-  // console.log("Loaded car JS-line-9:", car); // as object
 
-  // Set basic car information
-  document.getElementById("car-img").style.backgroundImage = `url(${
-    car.img || "../../images/default-car.jpg"
-  })`;
+function processImageUrl(imgUrl) {
+  // If empty, return default image
+  if (!imgUrl) return "../../images/default-car.jpg";
+
+  try {
+    // Handle Google Images redirect URLs
+    if (imgUrl.includes("google.com/imgres")) {
+      const extractedUrl = new URL(imgUrl).searchParams.get("imgurl");
+      if (extractedUrl) return extractedUrl;
+    }
+
+    // Handle direct URLs
+    new URL(imgUrl); // This will throw if invalid URL
+    return imgUrl;
+  } catch (e) {
+    // If URL is invalid, return default
+    return "../../images/default-car.jpg";
+  }
+}
+
+  document.getElementById("car-img").style.backgroundImage = `url(${processImageUrl(car.img)})`;
   document.getElementById("car-city").textContent =
     car.city_name || "Unknown City";
   document.getElementById("car-name").textContent = `${car.car_type || ""} ${
