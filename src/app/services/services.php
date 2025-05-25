@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Services</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/animate.css">
+
+    <link rel="stylesheet" href="../../css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../../css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../../css/aos.css">
+
+    <link rel="stylesheet" href="../../css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../../css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../../css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="../../css/flaticon.css">
+    <link rel="stylesheet" href="../../css/icomoon.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <link rel="stylesheet" href="./services.css">
+
+    <style>
+        section {
+            background-color: #1f2029;
+        }
+
+        h3 {
+            color: #ffeba7;
+        }
+
+        p {
+            color: #d8e2dc;
+        }
+
+        .nav-button {
+            font-size: 45px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');"
+        data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="/MostWanted/src/app/home/home.php">Home <i
+                                    class="ion-ios-arrow-forward"></i></a></span> <span>Services <i
+                                class="ion-ios-arrow-forward"></i></span></p>
+                    <h1 class="mb-3 bread">Our Services</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <span style="color:  #d8e2dc;">Services</span>
+                    <h2 class="mb-3" style="color: #ffeba7;">Our Latest Services</h2>
+                </div>
+            </div>
+            <div style="justify-content: center;" class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <div class="services services-2 w-100 text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
+                        </div>
+                        <div class="text w-100">
+                            <h3 class="heading mb-2">Wedding Ceremony</h3>
+                            <p>Make your wedding day extra special with our luxury wedding cars. Arrive in style and
+                                enjoy every
+                                moment with comfort and elegance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <div class="services services-2 w-100 text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
+                        </div>
+                        <div class="text w-100">
+                            <h3 class="heading mb-2">City Transfer</h3>
+                            <p>Enjoy smooth and reliable city transfers with our professional car rental service.
+                                Whether for
+                                business or leisure, we ensure timely and comfortable rides across the city.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <div class="services services-2 w-100 text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
+                        </div>
+                        <div class="text w-100">
+                            <h3 class="heading mb-2">Airport Transfer</h3>
+                            <p>Start or end your journey stress-free with our reliable airport transfer service. We
+                                provide punctual
+                                pickups, comfortable rides, and hassle-free travel to and from the airport.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <div class="services services-2 w-100 text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
+                        </div>
+                        <div class="text w-100">
+                            <h3 class="heading mb-2">Whole City Tour</h3>
+                            <p>Discover the city's top attractions with our comfortable and customizable Whole City
+                                Tour service.
+                                Enjoy a relaxed sightseeing experience with a private car and professional driver.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <div class="services services-2 w-100 text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
+                        </div>
+                        <div class="text w-100">
+                            <h3 class="heading mb-2">Rent A Car</h3>
+                            <p>Find the perfect car for your needs with our easy and flexible Rent A Car service. From
+                                economy to
+                                luxury, we offer a wide range of vehicles at competitive prices.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00" />
+        </svg></div>
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/jquery.easing.1.3.js"></script>
+    <script src="../../js/jquery.waypoints.min.js"></script>
+    <script src="../../js/jquery.stellar.min.js"></script>
+    <script src="../../js/owl.carousel.min.js"></script>
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <script src="../../js/aos.js"></script>
+    <script src="../../js/jquery.animateNumber.min.js"></script>
+    <script src="../../js/bootstrap-datepicker.js"></script>
+    <script src="../../js/jquery.timepicker.min.js"></script>
+    <script src="../../js/scrollax.min.js"></script>
+    <script src="../../js/main.js"></script>
+
+    <script src="../partials/nav.js"></script>
+    <script>
+        fetch('../partials/nav.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('nav-placeholder').innerHTML = html;
+                initNav();
+            });
+    </script>
+
+    <script>
+        fetch('../partials/footer/footer.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('footer-placeholder').innerHTML = html;
+            })
+            .catch(err => console.error('Footer load failed:', err));
+    </script>
+
+</body>
+
+</html>

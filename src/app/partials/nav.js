@@ -1,5 +1,7 @@
 function initNav() {
-  const isLoggedIn = !!localStorage.getItem("authToken");
+  const isLoggedIn = !!localStorage.getItem("userEmail");
+  const userName = localStorage.getItem("userName") || "";
+
 
   ["nav-login", "nav-register"].forEach((id) => {
     document.getElementById(id)?.classList.toggle("d-none", isLoggedIn);
@@ -8,18 +10,28 @@ function initNav() {
     document.getElementById(id)?.classList.toggle("d-none", !isLoggedIn);
   });
 
+  document
+    .getElementById("nav-welcome")
+    ?.classList.toggle("d-none", !isLoggedIn);
+
   document.getElementById("nav-logout")?.addEventListener("click", (e) => {
     e.preventDefault();
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
     window.location.reload();
   });
+
+  const welcomeSpan = document.querySelector("#nav-welcome .nav-link");
+  if (welcomeSpan) {
+    welcomeSpan.textContent = `welcome ${userName}`;
+  }
 
   document.querySelectorAll("a[data-protected]").forEach((a) => {
     a.addEventListener("click", (e) => {
       if (!isLoggedIn) {
         e.preventDefault();
         const intended = a.getAttribute("href");
-        window.location.href = `/src/app/login/login.html?redirect=${encodeURIComponent(
+        window.location.href = `/src/app/login/login.php?redirect=${encodeURIComponent(
           intended
         )}`;
       }
@@ -43,4 +55,19 @@ function initNav() {
       li.classList.remove("active");
     }
   });
+  const profileAnchor = document.querySelector("#nav-profile a");
+  if (profileAnchor) {
+    profileAnchor.addEventListener("click", (e) => {
+      e.preventDefault();
+      const email = localStorage.getItem("userEmail");
+      if (!email) {
+        window.location.href = "/src/app/login/login.php";
+        return;
+      }
+
+      const url = new URL(profileAnchor.href, window.location.origin);
+      url.searchParams.set("email", email);
+      window.location.href = url.toString();
+    });
+  }
 }

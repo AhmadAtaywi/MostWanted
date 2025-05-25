@@ -1,3 +1,39 @@
+<?php
+require '../../configDataBase/userDataBaseConnection.php';
+?>
+
+<?php
+$bookingData = $_GET['bookingData'];
+$bookingData = json_decode($bookingData, true); // encode JSON into an associative array or object
+
+try {
+  // Insert booking data into the database
+  $stmt = $conn->prepare("INSERT INTO Bookings (car_id, car_type, car_model, full_name, email, phone, booking_date, pickup_type, pickup_location, service, price, driving_license) 
+                                  VALUES (:carId, :carType, :carModel, :fullName, :email, :phone, :date, :pickupType, :pickupLocation, :service, :price, :drivingLicense)");
+  $stmt->bindParam(':carId', $bookingData['carId']);
+  $stmt->bindParam(':carType', $bookingData['carType']);
+  $stmt->bindParam(':carModel', $bookingData['carModel']);
+  $stmt->bindParam(':fullName', $bookingData['fullName']);
+  $stmt->bindParam(':email', $bookingData['email']);
+  $stmt->bindParam(':phone', $bookingData['phone']);
+  $stmt->bindParam(':date', date('Y-m-d h:m:s'));
+  $stmt->bindParam(':pickupType', $bookingData['pickupType']);
+  $stmt->bindParam(':pickupLocation', $bookingData['pickupLocation']);
+  $stmt->bindParam(':service', $bookingData['service']);
+  $stmt->bindParam(':price', $bookingData['price']);
+  $stmt->bindParam(':drivingLicense', $bookingData['drivingLicense']);
+  $stmt->execute();
+
+  // update the car's availability status and count
+  $stmt = $conn->prepare("UPDATE Cars SET available = 'false', count = count + 1 WHERE car_id = :carId");
+  $stmt->bindParam(':carId', $bookingData['carId']);
+  $stmt->execute();
+} catch (PDOException $e) {
+  echo "<script>console.log('Error: ' . '{$e->getMessage()}');</script>";
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,6 +115,10 @@
     border-color: #ffeba7 !important;
     border-image: initial !important;
   }
+
+  .nav-button {
+    font-size: 45px;
+  }
 </style>
 
 <body>
@@ -91,11 +131,11 @@
     <div class="container">
       <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
         <div class="col-md-9 ftco-animate pb-5">
-          <p class="breadcrumbs"><span class="mr-2"><a href="../home/home.html">Home <i
+          <p class="breadcrumbs"><span class="mr-2"><a href="/MostWanted/src/app/home/home.php">Home <i
                   class="ion-ios-arrow-forward"></i></a></span> <span>Car details <i
                 class="ion-ios-arrow-forward"></i></span></p>
           <h1 class="mb-3 bread">Car Details</h1>
-          <p class="mb-0"><a href="../cars/cars.html" class="btn btn-light">Choose Another Region</a></p>
+          <p class="mb-0"><a href="/MostWanted/src/app/cars/cars.php" class="btn btn-light">Choose Another Region</a></p>
         </div>
       </div>
     </div>
@@ -211,7 +251,7 @@
   <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <form id="bookingForm" class="modal-content" style="background-color: #5e5f7b;color:#ffeba7;">
+      <form method="get" id="bookingForm" class="modal-content" style="background-color: #5e5f7b;color:#ffeba7;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -220,15 +260,15 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="fullName">Full name</label>
-            <input type="text" class="form-control" id="fullName" required>
+            <input type="text" class="form-control" id="fullName" name="fullName" required>
           </div>
           <div class="form-group">
             <label for="emailAddr">Email address</label>
-            <input type="email" class="form-control" id="emailAddr" required>
+            <input type="email" class="form-control" id="emailAddr" name="emailAddr" required>
           </div>
           <div class="form-group">
             <label for="phoneNum">Phone number</label>
-            <input type="tel" class="form-control" id="phoneNum" required>
+            <input type="tel" class="form-control" id="phoneNum" name="phoneNum" required>
           </div>
 
           <div class="form-group">
@@ -256,22 +296,22 @@
 
           <div class="form-group" id="priceGroup" style="display:none">
             <label for="computedPrice">Total Price</label>
-            <input type="text" class="form-control" id="computedPrice" readonly>
+            <input type="text" class="form-control" id="computedPrice" name="computedPrice" readonly>
           </div>
 
           <fieldset class="form-group">
             <legend>Choose Your Service</legend>
             <div>
-              <div class="form-check"><input class="form-check-input" type="radio" name="service" id="s1" value="s1"
+              <div class="form-check"><input class="form-check-input" type="radio" name="service" id="s1" value="WeddingCeremony"
                   required><label class="form-check-label" for="Wedding Ceremony">Wedding Ceremony</label></div>
               <div class="form-check"><input class="form-check-input" type="radio" name="service" id="s2"
-                  value="s2"><label class="form-check-label" for="City Transfer">City Transfer</label></div>
+                  value="CityTransfer"><label class="form-check-label" for="City Transfer">City Transfer</label></div>
               <div class="form-check"><input class="form-check-input" type="radio" name="service" id="s3"
-                  value="s3"><label class="form-check-label" for="Airport Transfer">Airport Transfer</label></div>
+                  value="AirportTransfer"><label class="form-check-label" for="Airport Transfer">Airport Transfer</label></div>
               <div class="form-check"><input class="form-check-input" type="radio" name="service" id="s4"
-                  value="s4"><label class="form-check-label" for="Whole City Tour">Whole City Tour</label></div>
+                  value="WholeCityTour"><label class="form-check-label" for="Whole City Tour">Whole City Tour</label></div>
               <div class="form-check"><input class="form-check-input" type="radio" name="service" id="s5"
-                  value="s5"><label class="form-check-label" for="Rent A Car">Rent A Car</label></div>
+                  value="RentACar"><label class="form-check-label" for="Rent A Car">Rent A Car</label></div>
             </div>
           </fieldset>
 
@@ -294,12 +334,11 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="thankYouLabel">Thank You!</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          Thanks for the booking, our team will contact you soon.
+          Thanks for the booking, our team will contact you soon, You be redirect to booking page after 5sec
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -307,6 +346,25 @@
       </div>
     </div>
   </div>
+
+
+  <script>
+    fetch('../partials/nav.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('nav-placeholder').innerHTML = html;
+        initNav();
+      });
+  </script>
+
+  <script>
+    fetch('../partials/footer/footer.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Footer load failed:', err));
+  </script>
 </body>
 
 </html>

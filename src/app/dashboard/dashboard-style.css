@@ -1,5 +1,3 @@
-
-
 .sidebar {
     height: 100vh;
     width: 250px;
@@ -24,28 +22,39 @@
     margin-left: 250px;
     padding: 20px;
 }
+
 .card-stat {
     margin: 10px 0;
 }
+
 .navbar-custom {
     background-color: #343a40;
     color: white;
 }
+
 .navbar-custom .navbar-brand {
     color: white;
 }
-th{
-    color:  #ffeba7;
+
+th {
+    color: #ffeba7;
 }
-.my-4{
-    color:  #ffeba7;
+
+.my-4 {
+    color: #ffeba7;
 }
-td{
+
+td {
     color: #d8e2dc;
 }
-.button{
+
+.button {
     background-color: #ffeba7;
 }
-label{
+
+label {
     color: #d8e2dc;
 }
+ .table {
+    min-width: 1100px;
+ }

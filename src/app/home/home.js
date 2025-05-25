@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const isLoggedIn = !!localStorage.getItem("authToken");
+  const isLoggedIn = !!localStorage.getItem("userEmail");
 
   ["nav-pricing", "nav-cars"].forEach((id) => {
     const li = document.getElementById(id);
@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isLoggedIn) {
         e.preventDefault();
         const targetPage = link.getAttribute("href");
-        const redirectPath = `../home/${targetPage}`;
-        window.location.href = `../login/login.html?redirect=${encodeURIComponent(
+        const redirectPath = `/MostWanted/src/app/home/${targetPage}`;
+        window.location.href = `/MostWanted/src/app/login/login.php?redirect=${encodeURIComponent(
           redirectPath
         )}`;
       }
@@ -31,18 +31,28 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutEl) {
     logoutEl.addEventListener("click", (e) => {
       e.preventDefault();
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("userEmail");
       window.location.reload();
     });
   }
+  
 
-  const regions = [
-    { name: "Amman", img: "../../images/amman.png" },
-    { name: "Irbid", img: "../../images/irbid.jpg" },
-    { name: "Aqaba", img: "../../images/aqaba.jpg" },
-    { name: "Zarqa", img: "../../images/zarqa.jpg" },
-    { name: "Salt", img: "../../images/salt.jpeg" },
-  ];
+  // Safely get data from PHP variables with fallbacks
+  const regions =
+    typeof cities !== "undefined" && Array.isArray(cities)
+      ? cities.map((city) => ({
+          name: city,
+          img: `../../images/${city.toLowerCase()}.jpg`,
+        }))
+      : [
+          { name: "Amman", img: "../../images/amman.jpg" },
+          { name: "Zarqa", img: "../../images/zarqa.jpg" },
+          { name: "Irbid", img: "../../images/irbid.jpg" },
+          { name: "Aqaba", img: "../../images/aqaba.jpg" },
+          { name: "Salt", img: "../../images/salt.jpg" },
+          { name: "Karak", img: "../../images/karak.jpg" },
+          { name: "Mafraq", img: "../../images/mafraq.jpg" },
+        ];
 
   const container = document.getElementById("region-list");
   container.innerHTML = "";
@@ -61,11 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
     col.querySelector(".location-card").addEventListener("click", () => {
-      const href = `../cars/cars.html?location=${encodeURIComponent(
+      const href = `/MostWanted/src/app/cars/cars.php?location=${encodeURIComponent(
         region.name
       )}`;
       if (!isLoggedIn) {
-        window.location.href = `../login/login.html?redirect=${encodeURIComponent(
+        window.location.href = `/MostWanted/src/app/login/login.php?redirect=${encodeURIComponent(
           href
         )}`;
       } else {
@@ -85,6 +95,6 @@ document.querySelectorAll(".details-btn a").forEach((link) => {
 
     e.preventDefault();
     sessionStorage.setItem("selectedCar", JSON.stringify(car));
-    window.location.href = "../car-details/car-details.html";
+    window.location.href = "/MostWanted/src/app/car-details/car-details.php";
   });
 });

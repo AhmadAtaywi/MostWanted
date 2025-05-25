@@ -1,0 +1,276 @@
+<?php
+require '../../configDataBase/userDataBaseConnection.php';
+$clearData = new ClearData();
+?>
+
+<?php
+// Sign In functionality form for user login
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userEmailSignIn = $_POST['signInEmail'];
+    $passwordSignIn = $_POST['signInPass'];
+    $emailErrorSignIn = $passwordErrorSignIn = "";
+
+
+    // Validate user email input
+    if (empty($userEmailSignIn)) {
+        $emailErrorSignIn = "*Email is required.";
+    } else {
+        $userEmailSignIn = $clearData->cleanInput($userEmailSignIn);
+        $userEmailSignIn = filter_var($userEmailSignIn, FILTER_SANITIZE_EMAIL);
+        if (!filter_var($userEmailSignIn, FILTER_VALIDATE_EMAIL)) {
+            $emailErrorSignIn = "*Invalid email format.";
+        }
+    }
+
+    // Validate user password input
+    if (empty($passwordSignIn)) {
+        $passwordErrorSignIn = "*Password is required.";
+    } else {
+        $passwordSignIn = $clearData->cleanInput($passwordSignIn);        
+    }
+
+    $successSignIn = empty($emailErrorSignIn) && empty($passwordErrorSignIn);
+    if ($successSignIn) {
+        try {
+            $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email AND password = :password");
+            $stmt->bindParam(':email', $userEmailSignIn);
+            $stmt->bindParam(':password', $passwordSignIn);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['role_id'] == 2) {
+                echo "<script>                            
+                            setTimeout(() => {
+                                window.location.href = '/MostWanted/src/app/dashboard/dashboard.php?userEmail={$user['email']}';
+                            }, 100);
+                        </script>";
+            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password']  && $user['merchant_status'] == 'true' && $user['role_id'] == 3) {
+                echo "<script>                                                                                                             
+                            setTimeout(() => {
+                                window.location.href = '/MostWanted/src/app/merchant-dashboard/merchant-dashboard.php?userEmail={$user['email']}';
+                            }, 100);
+                        </script>";
+            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['merchant_status'] == 'false' && $user['role_id'] == 3) {
+                echo "<script>                    
+                    merchantStatus();
+                    function merchantStatus() {
+                        alert('Merchant status still not confirmed yet.');
+                        }
+                        window.location.href = '/MostWanted/src/app/login/login.php';
+                </script>";
+            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['role_id'] == 1) {
+                echo "<script>                            
+                            localStorage.setItem('userEmail', '" . $user['email'] . "'); 
+                            localStorage.setItem('userName', '" . $user['name'] . "');                                                     
+                            setTimeout(() => {
+                                window.location.href = '/MostWanted/src/app/home/home.php';
+                            }, 100);
+                        </script>";
+            } else { 
+                echo "<script>
+                    invalidEmailOrPassword();
+                    function invalidEmailOrPassword() {
+                        alert('Invalid email or password.');
+                        }
+                </script>";
+            }
+        } catch (PDOException $e) {
+            echo "<script>
+                    console.log('Error: " . $e->getMessage() . "');
+                </script>";
+        }
+    }
+}
+?>
+
+<?php
+//Sign Up functionality form for user registration
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userNameSignUp = $_POST['signUpName'];
+    $userEmailSignUp = $_POST['signUpEmail'];
+    $userPhoneNumberSignUp = $_POST['signUpPhoneNumber'];
+    $userPasswordSignUp = $_POST['signUpPass'];
+    $nameErrorSignUp = $emailErrorSignUp = $phoneNumberErrorSignUp = $passwordErrorSignUp = "";
+
+    // Validate user name input
+    if (empty($userNameSignUp)) {
+        $nameErrorSignUp = "*Name is required.";
+    } else {
+        $userNameSignUp = $clearData->cleanInput($userNameSignUp);
+    }
+
+    // Validate user email input
+    if (empty($userEmailSignUp)) {
+        $emailErrorSignUp = "*Email is required.";
+    } else
+        $userEmailSignUp = $clearData->cleanInput($userEmailSignUp);
+        $userEmailSignUp = filter_var($userEmailSignUp, FILTER_SANITIZE_EMAIL);
+    if (!filter_var($userEmailSignUp, FILTER_VALIDATE_EMAIL)) {
+        $emailErrorSignUp = "*Invalid email format.";
+    }
+
+    // Validate user phone number input
+    if (empty($userPhoneNumberSignUp)) {
+        $phoneNumberErrorSignUp = "*Phone number is required.";
+    } else {
+        $userPhoneNumberSignUp = $clearData->cleanInput($userPhoneNumberSignUp);
+        $userPhoneNumberSignUp = filter_var($userPhoneNumberSignUp, FILTER_SANITIZE_NUMBER_INT);
+        if (!preg_match('/^07[7-9]{1}[0-9]{7}$/', $userPhoneNumberSignUp)) {
+            $phoneNumberErrorSignUp = "*Invalid Jordanian phone number format. Must be 07XXXXXXXX where first X is 7-9.";
+        }
+    }
+
+    // Validate user password input
+    if (empty($userPasswordSignUp)) {
+        $passwordErrorSignUp = "*Password is required.";
+    } else {
+        $userPasswordSignUp = $clearData->cleanInput($userPasswordSignUp);
+    }
+
+    $successSignUp = empty($nameErrorSignUp) && empty($emailErrorSignUp) && empty($phoneNumberErrorSignUp) && empty($passwordErrorSignUp);
+
+    if ($successSignUp) {
+        try {
+            $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email");
+            $stmt->bindParam(':email', $userEmailSignUp);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user['email'] == $userEmailSignUp) {
+                echo "<script>
+                    existsEmail();
+                    function existsEmail() {
+                        alert('User already exists with the provided email');
+                        }
+                        window.location.href = '/MostWanted/src/app/login/login.php';                        
+                </script>";
+            } else {
+                $stmt = $conn->prepare("INSERT INTO Users (name, email, phone, password, role_id, merchant_status) VALUES (:name, :email, :phone, :password, 1, 'false')");
+                $stmt->bindParam(':name', $userNameSignUp);
+                $stmt->bindParam(':email', $userEmailSignUp);
+                $stmt->bindParam(':phone', $userPhoneNumberSignUp);
+                $stmt->bindParam(':password', $userPasswordSignUp);
+                $stmt->execute();
+                echo "<script>                 
+                            localStorage.setItem('userEmail', '" . $userEmailSignUp . "'); 
+                            localStorage.setItem('userName', '" . $userNameSignUp . "');                                                        
+                            setTimeout(() => {
+                                window.location.href = '/MostWanted/src/app/home/home.php';
+                            }, 200);
+                </script>";
+            }
+        } catch (PDOException $e) {
+            echo "<script>
+                    console.log('Error: " . $e->getMessage() . "');
+                </script>";
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MostWanted SignIn</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="./login.css">
+</head>
+<style>
+    .errorMessage {
+        color: red;
+    }
+</style>
+
+<body>
+
+    <a href="/MostWanted/src/app/home/home.php" class="logo">
+        <img src="../../images/logo1.png" alt="">
+    </a>
+
+    <div class="section">
+        <div class="container">
+            <div class="row full-height justify-content-center">
+                <div class="col-12 text-center align-self-center py-5">
+                    <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                        <h6 class="mb-0 pb-3"><span>Sign In </span><span>Sign Up</span></h6>
+                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+                        <label for="reg-log"></label>
+                        <div class="card-3d-wrap mx-auto">
+                            <div class="card-3d-wrapper">
+                                <div class="card-front">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Sign In</h4>
+                                            <form method="post">
+                                                <div class="form-group">
+                                                    <input type="email" name="signInEmail" class="form-style" placeholder="email"
+                                                        autocomplete="off"><span class="errorMessage"><?php if (!empty($emailErrorSignIn)) {
+                                                                                                            echo $emailErrorSignIn;
+                                                                                                        } ?></span>
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="signInPass" class="form-style" placeholder="password"
+                                                         autocomplete="off" value=""><span class="errorMessage"><?php if (!empty($passwordErrorSignIn)) {
+                                                                                                                                echo $passwordErrorSignIn;
+                                                                                                                            } ?></span>
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" id="logInBtn" class="btn mt-4">Sign In</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-back">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Sign Up</h4>
+                                            <form method="post">
+                                                <div class="form-group">
+                                                    <input type="text" name="signUpName" class="form-style" placeholder="full name" id="logname"
+                                                        autocomplete="off"><span class="errorMessage"><?php if (!empty($nameErrorSignUp)) {
+                                                                                                            echo $nameErrorSignUp;
+                                                                                                        } ?></span>
+                                                    <i class="input-icon uil uil-user"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="email" name="signUpEmail" class="form-style" placeholder="email" id="logemail"
+                                                        autocomplete="off"><span class="errorMessage"><?php if (!empty($emailErrorSignUp)) {
+                                                                                                            echo $emailErrorSignUp;
+                                                                                                        } ?></span>
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="text" name="signUpPhoneNumber" class="form-style" placeholder="phone number" id="phoneNumber" autocomplete="off"><span class="errorMessage"><?php if (!empty($phoneNumberErrorSignUp)) {
+                                                                                                                                                                                                                    echo $phoneNumberErrorSignUp;
+                                                                                                                                                                                                                } ?></span>
+                                                    <i class="input-icon uil uil-phone"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="signUpPass" class="form-style" placeholder="password"
+                                                        id="logpass" autocomplete="off"><span class="errorMessage"><?php if (!empty($passwordErrorSignUp)) {
+                                                                                                                        echo $passwordErrorSignUp;
+                                                                                                                    } ?></span>
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" id="signupBtn" class="btn mt-4">Sign Up</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" ...></script>
+</body>
+
+</html>
