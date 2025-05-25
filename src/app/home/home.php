@@ -19,9 +19,6 @@ $cityNames = json_encode($uniqueCities);
 $cityCount = json_encode($cityCount);
 
 echo "<script>var cities = $cityNames; var cityCount = $cityCount;</script>";
-echo "<script>
-                localStorage.setItem('cityNames',  cities);
-                </script>";
 ?>
 
 <?php
@@ -114,7 +111,7 @@ echo "<script>var carsDetails = " . $carsDetails . ";</script>";
   <section class="ftco-section ftco-about">
     <div class="container about-container">
       <div class="row no-gutters">
-        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(../../images/background_img.jpg); width: 400px;  
+        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(../../images/background_img.jpg); width: 400px;
           height: 400px; border-radius: 50%;object-fit: cover;">
         </div>
         <div class="col-md-6 wrap-about ftco-animate">

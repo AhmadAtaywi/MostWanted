@@ -3,7 +3,6 @@ require '../../configDataBase/userDataBaseConnection.php';
 ?>
 
 <?php
-// fetch User
 $userEmail = $_GET['userEmail'];
 $userEmail = json_encode($userEmail);
 
