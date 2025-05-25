@@ -129,7 +129,7 @@
   <section class="ftco-section ftco-about about">
     <div class="container">
       <div class="row no-gutters">
-        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(../../images/about-us.jpeg); width: 400px;  
+        <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(../../images/background_img.jpg); width: 400px;  
           height: 400px;
           border-radius: 50%;
           object-fit: cover;">
@@ -137,7 +137,7 @@
         <div class="col-md-6 wrap-about ftco-animate">
           <div class="heading-section heading-section-white pl-md-5">
             <span class="subheading" style="color:  #ffeba7;">Our Story &amp; Vision</span>
-            <h2 class="mb-4" style="color:fad643"><em>Most Wanted</em></h2>
+            <h2 class="mb-4" style="color:#fad643"><em>MostWanted</em></h2>
             <p style="color:  #ffeba7;">we are passionate about providing a seamless, reliable, and comfortable car rental experience.</p>
             <p style="color:  #ffeba7;"> Founded with the goal of meeting the needs of all types of customers, we offer a wide range of vehicles—from luxury and economy cars to SUVs—at competitive prices and with top-quality service. We believe that customer satisfaction comes first, which is why we offer flexible booking options, continuous support, and a fleet of modern, fully equipped vehicles. With us, your journey begins with safety and peace of mind.</p>
 

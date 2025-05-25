@@ -120,7 +120,7 @@ echo "<script>var carsDetails = " . $carsDetails . ";</script>";
         <div class="col-md-6 wrap-about ftco-animate">
           <div class="heading-section heading-section-white pl-md-5">
             <span class="subheading" style="color:  #ffeba7;">Our Story &amp; Vision</span>
-            <h2 class="mb-4" style="color:fad643"><em>Most Wanted</em></h2>
+            <h2 class="mb-4" style="color:fad643"><em>MostWanted</em></h2>
             <p style="color:  #ffeba7;">we are passionate about providing a seamless, reliable, and comfortable car
               rental experience.</p>
             <p style="color:  #ffeba7;"> Founded with the goal of meeting the needs of all types of customers, we offer
