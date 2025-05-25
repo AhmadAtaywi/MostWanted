@@ -4,7 +4,7 @@ require '../../configDataBase/userDataBaseConnection.php';
 $userEmail = $_GET['userEmail'];
 
 // Booking Count
-$stmt = $conn->prepare("SELECT COUNT(*) FROM RecentBooking");
+$stmt = $conn->prepare("SELECT COUNT(*) FROM RecentBookingCars");
 $stmt->execute();
 $bookingCount = (int)$stmt->fetchColumn();
 
