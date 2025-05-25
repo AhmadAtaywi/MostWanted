@@ -6,7 +6,6 @@
     position: fixed;
     padding-top: 20px;
 }
-
 .sidebar a {
     color: white;
     text-decoration: none;
@@ -15,12 +14,10 @@
     font-size: 16px;
     margin: 5px 0;
 }
-
 .sidebar a:hover {
     background-color: #495057;
     border-radius: 5px;
 }
-
 .content {
     margin-left: 250px;
     padding: 20px;
