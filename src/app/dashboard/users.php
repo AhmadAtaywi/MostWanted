@@ -72,10 +72,12 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
             class="nav-link text-white active" 
             href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmail) ?>"
           ><i class="fas fa-users me-2"></i>Users</a>
-          <a 
-            class="nav-link text-white mt-3" 
-            onclick="backToHomePage()"
-          ><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+          <a
+            href="javascript:void(0)"
+            class="nav-link text-white mt-3"
+            onclick="backToHomePage()">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </a>
         </nav>
       </aside>
 

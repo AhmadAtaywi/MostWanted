@@ -105,7 +105,10 @@ if (!isset($_GET['userEmail'])) {
              href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmailJson) ?>">
             <i class="fas fa-users me-2"></i>Users
           </a>
-          <a class="nav-link text-white mt-3" onclick="backToHomePage()">
+          <a
+            href="javascript:void(0)"
+            class="nav-link text-white mt-3"
+            onclick="backToHomePage()">
             <i class="fas fa-sign-out-alt me-2"></i>Logout
           </a>
         </nav>

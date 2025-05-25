@@ -63,6 +63,115 @@ echo "<script>var carsDetails = " . $carsDetails . ";</script>";
     .nav-button {
       font-size: 45px;
     }
+
+    .details-btn {
+     display: flex;
+     justify-content: end;
+ }
+
+ .test {
+     background-color: gray;
+     background-image: none !important;
+ }
+
+ .ftco-animate {
+     opacity: 1;
+     visibility: visible;
+ }
+
+ .test1 {
+     display: flex;
+     justify-content: center;
+ }
+
+ body {
+     font-family: Poppins, Arial, sans-serif;
+     font-size: 16px;
+     line-height: 1.8;
+     font-weight: 400;
+     color: #ffeba7;
+     background: #1f2029;
+ }
+
+ .bg-light {
+     background: #1f2029 !important;
+ }
+
+ div.hero-wrap::after {
+     background-color: #1f2029;
+ }
+
+ .test {
+     background-color: #3f3f52;
+     background-image: none !important;
+ }
+
+ .hero-wrap .overlay {
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     content: '';
+     opacity: .3;
+     background: none;
+     height: 850px;
+ }
+
+ .ftco-about:after {
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     content: '';
+     background: #3f3f52;
+     z-index: -2;
+     width: 63%;
+ }
+
+ h1.mb-4 {
+     color: #ffeba7;
+     text-shadow:
+         0 0 20px #ffeba7,
+         0 0 40px #ffeba7;
+
+ }
+
+ h3 {
+     color: #ffeba7;
+ }
+
+ .col-md-4 {
+     background-color: #5e5f7b;
+     border-radius: 20px;
+ }
+
+ .slider-text .icon-wrap .icon {
+     width: 70px;
+     height: 70px;
+     background: #ffeba7;
+     -webkit-border-radius: 50%;
+     -moz-border-radius: 50%;
+     -ms-border-radius: 50%;
+     border-radius: 50%;
+ }
+
+ .ion-ios-play:before {
+     content: "\f488";
+     color: #3f3f52;
+ }
+
+ #region-list {
+     width: 100%;
+     gap: 15px;
+     display: flex;
+     justify-content: center;
+ }
+
+ .location {
+     width: 380px;
+     flex: none;
+ }
   </style>
 </head>
 
@@ -88,7 +197,7 @@ echo "<script>var carsDetails = " . $carsDetails . ";</script>";
   </div>
 
   <section class="ftco-section ftco-no-pt bg-light" style="background-color:  #1f2029;">
-    <div class="container col-12">
+    <div class="container mt-5 col-12">
       <div class="row justify-content-center mb-5">
         <div class="col-md-12 heading-section text-center ftco-animate">
           <span class="subheading" style="color:  #d8e2dc;">Where We Operate</span>
