@@ -10,8 +10,4 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = target;
     return;  // stop running any further code on this page
   }
-
-  // if we get here, bookingData is already in the URL
-  // populate your form field:
-  // document.getElementById("email").value = userEmail;
 });

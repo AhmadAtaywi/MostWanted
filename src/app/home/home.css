@@ -1,59 +1,6 @@
-/* .details-btn {
-    display: flex;
-    justify-content: end;
-}
-
-.test {
-    background-color: gray;
-    background-image: none !important;
-}
-
-.ftco-animate {
-    opacity: 1;
-    visibility: visible;
-} */
-
-
-.details-btn {
-    display: flex;
-    justify-content: end;
-}
-
-.test {
-    background-color: gray;
-    background-image: none !important;
-}
-
-.ftco-animate {
-    opacity: 1;
-    visibility: visible;
-}
-
-.test1 {
-    display: flex;
-    justify-content: center;
-}
-
-body {
-    font-family: Poppins, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.8;
-    font-weight: 400;
-    color: #ffeba7;
-    background: #1f2029;
-}
-
-.bg-light {
-    background: #1f2029 !important;
-}
-
-div.hero-wrap::after {
-    background-color: #1f2029;
-}
-
-.test {
-    background-color: #3f3f52;
-    background-image: none !important;
+.hero-wrap {
+    position: relative;
+    color: white;
 }
 
 .hero-wrap .overlay {
@@ -62,63 +9,44 @@ div.hero-wrap::after {
     left: 0;
     right: 0;
     bottom: 0;
-    content: '';
-    opacity: .3;
-    background: none;
-    height: 850px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
 }
 
-.ftco-about:after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    content: '';
-    background: #3f3f52;
-    z-index: -2;
-    width: 63%;
+.hero-wrap .container {
+    position: relative;
+    z-index: 1;
+    height: 100%;
 }
 
-h1.mb-4 {
-    color: #ffeba7;
-    text-shadow:
-        0 0 20px #ffeba7,
-        0 0 40px #ffeba7;
-
+.hero-wrap .slider-text {
+    height: 100%;
 }
 
-h3 {
-    color: #ffeba7;
+.hero-wrap h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1.5rem;
 }
 
-.col-md-4 {
-    background-color: #5e5f7b;
-    border-radius: 20px;
+.hero-wrap p {
+    font-size: 1.2rem;
+    color: #d8e2dc;
+    margin-bottom: 2rem;
 }
 
-.slider-text .icon-wrap .icon {
-    width: 70px;
-    height: 70px;
-    background: #ffeba7;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    border-radius: 50%;
+.btn-primary {
+    background-color: #fad643;
+    border: none;
+    color: #1f2029;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
 }
 
-.ion-ios-play:before {
-    content: "\f488";
-    color: #3f3f52;
-}
-
-#region-list {
-    width: 100%;
-    gap: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-.location {
-    width: 380px;
-    flex: none;
+.btn-outline-light {
+    border: 2px solid #fad643;
+    color: #fad643;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
 }

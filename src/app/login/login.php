@@ -5,10 +5,9 @@ $clearData = new ClearData();
 
 <?php
 // Sign In functionality form for user login
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $userEmailSignIn = $_GET['signInEmail'];
-    $passwordSignIn = $_GET['signInPass'];
-    // $successSignIn = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userEmailSignIn = $_POST['signInEmail'];
+    $passwordSignIn = $_POST['signInPass'];
     $emailErrorSignIn = $passwordErrorSignIn = "";
 
 
@@ -17,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $emailErrorSignIn = "*Email is required.";
     } else {
         $userEmailSignIn = $clearData->cleanInput($userEmailSignIn);
-        // Sanitize email input sanitization: means removing all illegal characters from the email address
         $userEmailSignIn = filter_var($userEmailSignIn, FILTER_SANITIZE_EMAIL);
         if (!filter_var($userEmailSignIn, FILTER_VALIDATE_EMAIL)) {
             $emailErrorSignIn = "*Invalid email format.";
@@ -28,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (empty($passwordSignIn)) {
         $passwordErrorSignIn = "*Password is required.";
     } else {
-        $passwordSignIn = $clearData->cleanInput($passwordSignIn);
+        $passwordSignIn = $clearData->cleanInput($passwordSignIn);        
     }
 
     $successSignIn = empty($emailErrorSignIn) && empty($passwordErrorSignIn);
@@ -46,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 window.location.href = '/MostWanted/src/app/dashboard/dashboard.php?userEmail={$user['email']}';
                             }, 100);
                         </script>";
-            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['merchant_status'] == 'true' && $user['role_id'] == 3) {
-                echo "<script>                                                                               
+            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password']  && $user['merchant_status'] == 'true' && $user['role_id'] == 3) {
+                echo "<script>                                                                                                             
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/merchant-dashboard/merchant-dashboard.php?userEmail={$user['email']}';
                             }, 100);
@@ -63,12 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['role_id'] == 1) {
                 echo "<script>                            
                             localStorage.setItem('userEmail', '" . $user['email'] . "'); 
-                            localStorage.setItem('userName', '" . $user['name'] . "');                                                      
+                            localStorage.setItem('userName', '" . $user['name'] . "');                                                     
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/home/home.php';
                             }, 100);
                         </script>";
-            } else {
+            } else { 
                 echo "<script>
                     invalidEmailOrPassword();
                     function invalidEmailOrPassword() {
@@ -87,11 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 <?php
 //Sign Up functionality form for user registration
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $userNameSignUp = $_GET['signUpName'];
-    $userEmailSignUp = $_GET['signUpEmail'];
-    $userPhoneNumberSignUp = $_GET['signUpPhoneNumber'];
-    $userPasswordSignUp = $_GET['signUpPass'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userNameSignUp = $_POST['signUpName'];
+    $userEmailSignUp = $_POST['signUpEmail'];
+    $userPhoneNumberSignUp = $_POST['signUpPhoneNumber'];
+    $userPasswordSignUp = $_POST['signUpPass'];
     $nameErrorSignUp = $emailErrorSignUp = $phoneNumberErrorSignUp = $passwordErrorSignUp = "";
 
     // Validate user name input
@@ -106,8 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $emailErrorSignUp = "*Email is required.";
     } else
         $userEmailSignUp = $clearData->cleanInput($userEmailSignUp);
-    // Sanitize email input sanitization: means removing all illegal characters from the email address
-    $userEmailSignUp = filter_var($userEmailSignUp, FILTER_SANITIZE_EMAIL);
+        $userEmailSignUp = filter_var($userEmailSignUp, FILTER_SANITIZE_EMAIL);
     if (!filter_var($userEmailSignUp, FILTER_VALIDATE_EMAIL)) {
         $emailErrorSignUp = "*Invalid email format.";
     }
@@ -117,10 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $phoneNumberErrorSignUp = "*Phone number is required.";
     } else {
         $userPhoneNumberSignUp = $clearData->cleanInput($userPhoneNumberSignUp);
-        // Sanitize phone number input
         $userPhoneNumberSignUp = filter_var($userPhoneNumberSignUp, FILTER_SANITIZE_NUMBER_INT);
-        if (!preg_match('/^[0-9]{10}$/', $userPhoneNumberSignUp)) {
-            $phoneNumberErrorSignUp = "*Invalid phone number format.";
+        if (!preg_match('/^07[7-9]{1}[0-9]{7}$/', $userPhoneNumberSignUp)) {
+            $phoneNumberErrorSignUp = "*Invalid Jordanian phone number format. Must be 07XXXXXXXX where first X is 7-9.";
         }
     }
 
@@ -135,7 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if ($successSignUp) {
         try {
-            // Check if the user already exists
             $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email");
             $stmt->bindParam(':email', $userEmailSignUp);
             $stmt->execute();
@@ -147,17 +142,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     function existsEmail() {
                         alert('User already exists with the provided email');
                         }
-                        window.location.href = '/MostWanted/src/app/login/login.php';
+                        window.location.href = '/MostWanted/src/app/login/login.php';                        
                 </script>";
             } else {
-                $stmt = $conn->prepare("INSERT INTO Users (name, email, phone, password, role_id) VALUES (:name, :email, :phone, :password, 1)");
+                $stmt = $conn->prepare("INSERT INTO Users (name, email, phone, password, role_id, merchant_status) VALUES (:name, :email, :phone, :password, 1, 'false')");
                 $stmt->bindParam(':name', $userNameSignUp);
                 $stmt->bindParam(':email', $userEmailSignUp);
                 $stmt->bindParam(':phone', $userPhoneNumberSignUp);
                 $stmt->bindParam(':password', $userPasswordSignUp);
                 $stmt->execute();
                 echo "<script>                 
-                            localStorage.setItem('userEmail', '" . $userEmailSignUp . "');                                                         
+                            localStorage.setItem('userEmail', '" . $userEmailSignUp . "'); 
+                            localStorage.setItem('userName', '" . $userNameSignUp . "');                                                        
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/home/home.php';
                             }, 200);
@@ -210,9 +206,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Sign In</h4>
-                                            <form method="get">
+                                            <form method="post">
                                                 <div class="form-group">
-                                                    <input type="email" name="signInEmail" class="form-style" placeholder="email" id="logemail"
+                                                    <input type="email" name="signInEmail" class="form-style" placeholder="email"
                                                         autocomplete="off"><span class="errorMessage"><?php if (!empty($emailErrorSignIn)) {
                                                                                                             echo $emailErrorSignIn;
                                                                                                         } ?></span>
@@ -220,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                 </div>
                                                 <div class="form-group mt-2">
                                                     <input type="password" name="signInPass" class="form-style" placeholder="password"
-                                                        id="logpass" autocomplete="off" value=""><span class="errorMessage"><?php if (!empty($passwordErrorSignIn)) {
+                                                         autocomplete="off" value=""><span class="errorMessage"><?php if (!empty($passwordErrorSignIn)) {
                                                                                                                                 echo $passwordErrorSignIn;
                                                                                                                             } ?></span>
                                                     <i class="input-icon uil uil-lock-alt"></i>
@@ -234,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Sign Up</h4>
-                                            <form method="get">
+                                            <form method="post">
                                                 <div class="form-group">
                                                     <input type="text" name="signUpName" class="form-style" placeholder="full name" id="logname"
                                                         autocomplete="off"><span class="errorMessage"><?php if (!empty($nameErrorSignUp)) {
@@ -274,8 +270,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
         </div>
     </div>
-
-    <!-- <script src="./login.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" ...></script>
 </body>
 

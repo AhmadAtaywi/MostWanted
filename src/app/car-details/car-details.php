@@ -115,6 +115,10 @@ try {
     border-color: #ffeba7 !important;
     border-image: initial !important;
   }
+
+  .nav-button {
+    font-size: 45px;
+  }
 </style>
 
 <body>

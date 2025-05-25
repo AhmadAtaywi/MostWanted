@@ -40,21 +40,17 @@ document.addEventListener("DOMContentLoaded", () => {
       : []; // Fallback empty array if no data
 
   function processImageUrl(imgUrl) {
-    // If empty, return default image
     if (!imgUrl) return "../../images/default-car.jpg";
 
     try {
-      // Handle Google Images redirect URLs
       if (imgUrl.includes("google.com/imgres")) {
         const extractedUrl = new URL(imgUrl).searchParams.get("imgurl");
         if (extractedUrl) return extractedUrl;
       }
 
-      // Handle direct URLs
-      new URL(imgUrl); // This will throw if invalid URL
+      new URL(imgUrl);
       return imgUrl;
     } catch (e) {
-      // If URL is invalid, return default
       return "../../images/default-car.jpg";
     }
   }
@@ -202,3 +198,4 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
   }
 });
+

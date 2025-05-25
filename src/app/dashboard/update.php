@@ -3,24 +3,24 @@ require '../../configDataBase/userDataBaseConnection.php';
 $clearData = new ClearData();
 
 $id = $_GET['car_id'];
-$id = json_decode($id, true);
+$id = json_decode($id, true); 
 $carId = $id['id'];
 $userEmail = $id['userEmail'];
 
 $stmt = $conn->prepare("SELECT * FROM Cars WHERE car_id = {$id['id']}");
 $stmt->execute();
-$car = $stmt->fetch(); // fetch: to get a single row
+$car = $stmt->fetch();
 
 $stmt = $conn->prepare("SELECT * FROM CarDetails WHERE car_id = {$id['id']}");
 $stmt->execute();
-$carDetails = $stmt->fetch(); // fetch: to get a single row
+$carDetails = $stmt->fetch();
 
 ?>
 
 <?php
 // Check if the ID is set in the URL
 if (!isset($_GET['car_id'])) {
-    header("Location: /MostWanted/src/app/home/home.php}");
+    header("Location: /MostWanted/src/app/home/home.php}"); 
     exit;
 }
 
@@ -42,8 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         // Update Cars table
-        $stmt = $conn->prepare("UPDATE Cars SET 
-            user_name = :user_name,
+        $stmt = $conn->prepare("UPDATE Cars SET             
             car_type = :car_type,
             car_model = :car_model,
             model_year = :model_year,
@@ -52,9 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             available_time = :available_time,
             available = :available,
             city_name = :city_name
-            WHERE car_id = {$carDetails['car_id']}");
+            WHERE car_id = {$id['id']}");
 
-        $stmt->bindParam(':user_name', $userEmail);
         $stmt->bindParam(':car_type', $carType);
         $stmt->bindParam(':car_model', $carModel);
         $stmt->bindParam(':model_year', $modelYear);
@@ -71,17 +69,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color = :color,
             fuel = :fuel,
             seats = :seats
-            WHERE car_details_id = {$carDetails['car_details_id']} ");
+            WHERE car_details_id = {$id['id']} ");
 
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':color', $color);
         $stmt->bindParam(':fuel', $fuel);
         $stmt->bindParam(':seats', $seats);
         $stmt->bindParam(':img', $urlImage);
+        echo "<script>
+                    setTimeout(() => {
+                                window.location.href = '/MostWanted/src/app/dashboard/cars.php?userEmail={$id['userEmail']}';
+                            }, 50);
+                </script>";
         $stmt->execute();
-
-        header("Location: /MostWanted/src/app/dashboard/cars.php?userEmail={$id['userEmail']}");
-        exit;
     } catch (PDOException $e) {
         echo "<script>
                     console.log('Error: " . $e->getMessage() . "');

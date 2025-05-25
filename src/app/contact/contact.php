@@ -105,6 +105,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .successMessage {
             color: white;
         }
+
+        .logo {
+            width: 100%;
+        }
+
+        .logo img {
+            width: 100%;
+        }
+
+        .nav-button {
+            font-size: 45px;
+        }
     </style>
 </head>
 
@@ -112,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div id="nav-placeholder"></div>
 
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/about-us.jpeg');"
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');"
         data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">

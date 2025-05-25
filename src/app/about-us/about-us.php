@@ -8,6 +8,7 @@
 
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="./about-us.css">
   <link rel="stylesheet" href="../../css/open-iconic-bootstrap.min.css">
   <link rel="stylesheet" href="../../css/animate.css">
 
@@ -26,7 +27,6 @@
   <link rel="stylesheet" href="../../css/flaticon.css">
   <link rel="stylesheet" href="../../css/icomoon.css">
   <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="./about-us.css">
   <style>
     .ftco-about:after {
       position: absolute;
@@ -83,13 +83,38 @@
       content: '';
       opacity: 0;
     }
+
+    .card-description {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-description.expanded {
+      display: block;
+      -webkit-line-clamp: none;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: .5em;
+      font-size: .9em;
+      color: #ffeba7;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-button {
+      font-size: 45px;
+    }
   </style>
 </head>
 
 <body>
   <div id="nav-placeholder"></div>
 
-  <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/about-us.jpeg');" data-stellar-background-ratio="0.5">
+  <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
       <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
@@ -133,51 +158,63 @@
       <div class="row ftco-animate">
         <div class="col-md-12">
           <div class="carousel-testimony owl-carousel ftco-owl">
+
             <div class="item">
               <div class="testimony-wrap rounded text-center py-4 pb-5">
-                <div class="user-img mb-2" style="background-image: url(../../images/person_1.jpg)">
-                </div>
+                <div class="user-img mb-2" style="background-image: url(../../images/person_1.jpg)"></div>
                 <div class="text pt-4">
-                  <p class="mb-4">"Excellent service and very easy booking process! The car was clean and ready on time. Highly recommended."</p>
+                  <p class="mb-4 card-description">
+                    "Excellent service and very easy booking process! The car was clean and ready on time. Highly recommended."
+                  </p>
+                  <a href="#" class="read-more">Read more</a>
                   <p class="name">Ahmed Al-Qahtani</p>
                   <span class="position">Marketing Manager</span>
                 </div>
               </div>
             </div>
+
             <div class="item">
               <div class="testimony-wrap rounded text-center py-4 pb-5">
-                <div class="user-img mb-2" style="background-image: url(../../images/person_5.jpg)">
-                </div>
+                <div class="user-img mb-2" style="background-image: url(../../images/person_5.jpg)"></div>
                 <div class="text pt-4">
-                  <p class="mb-4">"I've tried several rental companies, but this one stands out in terms of price and customer service. I just hope they add electric vehicles soon."</p>
+                  <p class="mb-4 card-description">
+                    "I've tried several rental companies, but this one stands out in terms of price and customer service. I just hope they add electric vehicles soon."
+                  </p>
+                  <a href="#" class="read-more">Read more</a>
                   <p class="name">Reem Al-Harbi</p>
                   <span class="position">Interface Designer</span>
                 </div>
               </div>
             </div>
+
             <div class="item">
               <div class="testimony-wrap rounded text-center py-4 pb-5">
-                <div class="user-img mb-2" style="background-image: url(../../images/person_4.jpg)">
-                </div>
+                <div class="user-img mb-2" style="background-image: url(../../images/person_4.jpg)"></div>
                 <div class="text pt-4">
-                  <p class="mb-4">"User-friendly website and very helpful support team. I rented for a week and everything went smoothly from start to finish."
+                  <p class="mb-4 card-description">
+                    "User-friendly website and very helpful support team. I rented for a week and everything went smoothly from start to finish."
                   </p>
+                  <a href="#" class="read-more">Read more</a>
                   <p class="name">Youssef Al-Otaibi</p>
                   <span class="position">UI Designer</span>
                 </div>
               </div>
             </div>
+
             <div class="item">
               <div class="testimony-wrap rounded text-center py-4 pb-5">
-                <div class="user-img mb-2" style="background-image: url(../../images/person_6.jpg)">
-                </div>
+                <div class="user-img mb-2" style="background-image: url(../../images/person_6.jpg)"></div>
                 <div class="text pt-4">
-                  <p class="mb-4">"The car was in great condition, but there was a slight delay in delivery—that’s the only reason I’m not giving 5 stars. Everything else was great."</p>
+                  <p class="mb-4 card-description">
+                    "The car was in great condition, but there was a slight delay in delivery—that’s the only reason I’m not giving 5 stars. Everything else was great."
+                  </p>
+                  <a href="#" class="read-more">Read more</a>
                   <p class="name">Nada Al-Subaie</p>
                   <span class="position">Web Developer</span>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -225,7 +262,6 @@
   </section>
   <div id="footer-placeholder"></div>
 
-  <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
       <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
@@ -265,6 +301,19 @@
         document.getElementById('footer-placeholder').innerHTML = html;
       })
       .catch(err => console.error('Footer load failed:', err));
+  </script>
+
+  <script>
+    document.querySelectorAll('.read-more').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const desc = this.previousElementSibling;
+        desc.classList.toggle('expanded');
+        this.textContent = desc.classList.contains('expanded') ?
+          'Show less' :
+          'Read more';
+      });
+    });
   </script>
 
 </body>

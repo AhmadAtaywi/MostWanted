@@ -3,16 +3,8 @@ require '../../configDataBase/userDataBaseConnection.php';
 ?>
 
 <?php
-// fetch existed city names from the database
-// and store them in local storage
-// to use them in the cars.js file
-// to filter the cars by city name
-// and to show the cars in the selected city
-$stmt = $conn->prepare("SELECT city_name FROM City"); // CityNames table as a view table
+$stmt = $conn->prepare("SELECT city_name FROM City");
 $stmt->execute();
-// Set the fetch mode ensures that each row of the result is
-// returned as an associative array, where the column names.
-// are the keys of the array and the values are the corresponding
 $stmt->setFetchMode(PDO::FETCH_ASSOC);
 $cities = $stmt->fetchAll();
 $uniqueCities = [];
@@ -115,13 +107,17 @@ echo "<script>var carsDetails = " . $carsDetails . ";</script>";
         .car-wrap .text {
             width: 300px;
         }
+
+        .nav-button {
+            font-size: 45px;
+        }
     </style>
 </head>
 
 <body>
     <div id="nav-placeholder"></div>
 
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/about-us.jpeg');"
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');"
         data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">

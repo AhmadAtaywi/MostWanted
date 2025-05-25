@@ -42,6 +42,10 @@
         p {
             color: #d8e2dc;
         }
+
+        .nav-button {
+            font-size: 45px;
+        }
     </style>
 </head>
 
@@ -49,7 +53,7 @@
 
     <div id="nav-placeholder"></div>
 
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/about-us.jpeg');"
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');"
         data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -72,72 +76,79 @@
                     <h2 class="mb-3" style="color: #ffeba7;">Our Latest Services</h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-2">
+            <div style="justify-content: center;" class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                     <div class="services services-2 w-100 text-center">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-route"></span>
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
                         </div>
                         <div class="text w-100">
                             <h3 class="heading mb-2">Wedding Ceremony</h3>
-                            <p>"Make your wedding day extra special with our luxury wedding cars. Arrive in style and
+                            <p>Make your wedding day extra special with our luxury wedding cars. Arrive in style and
                                 enjoy every
-                                moment with comfort and elegance.".</p>
+                                moment with comfort and elegance</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                     <div class="services services-2 w-100 text-center">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-route"></span>
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
                         </div>
                         <div class="text w-100">
                             <h3 class="heading mb-2">City Transfer</h3>
-                            <p>"Enjoy smooth and reliable city transfers with our professional car rental service.
+                            <p>Enjoy smooth and reliable city transfers with our professional car rental service.
                                 Whether for
-                                business or leisure, we ensure timely and comfortable rides across the city."</p>
+                                business or leisure, we ensure timely and comfortable rides across the city.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                     <div class="services services-2 w-100 text-center">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-route"></span>
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
                         </div>
                         <div class="text w-100">
                             <h3 class="heading mb-2">Airport Transfer</h3>
-                            <p>"Start or end your journey stress-free with our reliable airport transfer service. We
+                            <p>Start or end your journey stress-free with our reliable airport transfer service. We
                                 provide punctual
-                                pickups, comfortable rides, and hassle-free travel to and from the airport."</p>
+                                pickups, comfortable rides, and hassle-free travel to and from the airport.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                     <div class="services services-2 w-100 text-center">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-route"></span>
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
                         </div>
                         <div class="text w-100">
                             <h3 class="heading mb-2">Whole City Tour</h3>
-                            <p>"Discover the city's top attractions with our comfortable and customizable Whole City
+                            <p>Discover the city's top attractions with our comfortable and customizable Whole City
                                 Tour service.
-                                Enjoy a relaxed sightseeing experience with a private car and professional driver."</p>
+                                Enjoy a relaxed sightseeing experience with a private car and professional driver.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                     <div class="services services-2 w-100 text-center">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-route"></span>
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="flaticon-route"></span>
                         </div>
                         <div class="text w-100">
-                            <h3 class="heading mb-2"> Rent A Car</h3>
-                            <p>"Find the perfect car for your needs with our easy and flexible Rent A Car service. From
+                            <h3 class="heading mb-2">Rent A Car</h3>
+                            <p>Find the perfect car for your needs with our easy and flexible Rent A Car service. From
                                 economy to
-                                luxury, we offer a wide range of vehicles at competitive prices."</p>
+                                luxury, we offer a wide range of vehicles at competitive prices.</p>
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </section>

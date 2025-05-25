@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $color = $clearData->cleanInput($_POST['color']);
     $fuel = $clearData->cleanInput($_POST['fuel']);
     $seats = $clearData->cleanInput($_POST['seats']);
-    $urlImage = $clearData->cleanInput($_POST['img']);
+    $urlImage = $clearData->cleanInput($_POST['img']); 
 
     try {
         // Update Cars table

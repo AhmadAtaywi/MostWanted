@@ -1,16 +1,11 @@
-.services.services-2 .icon>span.flaticon-route {
-    color: black;
+.services.services-2 .icon > span.flaticon-route {
+  color: black;
 }
 
 .services h3 {
-    color: #ffeba7;
+  color: #ffeba7;
 }
 
 .services.services-2 .icon {
-    background-color: #ffeba7;
-}
-
-.col-md-2 {
-    flex: 19.6%;
-    max-width: 22.6%;
+  background-color: #ffeba7;
 }

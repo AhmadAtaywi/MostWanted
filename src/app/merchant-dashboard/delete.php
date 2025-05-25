@@ -17,3 +17,4 @@ $stmt->execute();
 
 header("Location: /MostWanted/src/app/merchant-dashboard/merchant-cars.php?userEmail={$id['userEmail']}");
 exit;
+?>

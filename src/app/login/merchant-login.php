@@ -5,21 +5,20 @@ $clearData = new ClearData();
 
 <?php
 //Sign Up functionality form for user registration
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $userNameSignUp = $_GET['signUpName'];
-    $userEmailSignUp = $_GET['signUpEmail'];
-    $userPhoneNumberSignUp = $_GET['signUpPhoneNumber'];
-    $userPasswordSignUp = $_GET['signUpPass'];
-    // $successSignUp = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userNameSignUp = $_POST['signUpName'];
+    $userEmailSignUp = $_POST['signUpEmail'];
+    $userPhoneNumberSignUp = $_POST['signUpPhoneNumber'];
+    $userPasswordSignUp = $_POST['signUpPass'];
     $nameErrorSignUp = $emailErrorSignUp = $phoneNumberErrorSignUp = $passwordErrorSignUp = "";
 
     // Validate user name input
     if (empty($userNameSignUp)) {
         $nameErrorSignUp = "*Name is required.";
-    } else {
+    } else { 
         $userNameSignUp = $clearData->cleanInput($userNameSignUp);
     }
-
+ 
     // Validate user email input
     if (empty($userEmailSignUp)) {
         $emailErrorSignUp = "*Email is required.";
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $userPhoneNumberSignUp = $clearData->cleanInput($userPhoneNumberSignUp);
         // Sanitize phone number input
         $userPhoneNumberSignUp = filter_var($userPhoneNumberSignUp, FILTER_SANITIZE_NUMBER_INT);
-        if (!preg_match('/^[0-9]{10}$/', $userPhoneNumberSignUp)) {
+        if (!preg_match('/^07[7-9]{1}[0-9]{7}$/', $userPhoneNumberSignUp)) {
             $phoneNumberErrorSignUp = "*Invalid phone number format.";
         }
     }
@@ -129,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Sign Up</h4>
-                                            <form method="get">
+                                            <form method="post">
                                                 <div class="form-group">
                                                     <input type="text" name="signUpName" class="form-style" placeholder="full name" id="logname"
                                                         autocomplete="off"><span class="errorMessage"><?php if (!empty($nameErrorSignUp)) {
@@ -169,8 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
         </div>
     </div>
-
-    <!-- <script src="./login.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" ...></script>
 </body>
 

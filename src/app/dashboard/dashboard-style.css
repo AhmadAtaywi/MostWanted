@@ -58,3 +58,6 @@ td {
 label {
     color: #d8e2dc;
 }
+ .table {
+    min-width: 1100px;
+ }

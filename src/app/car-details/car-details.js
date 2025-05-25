@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Get car data from session storage
   const raw = sessionStorage.getItem("selectedCar");
   if (!raw) {
     return window.location.replace("/MostWanted/src/app/home/home.php");
@@ -8,21 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const car = JSON.parse(raw);
 
 function processImageUrl(imgUrl) {
-  // If empty, return default image
   if (!imgUrl) return "../../images/default-car.jpg";
 
   try {
-    // Handle Google Images redirect URLs
     if (imgUrl.includes("google.com/imgres")) {
       const extractedUrl = new URL(imgUrl).searchParams.get("imgurl");
       if (extractedUrl) return extractedUrl;
     }
 
-    // Handle direct URLs
-    new URL(imgUrl); // This will throw if invalid URL
+    new URL(imgUrl);
     return imgUrl;
   } catch (e) {
-    // If URL is invalid, return default
     return "../../images/default-car.jpg";
   }
 }
@@ -157,17 +152,7 @@ function processImageUrl(imgUrl) {
         window.location.href = `/MostWanted/src/app/car-details/car-details.php?bookingData=${JSON.stringify(
           bookingData
         )}`;
-        // setTimeout(() => {
-        //   window.location.href = `/MostWanted/src/app/cars/cars.php`;
-        // }, 2000);
       }, 2000);
-
-      // const params = new URLSearchParams(window.location.search);
-      // if (!params.has("bookingData")) {
-      //   const target = `/MostWanted/src/app/cars/cars.php`;
-      //   window.location.href = target;
-      //   return; // stop running any further code on this page
-      // }
 
       // Here you would typically send the data to your backend
       // For now, we'll just show the thank you modal
