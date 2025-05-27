@@ -15,19 +15,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate user name input
     if (empty($userNameSignUp)) {
         $nameErrorSignUp = "*Name is required.";
-    } else { 
+    } else {
         $userNameSignUp = $clearData->cleanInput($userNameSignUp);
     }
- 
+
     // Validate user email input
     if (empty($userEmailSignUp)) {
         $emailErrorSignUp = "*Email is required.";
-    } else
+    } else {
         $userEmailSignUp = $clearData->cleanInput($userEmailSignUp);
-    // Sanitize email input sanitization: means removing all illegal characters from the email address
-    $userEmailSignUp = filter_var($userEmailSignUp, FILTER_SANITIZE_EMAIL);
-    if (!filter_var($userEmailSignUp, FILTER_VALIDATE_EMAIL)) {
-        $emailErrorSignUp = "*Invalid email format.";
+        // Sanitize email input sanitization: means removing all illegal characters from the email address
+        $userEmailSignUp = filter_var($userEmailSignUp, FILTER_SANITIZE_EMAIL);
+        if (!filter_var($userEmailSignUp, FILTER_VALIDATE_EMAIL)) {
+            $emailErrorSignUp = "*Invalid email format.";
+        }
     }
 
     // Validate user phone number input
@@ -47,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordErrorSignUp = "*Password is required.";
     } else {
         $userPasswordSignUp = $clearData->cleanInput($userPasswordSignUp);
+        // Password will be hashed before storage
     }
 
     $successSignUp = empty($nameErrorSignUp) && empty($emailErrorSignUp) && empty($phoneNumberErrorSignUp) && empty($passwordErrorSignUp);
@@ -59,25 +61,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user['email'] == $userEmailSignUp) {                
+            if ($user && $user['email'] == $userEmailSignUp) {
                 echo "<script>
                     existsEmail();
                     function existsEmail() {
-                        alert('User already exists with the provided email and password');
+                        alert('User already exists with the provided email');
                         }
                         window.location.href = '/MostWanted/src/app/login/merchant-login.php';
                 </script>";
             } else {
+                // Hash the password before storing it
+                $hashedPassword = password_hash($userPasswordSignUp, PASSWORD_DEFAULT);
+
                 $stmt = $conn->prepare("INSERT INTO Users (name, email, phone, password, merchant_status, role_id) VALUES (:name, :email, :phone, :password, 'false', 3)");
                 $stmt->bindParam(':name', $userNameSignUp);
                 $stmt->bindParam(':email', $userEmailSignUp);
                 $stmt->bindParam(':phone', $userPhoneNumberSignUp);
-                $stmt->bindParam(':password', $userPasswordSignUp);
+                $stmt->bindParam(':password', $hashedPassword);
                 $stmt->execute();
                 echo "<script>
                         dataSentSuccessfully();
                         function dataSentSuccessfully() {
-                            alert('successfully data sent to the admin to check it out');
+                            alert('Successfully data sent to the admin to check it out');
                         }                     
                         window.location.href = '/MostWanted/src/app/login/merchant-login.php';                                            
                 </script>";
@@ -156,8 +161,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                                                     } ?></span>
                                                     <i class="input-icon uil uil-lock-alt"></i>
                                                 </div>
-                                                <button type="submit" id="signupBtn" class="btn mt-4">Sign Up</button>                                                
-                                            </form>                                            
+                                                <button type="submit" id="signupBtn" class="btn mt-4">Sign Up</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

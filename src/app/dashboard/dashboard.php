@@ -25,23 +25,31 @@ $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Build bookings query
-$query = "SELECT * FROM RecentBookingCars"; 
+$query = "SELECT * FROM RecentBookingCars";
 $params = [];
 if (!empty($_GET['dateFrom']) && !empty($_GET['dateTo'])) {
-    $query .= " WHERE booking_date BETWEEN :dateFrom AND :dateTo";
-    $params[':dateFrom'] = $_GET['dateFrom'];
-    $params[':dateTo']   = $_GET['dateTo'] . ' 23:59:59';
+  $query .= " WHERE booking_date BETWEEN :dateFrom AND :dateTo";
+  $params[':dateFrom'] = $_GET['dateFrom'];
+  $params[':dateTo']   = $_GET['dateTo'] . ' 23:59:59';
 }
 $sort = $_GET['sortBy'] ?? 'date_desc';
 switch ($sort) {
-    case 'date_asc':   $query .= " ORDER BY booking_date ASC";  break;
-    case 'count_asc':  $query .= " ORDER BY count ASC";         break;
-    case 'count_desc': $query .= " ORDER BY count DESC";        break;
-    default:           $query .= " ORDER BY booking_date DESC"; break;
+  case 'date_asc':
+    $query .= " ORDER BY booking_date ASC";
+    break;
+  case 'count_asc':
+    $query .= " ORDER BY count ASC";
+    break;
+  case 'count_desc':
+    $query .= " ORDER BY count DESC";
+    break;
+  default:
+    $query .= " ORDER BY booking_date DESC";
+    break;
 }
 $stmt = $conn->prepare($query);
 foreach ($params as $k => $v) {
-    $stmt->bindValue($k, $v);
+  $stmt->bindValue($k, $v);
 }
 $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,23 +61,28 @@ if (!isset($_GET['userEmail'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Dashboard</title>
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
+    rel="stylesheet">
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    rel="stylesheet"
-  >
+    rel="stylesheet">
   <style>
-    body { background-color: #495057; }
-    .sidebar .nav-link.active { background-color: #343a40; }
+    body {
+      background-color: #495057;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: #343a40;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Mobile navbar to toggle sidebar -->
@@ -81,8 +94,7 @@ if (!isset($_GET['userEmail'])) {
         data-bs-toggle="collapse"
         data-bs-target="#sidebar"
         aria-controls="sidebar"
-        aria-expanded="false"
-      >
+        aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
       </button>
       <span class="navbar-brand">Admin Panel</span>
@@ -94,33 +106,33 @@ if (!isset($_GET['userEmail'])) {
       <!-- Sidebar: collapse on xs, always show on md+ -->
       <aside
         id="sidebar"
-        class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar"
-      >
+        class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar">
         <h3 class="text-center text-white py-3">Admin Panel</h3>
         <nav class="nav flex-column">
           <a
             href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= $userEmail ?>"
-            class="nav-link text-white"
-          >
+            class="nav-link text-white">
             <i class="fas fa-tachometer-alt me-2"></i>Dashboard
           </a>
           <a
             href="/MostWanted/src/app/dashboard/cars.php?userEmail=<?= $userEmail ?>"
-            class="nav-link text-white"
-          >
+            class="nav-link text-white">
             <i class="fas fa-car me-2"></i>Cars
           </a>
           <a
             href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= $userEmail ?>"
-            class="nav-link text-white"
-          >
+            class="nav-link text-white">
             <i class="fas fa-users me-2"></i>Users
+          </a>
+          <a
+            href="/MostWanted/src/app/dashboard/from-contact-us.php?userEmail=<?= $userEmail ?>"
+            class="nav-link text-white">
+            <i class="fas fa-users me-2"></i>Request From Contact Us
           </a>
           <a
             href="javascript:void(0)"
             class="nav-link text-white mt-3"
-            onclick="backToHomePage()"
-          >
+            onclick="backToHomePage()">
             <i class="fas fa-sign-out-alt me-2"></i>Logout
           </a>
         </nav>
@@ -131,8 +143,8 @@ if (!isset($_GET['userEmail'])) {
         <!-- Header navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4 rounded">
           <div class="container-fluid">
-            <span class="navbar-brand">
-              <?= $user['name'] ?? '' ?>
+            <span class="navbar-brand text-warning">
+              <?= $userEmail ?>
             </span>
           </div>
         </nav>
@@ -175,8 +187,7 @@ if (!isset($_GET['userEmail'])) {
                 type="date"
                 id="dateFrom"
                 class="form-control"
-                value="<?= $_GET['dateFrom'] ?? '' ?>"
-              >
+                value="<?= $_GET['dateFrom'] ?? '' ?>">
             </div>
             <div class="col-auto">
               <label for="dateTo" class="form-label text-white">To</label>
@@ -184,8 +195,7 @@ if (!isset($_GET['userEmail'])) {
                 type="date"
                 id="dateTo"
                 class="form-control"
-                value="<?= $_GET['dateTo'] ?? '' ?>"
-              >
+                value="<?= $_GET['dateTo'] ?? '' ?>">
             </div>
             <div class="col-auto align-self-end">
               <button class="btn btn-primary">Apply</button>
@@ -235,22 +245,25 @@ if (!isset($_GET['userEmail'])) {
   </div>
 
   <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-  ></script>
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     function backToHomePage() {
       alert("Successfully signed out");
       window.location.href = "/MostWanted/src/app/home/home.php";
     }
+
     function applyFilters() {
       const params = new URLSearchParams(window.location.search);
       params.set('userEmail', '<?= addslashes($userEmail) ?>');
       const from = document.getElementById('dateFrom').value;
-      const to   = document.getElementById('dateTo').value;
-      if (from) params.set('dateFrom', from); else params.delete('dateFrom');
-      if (to)   params.set('dateTo', to);     else params.delete('dateTo');
+      const to = document.getElementById('dateTo').value;
+      if (from) params.set('dateFrom', from);
+      else params.delete('dateFrom');
+      if (to) params.set('dateTo', to);
+      else params.delete('dateTo');
       window.location.search = params.toString();
     }
   </script>
 </body>
+
 </html>

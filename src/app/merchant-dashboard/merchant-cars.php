@@ -2,7 +2,7 @@
 require '../../configDataBase/userDataBaseConnection.php';
 $clearData = new ClearData();
 ?>
- 
+
 <?php
 $userEmail = $_GET['userEmail'];
 $userEmail = json_encode($userEmail);
@@ -83,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         body {
             background-color: #495057;
         }
+
         #sidebar.position-md-static {
             position: static !important;
         }
@@ -90,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .table {
             min-width: 1100px;
         }
-
     </style>
 </head>
 
@@ -126,7 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         href="/MostWanted/src/app/merchant-dashboard/merchant-cars.php?userEmail=<?= json_decode($userEmail) ?>">
                         <i class="fas fa-car me-2"></i>Cars
                     </a>
-                    <a class="nav-link text-white mt-3" onclick="backToHomePage()">
+                    <a href="javascript:void(0)"
+                        class="nav-link text-white mt-3"
+                        onclick="backToHomePage()">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </a>
                 </nav>
