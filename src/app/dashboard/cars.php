@@ -6,7 +6,7 @@ $userEmail = $_GET['userEmail'];
 $userEmailJson = json_encode($userEmail);
 
 $stmt = $conn->prepare("SELECT * FROM Users where role_id = 2 And email = :email ");
-$stmt->bindParam(':email', json_decode($userEmailJson));
+$stmt->bindParam(':email', json_decode( $userEmailJson));
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -115,7 +115,7 @@ if (!isset($_GET['userEmail'])) {
           </a>
           <a
             class="nav-link text-white"
-            href="/MostWanted/src/app/dashboard/from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>">
+            href="/MostWanted/src/app/dashboard/request-from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>">
             <i class="fas fa-users me-2"></i>Request From Contact Us</a>
           <a
             href="javascript:void(0)"

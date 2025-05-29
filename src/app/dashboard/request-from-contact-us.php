@@ -5,7 +5,6 @@ require '../../configDataBase/userDataBaseConnection.php';
 <?php
 $userEmail = $_GET['userEmail'];
 $userEmail = json_encode($userEmail);
-
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +13,7 @@ $userEmail = json_encode($userEmail);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Users Dashboard</title>
+    <title>Admin Request From Contact Us Dashboard</title>
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet">
@@ -71,7 +70,7 @@ $userEmail = json_encode($userEmail);
                         href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Users</a>
                     <a
                         class="nav-link text-white"
-                        href="/MostWanted/src/app/dashboard/from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Request From Contact Us</a>
+                        href="/MostWanted/src/app/dashboard/request-from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Request From Contact Us</a>
                     <a
                         href="javascript:void(0)"
                         class="nav-link text-white mt-3"
@@ -122,8 +121,6 @@ $userEmail = json_encode($userEmail);
                         </tbody>
                     </table>
                 </div>
-
-
             </main>
         </div>
     </div>

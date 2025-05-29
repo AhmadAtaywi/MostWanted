@@ -70,7 +70,7 @@ $userEmail = json_encode($userEmail);
             href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Users</a>
           <a
             class="nav-link text-white"
-            href="/MostWanted/src/app/dashboard/from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Request From Contact Us</a>
+            href="/MostWanted/src/app/dashboard/request-from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Request From Contact Us</a>
           <a
             href="javascript:void(0)"
             class="nav-link text-white mt-3"

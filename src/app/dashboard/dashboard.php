@@ -30,18 +30,12 @@ $params = [];
 if (!empty($_GET['dateFrom']) && !empty($_GET['dateTo'])) {
   $query .= " WHERE booking_date BETWEEN :dateFrom AND :dateTo";
   $params[':dateFrom'] = $_GET['dateFrom'];
-  $params[':dateTo']   = $_GET['dateTo'] . ' 23:59:59';
+  $params[':dateTo']   = $_GET['dateTo'];
 }
 $sort = $_GET['sortBy'] ?? 'date_desc';
 switch ($sort) {
   case 'date_asc':
     $query .= " ORDER BY booking_date ASC";
-    break;
-  case 'count_asc':
-    $query .= " ORDER BY count ASC";
-    break;
-  case 'count_desc':
-    $query .= " ORDER BY count DESC";
     break;
   default:
     $query .= " ORDER BY booking_date DESC";
@@ -125,7 +119,7 @@ if (!isset($_GET['userEmail'])) {
             <i class="fas fa-users me-2"></i>Users
           </a>
           <a
-            href="/MostWanted/src/app/dashboard/from-contact-us.php?userEmail=<?= $userEmail ?>"
+            href="/MostWanted/src/app/dashboard/request-from-contact-us.php?userEmail=<?= $userEmail ?>"
             class="nav-link text-white">
             <i class="fas fa-users me-2"></i>Request From Contact Us
           </a>
@@ -187,7 +181,7 @@ if (!isset($_GET['userEmail'])) {
                 type="date"
                 id="dateFrom"
                 class="form-control"
-                value="<?= $_GET['dateFrom'] ?? '' ?>">
+                value="<?= $_GET['dateFrom']?>">
             </div>
             <div class="col-auto">
               <label for="dateTo" class="form-label text-white">To</label>
@@ -195,10 +189,15 @@ if (!isset($_GET['userEmail'])) {
                 type="date"
                 id="dateTo"
                 class="form-control"
-                value="<?= $_GET['dateTo'] ?? '' ?>">
+                value="<?= $_GET['dateTo']?>">
             </div>
             <div class="col-auto align-self-end">
               <button class="btn btn-primary">Apply</button>
+            </div>
+            <div class="col-auto align-self-end">
+            <a href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= $userEmail ?>">
+            <i class="btn btn-primary">Clear</i>
+            </a>
             </div>
           </form>
         </div>
@@ -210,7 +209,7 @@ if (!isset($_GET['userEmail'])) {
               <tr>
                 <th>Refer to Merchant</th>
                 <th>Booked By User</th>
-                <th>Email</th>
+                <th>User Email</th>
                 <th>Car</th>
                 <th>Booking Date</th>
                 <th>Status</th>
