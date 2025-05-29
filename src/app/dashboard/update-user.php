@@ -15,7 +15,7 @@ $user = $stmt->fetch();
 
 <?php
 if (!isset($_GET['user_id'])) {
-    header("Location: /MostWanted/src/app/home/home.php}");
+    header("Location: /MostWanted/src/app/home/home.php}"); 
     exit;
 }
 
@@ -27,6 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userMerchantStatus = $clearData->cleanInput($_POST['merchant_status']);
 
     try {
+        // Hash the password before storing it if it's not empty
+        $passwordToStore = $userPassword;
+        if (!empty($userPassword)) {
+            $passwordToStore = password_hash($userPassword, PASSWORD_DEFAULT);
+        } else {
+            // If password field is empty, keep the existing hashed password
+            $passwordToStore = $user['password'];
+        }
+
+        // Update Users table
         $stmt = $conn->prepare("UPDATE Users SET 
             name = :name,
             email = :email,
@@ -38,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':name', $newUserName);
         $stmt->bindParam(':email', $newUserEmail);
         $stmt->bindParam(':phone', $userPhone);
-        $stmt->bindParam(':password', $userPassword);
+        $stmt->bindParam(':password', $passwordToStore);
         $stmt->bindParam(':merchant_status', $userMerchantStatus);
         $stmt->execute();
 
@@ -90,7 +100,7 @@ if (!$user) {
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="text" class="form-control" name="password" value="<?= $user['password'] ?>" required>
+                <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Merchant Status</label>
@@ -100,7 +110,7 @@ if (!$user) {
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
-            <a href="/MostWanted/src/app/dashboard/user.php?userEmail=<?= $userEmail ?>" class="btn btn-secondary">Cancel</a>
+            <a href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= $userEmail ?>" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </body>

@@ -6,53 +6,53 @@ $userEmail = $_GET['userEmail'];
 $userEmailJson = json_encode($userEmail);
 
 $stmt = $conn->prepare("SELECT * FROM Users where role_id = 2 And email = :email ");
-$stmt->bindParam(':email', json_decode($userEmailJson));
+$stmt->bindParam(':email', json_decode( $userEmailJson));
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $carType     = $clearData->cleanInput($_POST['carType']);
-    $carModel    = $clearData->cleanInput($_POST['carModel']);
-    $modelYear   = $clearData->cleanInput($_POST['modelYear']);
-    $plateNumber = $clearData->cleanInput($_POST['plateNumber']);
-    $cityName    = $clearData->cleanInput($_POST['cityName']);
-    $description = $clearData->cleanInput($_POST['description']);
-    $color       = $clearData->cleanInput($_POST['color']);
-    $fuel        = $clearData->cleanInput($_POST['fuel']);
-    $seats       = $clearData->cleanInput($_POST['seats']);
-    $price       = $clearData->cleanInput($_POST['price']);
-    $availableDate = $clearData->cleanInput($_POST['availableDate']);
-    $urlImage    = $clearData->cleanInput($_POST['image']);
+  $carType     = $clearData->cleanInput($_POST['carType']);
+  $carModel    = $clearData->cleanInput($_POST['carModel']);
+  $modelYear   = $clearData->cleanInput($_POST['modelYear']);
+  $plateNumber = $clearData->cleanInput($_POST['plateNumber']);
+  $cityName    = $clearData->cleanInput($_POST['cityName']);
+  $description = $clearData->cleanInput($_POST['description']);
+  $color       = $clearData->cleanInput($_POST['color']);
+  $fuel        = $clearData->cleanInput($_POST['fuel']);
+  $seats       = $clearData->cleanInput($_POST['seats']);
+  $price       = $clearData->cleanInput($_POST['price']);
+  $availableDate = $clearData->cleanInput($_POST['availableDate']);
+  $urlImage    = $clearData->cleanInput($_POST['image']);
 
-    try {
-        $stmt = $conn->prepare("INSERT INTO Cars (user_name, car_type, car_model, model_year, plate_number, price, available_time, available, count, city_name) 
+  try {
+    $stmt = $conn->prepare("INSERT INTO Cars (user_name, car_type, car_model, model_year, plate_number, price, available_time, available, count, city_name) 
             VALUES (:user_name, :car_type, :car_model, :model_year, :plate_number, :price, :available_time, 'true', 0, :city_name)");
-        $stmt->bindParam(':user_name', json_decode($userEmailJson));
-        $stmt->bindParam(':car_type', $carType);
-        $stmt->bindParam(':car_model', $carModel);
-        $stmt->bindParam(':model_year', $modelYear);
-        $stmt->bindParam(':plate_number', $plateNumber);
-        $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':available_time', $availableDate);
-        $stmt->bindParam(':city_name', $cityName);
-        $stmt->execute();
-        $carId = $conn->lastInsertId();
+    $stmt->bindParam(':user_name', json_decode($userEmailJson));
+    $stmt->bindParam(':car_type', $carType);
+    $stmt->bindParam(':car_model', $carModel);
+    $stmt->bindParam(':model_year', $modelYear);
+    $stmt->bindParam(':plate_number', $plateNumber);
+    $stmt->bindParam(':price', $price);
+    $stmt->bindParam(':available_time', $availableDate);
+    $stmt->bindParam(':city_name', $cityName);
+    $stmt->execute();
+    $carId = $conn->lastInsertId();
 
-        $stmt = $conn->prepare("INSERT INTO CarDetails (description, color, fuel, seats, img, car_id) 
+    $stmt = $conn->prepare("INSERT INTO CarDetails (description, color, fuel, seats, img, car_id) 
             VALUES (:description, :color, :fuel, :seats, :img, :car_id)");
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':color', $color);
-        $stmt->bindParam(':fuel', $fuel);
-        $stmt->bindParam(':seats', $seats);
-        $stmt->bindParam(':car_id', $carId);
-        $stmt->bindParam(':img', $urlImage);
-        $stmt->execute();
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':color', $color);
+    $stmt->bindParam(':fuel', $fuel);
+    $stmt->bindParam(':seats', $seats);
+    $stmt->bindParam(':car_id', $carId);
+    $stmt->bindParam(':img', $urlImage);
+    $stmt->execute();
 
-        header("Location: /MostWanted/src/app/dashboard/cars.php?userEmail=" . json_decode($userEmail));
-        exit;
-    } catch (PDOException $e) {
-        echo "<script>console.log(" . json_encode($e->getMessage()) . ");</script>";
-    }
+    header("Location: /MostWanted/src/app/dashboard/cars.php?userEmail=" . json_decode($userEmail));
+    exit;
+  } catch (PDOException $e) {
+    echo "<script>console.log(" . json_encode($e->getMessage()) . ");</script>";
+  }
 }
 
 if (!isset($_GET['userEmail'])) {
@@ -62,6 +62,7 @@ if (!isset($_GET['userEmail'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,18 +70,25 @@ if (!isset($_GET['userEmail'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <style>
-    body { background-color: #495057; }
-    .sidebar .nav-link.active { background-color: #343a40; }
+    body {
+      background-color: #495057;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: #343a40;
+    }
+
     .table {
-        min-width: 1100px;
+      min-width: 1100px;
     }
   </style>
 </head>
+
 <body>
   <nav class="navbar navbar-dark bg-dark d-md-none">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button"
-              data-bs-toggle="collapse" data-bs-target="#sidebar">
+        data-bs-toggle="collapse" data-bs-target="#sidebar">
         <span class="navbar-toggler-icon"></span>
       </button>
       <span class="navbar-brand">Admin Panel</span>
@@ -90,21 +98,25 @@ if (!isset($_GET['userEmail'])) {
   <div class="container-fluid">
     <div class="row">
       <aside id="sidebar"
-             class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar">
+        class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar">
         <h3 class="text-center text-white py-4">Admin Panel</h3>
         <nav class="nav flex-column">
           <a class="nav-link text-white"
-             href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= json_decode($userEmailJson) ?>">
+            href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= json_decode($userEmailJson) ?>">
             <i class="fas fa-tachometer-alt me-2"></i>Dashboard
           </a>
-          <a class="nav-link text-white active"
-             href="/MostWanted/src/app/dashboard/cars.php?userEmail=<?= json_decode($userEmailJson) ?>">
+          <a class="nav-link text-white"
+            href="/MostWanted/src/app/dashboard/cars.php?userEmail=<?= json_decode($userEmailJson) ?>">
             <i class="fas fa-car me-2"></i>Cars
           </a>
           <a class="nav-link text-white"
-             href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmailJson) ?>">
+            href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmailJson) ?>">
             <i class="fas fa-users me-2"></i>Users
           </a>
+          <a
+            class="nav-link text-white"
+            href="/MostWanted/src/app/dashboard/request-from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>">
+            <i class="fas fa-users me-2"></i>Request From Contact Us</a>
           <a
             href="javascript:void(0)"
             class="nav-link text-white mt-3"
@@ -119,7 +131,7 @@ if (!isset($_GET['userEmail'])) {
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary rounded mb-4">
           <div class="container-fluid">
             <span class="navbar-brand text-warning">
-               <?= json_decode($userEmailJson); ?>
+              <?= json_decode($userEmailJson); ?>
             </span>
           </div>
         </nav>
@@ -145,7 +157,7 @@ if (!isset($_GET['userEmail'])) {
             </thead>
             <tbody>
               <?php
-              $stmt = $conn->prepare("SELECT * FROM Cars");               
+              $stmt = $conn->prepare("SELECT * FROM Cars");
               $stmt->execute();
               $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
               foreach ($cars as $row) {
@@ -166,7 +178,7 @@ if (!isset($_GET['userEmail'])) {
                           </td>";
                 echo "</tr>";
               }
-               ?>
+              ?>
             </tbody>
           </table>
         </div>
@@ -192,7 +204,7 @@ if (!isset($_GET['userEmail'])) {
                     <div class="col-12 col-md-4">
                       <label class="form-label">Model Year</label>
                       <input type="number" class="form-control" id="modelYear" name="modelYear"
-                             min="1900" max="2099" required>
+                        min="1900" max="2099" required>
                     </div>
                     <div class="col-12 col-md-4">
                       <label class="form-label">Plate Number</label>
@@ -201,10 +213,18 @@ if (!isset($_GET['userEmail'])) {
                     <div class="col-12 col-md-4">
                       <label class="form-label">City Name</label>
                       <select class="form-select" name="cityName" id="cityName">
-                        <option>zarqa</option><option>amman</option><option>irbid</option>
-                        <option>mafraq</option><option>maan</option><option>ajloun</option>
-                        <option>aqaba</option><option>salt</option><option>madaba</option>
-                        <option>karak</option><option>tafilah</option><option>jarash</option>
+                        <option>zarqa</option>
+                        <option>amman</option>
+                        <option>irbid</option>
+                        <option>mafraq</option>
+                        <option>maan</option>
+                        <option>ajloun</option>
+                        <option>aqaba</option>
+                        <option>salt</option>
+                        <option>madaba</option>
+                        <option>karak</option>
+                        <option>tafilah</option>
+                        <option>jarash</option>
                       </select>
                     </div>
                     <div class="col-12 col-md-4">
@@ -214,7 +234,9 @@ if (!isset($_GET['userEmail'])) {
                     <div class="col-12 col-md-4">
                       <label class="form-label">Fuel</label>
                       <select class="form-select" id="fuel" name="fuel">
-                        <option>Hybrid</option><option>Diesel</option><option>Electric</option>
+                        <option>Hybrid</option>
+                        <option>Diesel</option>
+                        <option>Electric</option>
                       </select>
                     </div>
                     <div class="col-12 col-md-4">
@@ -224,7 +246,7 @@ if (!isset($_GET['userEmail'])) {
                     <div class="col-12 col-md-4">
                       <label class="form-label">Price Per Day ($)</label>
                       <input type="number" class="form-control" id="price" name="price"
-                             min="0" step="0.01" required>
+                        min="0" step="0.01" required>
                     </div>
                     <div class="col-12 col-md-8">
                       <label class="form-label">Description</label>
@@ -233,7 +255,7 @@ if (!isset($_GET['userEmail'])) {
                     <div class="col-12 col-md-8">
                       <label class="form-label">Image</label>
                       <textarea class="form-control" id="image" name="image" rows="2"
-                                placeholder="add url image only!!"></textarea>
+                        placeholder="add url image only!!"></textarea>
                     </div>
                     <div class="col-12">
                       <label class="form-label">Available Dates</label>
@@ -295,7 +317,7 @@ if (!isset($_GET['userEmail'])) {
         ul.appendChild(li);
       });
     }
-
   </script>
 </body>
+
 </html>

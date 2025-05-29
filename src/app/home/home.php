@@ -19,6 +19,7 @@ $cityNames = json_encode($uniqueCities);
 $cityCount = json_encode($cityCount);
 
 echo "<script>var cities = $cityNames; var cityCount = $cityCount;</script>";
+
 ?>
 
 <?php

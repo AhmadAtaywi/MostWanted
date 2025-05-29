@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwordSignIn = $_POST['signInPass'];
     $emailErrorSignIn = $passwordErrorSignIn = "";
 
-
     // Validate user email input
     if (empty($userEmailSignIn)) {
         $emailErrorSignIn = "*Email is required.";
@@ -26,52 +25,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($passwordSignIn)) {
         $passwordErrorSignIn = "*Password is required.";
     } else {
-        $passwordSignIn = $clearData->cleanInput($passwordSignIn);        
+        $passwordSignIn = $clearData->cleanInput($passwordSignIn);
     }
 
     $successSignIn = empty($emailErrorSignIn) && empty($passwordErrorSignIn);
     if ($successSignIn) {
         try {
-            $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email AND password = :password");
+            $stmt = $conn->prepare("SELECT * FROM Users WHERE email = :email");
             $stmt->bindParam(':email', $userEmailSignIn);
-            $stmt->bindParam(':password', $passwordSignIn);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['role_id'] == 2) {
+            if ($userEmailSignIn == $user['email'] && $passwordSignIn == $user['password'] && $user['role_id'] == 2){
                 echo "<script>                            
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/dashboard/dashboard.php?userEmail={$user['email']}';
-                            }, 100);
+                            }, 50);
                         </script>";
-            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password']  && $user['merchant_status'] == 'true' && $user['role_id'] == 3) {
-                echo "<script>                                                                                                             
+                        exit;
+            }
+
+            if ($user && password_verify($passwordSignIn, $user['password'])) {
+                if ($user['merchant_status'] == 'true' && $user['role_id'] == 3) {
+                    echo "<script>                                                                                                             
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/merchant-dashboard/merchant-dashboard.php?userEmail={$user['email']}';
-                            }, 100);
+                            }, 50);
                         </script>";
-            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['merchant_status'] == 'false' && $user['role_id'] == 3) {
-                echo "<script>                    
+                } else if ($user['merchant_status'] == 'false' && $user['role_id'] == 3) {
+                    echo "<script>                    
                     merchantStatus();
                     function merchantStatus() {
                         alert('Merchant status still not confirmed yet.');
                         }
                         window.location.href = '/MostWanted/src/app/login/login.php';
                 </script>";
-            } else if ($userEmailSignIn == $user['email'] &&  $passwordSignIn == $user['password'] && $user['role_id'] == 1) {
-                echo "<script>                            
+                } else if ($user['role_id'] == 1) {
+                    echo "<script>                            
                             localStorage.setItem('userEmail', '" . $user['email'] . "'); 
                             localStorage.setItem('userName', '" . $user['name'] . "');                                                     
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/home/home.php';
                             }, 100);
                         </script>";
-            } else { 
+                }
+            } else {
                 echo "<script>
                     invalidEmailOrPassword();
                     function invalidEmailOrPassword() {
                         alert('Invalid email or password.');
                         }
+                        setTimeout(() => {
+                                window.location.href = '/MostWanted/src/app/login/login.php';
+                            }, 50);
                 </script>";
             }
         } catch (PDOException $e) {
@@ -102,11 +108,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate user email input
     if (empty($userEmailSignUp)) {
         $emailErrorSignUp = "*Email is required.";
-    } else
+    } else {
         $userEmailSignUp = $clearData->cleanInput($userEmailSignUp);
         $userEmailSignUp = filter_var($userEmailSignUp, FILTER_SANITIZE_EMAIL);
-    if (!filter_var($userEmailSignUp, FILTER_VALIDATE_EMAIL)) {
-        $emailErrorSignUp = "*Invalid email format.";
+        if (!filter_var($userEmailSignUp, FILTER_VALIDATE_EMAIL)) {
+            $emailErrorSignUp = "*Invalid email format.";
+        }
     }
 
     // Validate user phone number input
@@ -125,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordErrorSignUp = "*Password is required.";
     } else {
         $userPasswordSignUp = $clearData->cleanInput($userPasswordSignUp);
+        // Password will be hashed before storage
     }
 
     $successSignUp = empty($nameErrorSignUp) && empty($emailErrorSignUp) && empty($phoneNumberErrorSignUp) && empty($passwordErrorSignUp);
@@ -136,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user['email'] == $userEmailSignUp) {
+            if ($user && $user['email'] == $userEmailSignUp) {
                 echo "<script>
                     existsEmail();
                     function existsEmail() {
@@ -145,18 +153,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         window.location.href = '/MostWanted/src/app/login/login.php';                        
                 </script>";
             } else {
+                // Hash the password before storing it
+                $hashedPassword = password_hash($userPasswordSignUp, PASSWORD_DEFAULT);
+
                 $stmt = $conn->prepare("INSERT INTO Users (name, email, phone, password, role_id, merchant_status) VALUES (:name, :email, :phone, :password, 1, 'false')");
                 $stmt->bindParam(':name', $userNameSignUp);
                 $stmt->bindParam(':email', $userEmailSignUp);
                 $stmt->bindParam(':phone', $userPhoneNumberSignUp);
-                $stmt->bindParam(':password', $userPasswordSignUp);
+                $stmt->bindParam(':password', $hashedPassword);
                 $stmt->execute();
                 echo "<script>                 
                             localStorage.setItem('userEmail', '" . $userEmailSignUp . "'); 
                             localStorage.setItem('userName', '" . $userNameSignUp . "');                                                        
                             setTimeout(() => {
                                 window.location.href = '/MostWanted/src/app/home/home.php';
-                            }, 200);
+                            }, 50);
                 </script>";
             }
         } catch (PDOException $e) {
@@ -216,9 +227,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                                 <div class="form-group mt-2">
                                                     <input type="password" name="signInPass" class="form-style" placeholder="password"
-                                                         autocomplete="off" value=""><span class="errorMessage"><?php if (!empty($passwordErrorSignIn)) {
-                                                                                                                                echo $passwordErrorSignIn;
-                                                                                                                            } ?></span>
+                                                        autocomplete="off" value=""><span class="errorMessage"><?php if (!empty($passwordErrorSignIn)) {
+                                                                                                                    echo $passwordErrorSignIn;
+                                                                                                                } ?></span>
                                                     <i class="input-icon uil uil-lock-alt"></i>
                                                 </div>
                                                 <button type="submit" id="logInBtn" class="btn mt-4">Sign In</button>
