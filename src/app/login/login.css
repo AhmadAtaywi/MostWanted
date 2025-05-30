@@ -270,7 +270,7 @@ h6 span {
   box-shadow: 0 8px 24px 0 rgba(16, 39, 112, 0.2);
 }
 
-.logo {
+.logo { 
   position: absolute;
   top: 30px;
   left: 30px;
@@ -282,4 +282,8 @@ h6 span {
   height: auto;
   width: 200px;
   display: block;
+}
+
+.errorMessage {
+  color: red;
 }

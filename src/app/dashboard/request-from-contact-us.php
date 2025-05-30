@@ -36,7 +36,6 @@ $userEmail = json_encode($userEmail);
 </head>
 
 <body>
-    <!-- Mobile sidebar toggler -->
     <nav class="navbar navbar-dark bg-dark d-md-none">
         <div class="container-fluid">
             <button
@@ -53,7 +52,6 @@ $userEmail = json_encode($userEmail);
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar: collapses on xs, shows on md+ -->
             <aside
                 id="sidebar"
                 class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar">
@@ -69,7 +67,7 @@ $userEmail = json_encode($userEmail);
                         class="nav-link text-white"
                         href="/MostWanted/src/app/dashboard/users.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Users</a>
                     <a
-                        class="nav-link text-white"
+                        class="nav-link text-white" 
                         href="/MostWanted/src/app/dashboard/request-from-contact-us.php?userEmail=<?= json_decode($userEmail) ?>"><i class="fas fa-users me-2"></i>Request From Contact Us</a>
                     <a
                         href="javascript:void(0)"
@@ -80,9 +78,7 @@ $userEmail = json_encode($userEmail);
                 </nav>
             </aside>
 
-            <!-- Main content -->
             <main class="col-12 col-md-9 col-lg-10 px-4 py-3">
-                <!-- Header -->
                 <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4 rounded">
                     <div class="container-fluid">
                         <span class="navbar-brand text-warning">
@@ -93,7 +89,6 @@ $userEmail = json_encode($userEmail);
 
                 <h3 class="text-white mb-3">Request From Contact Us</h3>
 
-                <!-- Responsive table wrapper -->
                 <div class="table-responsive shadow-sm rounded">
                     <table class="table table-dark table-hover table-bordered mb-0">
                         <thead>
@@ -110,20 +105,37 @@ $userEmail = json_encode($userEmail);
                             $stmt->execute();
                             $allUsers = $stmt->fetchAll();
                             foreach ($allUsers as $row) {
+                                $messageAlert = json_encode($row['message']);
                                 echo "<tr>";
-                                echo "<td class='text-success'>{$row['name']}</td>";
-                                echo "<td class='text-primary'>{$row['email']}</td>";
-                                echo "<td class='text-info'>{$row['subject']}</td>";
-                                echo "<td>{$row['message']}</td>";
+                                echo "<td class='text-info'>{$row['name']}</td>";
+                                echo "<td class='text-info'>{$row['email']}</td>";
+                                echo "<td class='text-info'>{$row['subject']}</td>"; 
+                                echo "<td onclick='displayMessage({$messageAlert})' style='color: #B6B09F'>Click to display the message</td>";
                                 echo "</tr>";
-                            }
+                            } 
                             ?>
-                        </tbody>
+                        </tbody>  
                     </table>
                 </div>
             </main>
         </div>
     </div>
+
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="messageModalLabel">Message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="messageModalBody">        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -131,6 +143,13 @@ $userEmail = json_encode($userEmail);
         function backToHomePage() {
             alert("successfully Sign out");
             window.location.href = "/MostWanted/src/app/home/home.php";
+        }
+
+        function displayMessage(message) {
+            const modalBody = document.getElementById("messageModalBody");
+            modalBody.textContent = message;
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
         }
     </script>
 </body>

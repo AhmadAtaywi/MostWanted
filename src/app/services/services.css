@@ -1,11 +1,15 @@
-.services.services-2 .icon > span.flaticon-route {
-  color: black;
+section {
+  background-color: #1f2029;
 }
 
-.services h3 {
+h3 {
   color: #ffeba7;
 }
 
-.services.services-2 .icon {
-  background-color: #ffeba7;
+p {
+  color: #d8e2dc;
+}
+
+.nav-button {
+  font-size: 45px;
 }

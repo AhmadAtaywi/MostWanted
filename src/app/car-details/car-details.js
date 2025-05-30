@@ -6,38 +6,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const car = JSON.parse(raw);
 
-function processImageUrl(imgUrl) {
-  if (!imgUrl) return "../../images/default-car.jpg";
+  function processImageUrl(imgUrl) {
+    if (!imgUrl) return "../../images/default-car.jpg";
 
-  try {
-    if (imgUrl.includes("google.com/imgres")) {
-      const extractedUrl = new URL(imgUrl).searchParams.get("imgurl");
-      if (extractedUrl) return extractedUrl;
+    try {
+      if (imgUrl.includes("google.com/imgres")) {
+        const extractedUrl = new URL(imgUrl).searchParams.get("imgurl");
+        if (extractedUrl) return extractedUrl;
+      }
+
+      new URL(imgUrl);
+      return imgUrl;
+    } catch (e) {
+      return "../../images/default-car.jpg";
     }
-
-    new URL(imgUrl);
-    return imgUrl;
-  } catch (e) {
-    return "../../images/default-car.jpg";
   }
-}
 
-  document.getElementById("car-img").style.backgroundImage = `url(${processImageUrl(car.img)})`;
+  document.getElementById(
+    "car-img"
+  ).style.backgroundImage = `url(${processImageUrl(car.img)})`;
   document.getElementById("car-city").textContent =
     car.city_name || "Unknown City";
   document.getElementById("car-name").textContent = `${car.car_type || ""} ${
     car.car_model || ""
   } (${car.model_year || ""})`;
-  document.getElementById("car-price").textContent = `$${car.price || 0} /day`;
+  document.getElementById("car-price").textContent = `JD ${
+    car.price || 0
+  } /day`;
   document.getElementById("car-description").textContent =
     car.description || "No description available";
 
-  // Set car specifications
   document.getElementById("car-color").textContent = car.color || "Unknown";
   document.getElementById("car-fuel").textContent = car.fuel || "Unknown";
   document.getElementById("car-seats").textContent = car.seats || "N/A";
 
-  // Check if user is logged in
   const isLoggedIn = !!localStorage.getItem("userEmail");
   const bookBtn = document.getElementById("bookNowBtn");
 
@@ -50,7 +52,6 @@ function processImageUrl(imgUrl) {
           here
         )}`;
       } else if (car.available == "false") {
-        // message popup this car is unavailable
         alert("This car is currently unavailable for booking.");
         e.preventDefault();
         const here = window.location.pathname + window.location.search;
@@ -61,29 +62,25 @@ function processImageUrl(imgUrl) {
     });
   }
 
-  // Populate available dates dropdown
   const availableDateSelect = document.getElementById("availableDate");
   if (availableDateSelect && car.available_time && car.available == "true") {
-    // Ensure available_time is an array
     const availableTimes = Array.isArray(car.available_time)
       ? car.available_time
-      : [car.available_time]; // Convert string to array if necessary
+      : [car.available_time];
 
     availableTimes.forEach((time) => {
       const option = document.createElement("option");
       option.value = time;
-      option.textContent = new Date(time).toISOString().split("T")[0]; // Format as YYYY-MM-DD
+      option.textContent = new Date(time).toISOString().split("T")[0];
       availableDateSelect.appendChild(option);
     });
   } else {
-    // Fallback if no available times are specified
     const option = document.createElement("option");
     option.value = "not available";
     option.textContent = "Not available";
     availableDateSelect.appendChild(option);
   }
 
-  // Setup pickup location toggle
   const pickupStore = document.getElementById("pickupStore");
   const pickupDelivery = document.getElementById("pickupDelivery");
   const pickupLocationGroup = document.getElementById("pickupLocationGroup");
@@ -98,14 +95,13 @@ function processImageUrl(imgUrl) {
     });
   }
 
-  // Setup price calculation
   const basePrice = Number(car.price) || 0;
   const surchargeMap = {
-    WeddingCeremony: 0.04, // Wedding Ceremony
-    CityTransfer: 0.05, // City Transfer
-    AirportTransfer: 0.07, // Airport Transfer
-    WholeCityTour: 0.15, // Whole City Tour
-    RentACar: 0.18, // Rent A Car
+    WeddingCeremony: 0.04,
+    CityTransfer: 0.05,
+    AirportTransfer: 0.07,
+    WholeCityTour: 0.15,
+    RentACar: 0.18,
   };
 
   const priceGroup = document.getElementById("priceGroup");
@@ -154,19 +150,15 @@ function processImageUrl(imgUrl) {
         )}`;
       }, 2000);
 
-      // Here you would typically send the data to your backend
-      // For now, we'll just show the thank you modal
       $("#bookingModal").modal("hide");
       $("#thankYouModal").modal("show");
 
-      // Reset form
       form.reset();
       if (uploadGroup) uploadGroup.style.display = "none";
       if (priceGroup) priceGroup.style.display = "none";
     });
   }
 
-  // Cancel button handler
   const cancelBtn = document.getElementById("bookingCancelBtn");
   if (cancelBtn) {
     cancelBtn.addEventListener("click", () => {

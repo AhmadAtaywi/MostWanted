@@ -27,16 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userMerchantStatus = $clearData->cleanInput($_POST['merchant_status']);
 
     try {
-        // Hash the password before storing it if it's not empty
         $passwordToStore = $userPassword;
         if (!empty($userPassword)) {
             $passwordToStore = password_hash($userPassword, PASSWORD_DEFAULT);
         } else {
-            // If password field is empty, keep the existing hashed password
             $passwordToStore = $user['password'];
         }
-
-        // Update Users table
+        
         $stmt = $conn->prepare("UPDATE Users SET 
             name = :name,
             email = :email,
@@ -84,7 +81,7 @@ if (!$user) {
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Car Details Edit</h1>
+        <h1 class="mb-4">User Details Edit</h1>
         <form method="post">
             <div class="mb-3">
                 <label class="form-label">Name</label>
@@ -100,7 +97,7 @@ if (!$user) {
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password" required>
+                <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password">
             </div>
             <div class="mb-3">
                 <label class="form-label">Merchant Status</label>

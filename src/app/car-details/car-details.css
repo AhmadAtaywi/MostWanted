@@ -1,5 +1,61 @@
 .btn-light {
-    background-color: transparent;
-    color: white;
+  background-color: transparent;
+  color: white;
 }
 
+.ftco-car-details {
+  background-color: #1f2029;
+}
+
+.btn.btn-primary {
+  background: #ffeba7 !important;
+  border: 1px solid #ffeba7 !important;
+  color: #1f2029 !important;
+}
+
+.ftco-car-details .services .media-body .text h3 {
+  font-size: 14px !important;
+  color: #ffeba7;
+}
+
+.ftco-car-details .services .media-body .text h3 span {
+  display: block;
+  color: #d8e2dc;
+}
+
+h2 {
+  color: #d8e2dc;
+}
+
+.services .icon {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.car-details span.subheading {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #ffeba7;
+  display: block;
+}
+
+.slider-text h1 {
+  font-size: 44px;
+  color: #ffeba7;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.btn.btn-secondary {
+  color: #1f2029 !important;
+  background: #ffeba7 !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #ffeba7 !important;
+  border-image: initial !important;
+}
+
+.nav-button {
+  font-size: 45px;
+}

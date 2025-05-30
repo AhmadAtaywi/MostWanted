@@ -8,7 +8,6 @@
 
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./about-us.css">
   <link rel="stylesheet" href="../../css/open-iconic-bootstrap.min.css">
   <link rel="stylesheet" href="../../css/animate.css">
 
@@ -27,88 +26,7 @@
   <link rel="stylesheet" href="../../css/flaticon.css">
   <link rel="stylesheet" href="../../css/icomoon.css">
   <link rel="stylesheet" href="../../css/style.css">
-  <style>
-    .ftco-about:after {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      content: '';
-      background: #3f3f52;
-      z-index: -2;
-      width: 63%;
-    }
-
-    section {
-      background-color: #1f2029;
-    }
-
-    .bg-light {
-      background: #1f2029 !important;
-    }
-
-    .testimony-wrap {
-      display: block;
-      position: relative;
-      background: #3f3f52;
-      padding: 0 20px;
-    }
-
-    .mb-4 {
-      color: #d8e2dc;
-    }
-
-    .testimony-wrap .name {
-      font-weight: 500;
-      font-size: 20px;
-      margin-bottom: 0;
-      color: #ffeba7;
-    }
-
-    .testimony-wrap .position {
-      font-size: 16px;
-      color: #d8e2dc;
-    }
-
-    .testimony-section .owl-dots .owl-dot.active {
-      background: #ffeba7;
-    }
-
-    .ftco-counter .overlay {
-      position: absolute;
-      width: 27%;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      content: '';
-      opacity: 0;
-    }
-
-    .card-description {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-description.expanded {
-      display: block;
-      -webkit-line-clamp: none;
-    }
-
-    .read-more {
-      display: inline-block;
-      margin-top: .5em;
-      font-size: .9em;
-      color: #ffeba7;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .nav-button {
-      font-size: 45px;
-    }
-  </style>
+  <link rel="stylesheet" href="./about-us.css">
 </head>
 
 <body>

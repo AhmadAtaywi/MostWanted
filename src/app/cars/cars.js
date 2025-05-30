@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Safely get data from PHP variables with fallbacks
   const regions =
     typeof cities !== "undefined" && Array.isArray(cities)
       ? cities.map((city) => ({
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { name: "Tafilah", img: "../../images/tafilah.jpg" },
           { name: "maan", img: "../../images/maan.jpg" },
           { name: "Jarash", img: "../../images/jarash.jpg" },
-          { name: "ajloun", img: "../../images/ajloun.jpg" },          
+          { name: "ajloun", img: "../../images/ajloun.jpg" },
         ];
 
   const cars =
@@ -129,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="cat">${car.color} • ${car.fuel} • ${
           car.seats
         } seats</span>
-            <p class="price ml-auto">$${car.price} <span>/day</span></p>
+            <p class="price ml-auto">JD ${car.price} <span>/day</span></p>
           </div>
           <div class="d-flex mb-3">
             <span class="availability">Available Date: ${
@@ -198,4 +197,3 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
   }
 });
-

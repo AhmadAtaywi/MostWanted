@@ -6,7 +6,7 @@ $userEmail = $_GET['userEmail'];
 $userEmailJson = json_encode($userEmail);
 
 $stmt = $conn->prepare("SELECT * FROM Users where role_id = 2 And email = :email ");
-$stmt->bindParam(':email', json_decode( $userEmailJson));
+$stmt->bindParam(':email', json_decode($userEmailJson));
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

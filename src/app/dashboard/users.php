@@ -36,7 +36,6 @@ $userEmail = json_encode($userEmail);
 </head>
 
 <body>
-  <!-- Mobile sidebar toggler -->
   <nav class="navbar navbar-dark bg-dark d-md-none">
     <div class="container-fluid">
       <button
@@ -53,7 +52,6 @@ $userEmail = json_encode($userEmail);
 
   <div class="container-fluid">
     <div class="row">
-      <!-- Sidebar: collapses on xs, shows on md+ -->
       <aside
         id="sidebar"
         class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar">
@@ -80,9 +78,7 @@ $userEmail = json_encode($userEmail);
         </nav>
       </aside>
 
-      <!-- Main content -->
       <main class="col-12 col-md-9 col-lg-10 px-4 py-3">
-        <!-- Header -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4 rounded">
           <div class="container-fluid">
             <span class="navbar-brand text-warning">
@@ -93,7 +89,6 @@ $userEmail = json_encode($userEmail);
 
         <h3 class="text-white mb-3">User List</h3>
 
-        <!-- Responsive table wrapper -->
         <div class="table-responsive shadow-sm rounded">
           <table class="table table-dark table-hover table-bordered mb-0">
             <thead>

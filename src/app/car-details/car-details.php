@@ -4,10 +4,9 @@ require '../../configDataBase/userDataBaseConnection.php';
 
 <?php
 $bookingData = $_GET['bookingData'];
-$bookingData = json_decode($bookingData, true); // encode JSON into an associative array or object
+$bookingData = json_decode($bookingData, true);
 
 try {
-  // Insert booking data into the database
   $stmt = $conn->prepare("INSERT INTO Bookings (car_id, car_type, car_model, full_name, email, phone, booking_date, pickup_type, pickup_location, service, price, driving_license) 
                                   VALUES (:carId, :carType, :carModel, :fullName, :email, :phone, :date, :pickupType, :pickupLocation, :service, :price, :drivingLicense)");
   $stmt->bindParam(':carId', $bookingData['carId']);
@@ -24,7 +23,6 @@ try {
   $stmt->bindParam(':drivingLicense', $bookingData['drivingLicense']);
   $stmt->execute();
 
-  // update the car's availability status and count
   $stmt = $conn->prepare("UPDATE Cars SET available = 'false', count = count + 1 WHERE car_id = :carId");
   $stmt->bindParam(':carId', $bookingData['carId']);
   $stmt->execute();
@@ -62,64 +60,6 @@ try {
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="./car-details.css">
 </head>
-<style>
-  .ftco-car-details {
-    background-color: #1f2029;
-  }
-
-  .btn.btn-primary {
-    background: #ffeba7 !important;
-    border: 1px solid #ffeba7 !important;
-    color: #1f2029 !important;
-  }
-
-  .ftco-car-details .services .media-body .text h3 {
-    font-size: 14px !important;
-    color: #ffeba7;
-  }
-
-  .ftco-car-details .services .media-body .text h3 span {
-    display: block;
-    color: #d8e2dc;
-  }
-
-  h2 {
-    color: #d8e2dc;
-  }
-
-  .services .icon {
-    border: 1px solid rgba(0, 0, 0, 0.3);
-  }
-
-  .car-details span.subheading {
-    font-size: 12px;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: #ffeba7;
-    display: block;
-  }
-
-  .slider-text h1 {
-    font-size: 44px;
-    color: #ffeba7;
-    line-height: 1.1;
-    font-weight: 700;
-  }
-
-  .btn.btn-secondary {
-    color: #1f2029 !important;
-    background: #ffeba7 !important;
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: #ffeba7 !important;
-    border-image: initial !important;
-  }
-
-  .nav-button {
-    font-size: 45px;
-  }
-</style>
 
 <body>
 

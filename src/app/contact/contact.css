@@ -1,0 +1,23 @@
+section {
+  background-color: #1f2029;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.successMessage {
+  color: white;
+}
+
+.logo {
+  width: 100%;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.nav-button {
+  font-size: 45px;
+}

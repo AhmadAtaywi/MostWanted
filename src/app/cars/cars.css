@@ -1,44 +1,96 @@
 .ftco-animate {
-    opacity: 1;
-    visibility: visible;
+  opacity: 1;
+  visibility: visible;
 }
 
 .mt-3 {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 #car-list {
-    width: 100%;
-    gap: 15px;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  gap: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 .location {
-    width: 380px;
-    flex: none;
+  width: 380px;
+  flex: none;
 }
 
 .cars {
-    max-width: 380px;
+  max-width: 380px;
 }
 
 .test {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .text {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 .car-description {
-  display: -webkit-box;            
-  -webkit-box-orient: vertical;   
-  -webkit-line-clamp: 2;          
-  overflow: hidden;  
-  min-height: 66px;              
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 66px;
+}
+
+.col-md-4 {
+  background-color: #5e5f7b;
+  border-radius: 20px;
+}
+
+.bg-light {
+  background: #1f2029 !important;
+}
+
+h3 {
+  color: #ffeba7;
+}
+
+.btn.btn-secondary {
+  background: #ffeba7 !important;
+  border: 1px solid #ffeba7 !important;
+  color: #3f3f52 !important;
+}
+
+.car-wrap .text {
+  border-top: none;
+  padding: 20px 30px 30px;
+  background-color: #3f3f52;
+}
+
+.car-wrap .text span.cat {
+  font-weight: 400;
+  color: #ffd893;
+  display: block;
+  margin-bottom: 0px;
+}
+
+.car-wrap .text .price span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #ffd893;
+}
+
+.justify-content-between {
+  -webkit-box-pack: start !important;
+  -ms-flex-pack: start !important;
+  justify-content: flex-start !important;
+}
+
+.car-wrap .text {
+  width: 300px;
+}
+
+.nav-button {
+  font-size: 45px;
 }

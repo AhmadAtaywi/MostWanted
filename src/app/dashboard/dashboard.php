@@ -3,28 +3,23 @@ require '../../configDataBase/userDataBaseConnection.php';
 
 $userEmail = $_GET['userEmail'];
 
-// Booking Count
 $stmt = $conn->prepare("SELECT COUNT(*) FROM RecentBookingCars");
 $stmt->execute();
 $bookingCount = (int)$stmt->fetchColumn();
 
-// Users Count
 $stmt = $conn->prepare("SELECT COUNT(*) FROM Users");
 $stmt->execute();
 $userCount = (int)$stmt->fetchColumn();
 
-// Cars Count
 $stmt = $conn->prepare("SELECT COUNT(*) FROM Cars");
 $stmt->execute();
 $carCount = (int)$stmt->fetchColumn();
 
-// fetch User
 $stmt = $conn->prepare("SELECT * FROM Users WHERE role_id = 2 AND email = :email");
 $stmt->bindParam(':email', $userEmail);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Build bookings query
 $query = "SELECT * FROM RecentBookingCars";
 $params = [];
 if (!empty($_GET['dateFrom']) && !empty($_GET['dateTo'])) {
@@ -60,11 +55,9 @@ if (!isset($_GET['userEmail'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Dashboard</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
     rel="stylesheet">
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     rel="stylesheet">
   <style>
     body {
@@ -74,12 +67,15 @@ if (!isset($_GET['userEmail'])) {
     .sidebar .nav-link.active {
       background-color: #343a40;
     }
+
+    #sidebar {
+      height: auto !important;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Mobile navbar to toggle sidebar -->
   <nav class="navbar navbar-dark bg-dark d-md-none">
     <div class="container-fluid">
       <button
@@ -97,7 +93,6 @@ if (!isset($_GET['userEmail'])) {
 
   <div class="container-fluid">
     <div class="row">
-      <!-- Sidebar: collapse on xs, always show on md+ -->
       <aside
         id="sidebar"
         class="collapse d-md-block bg-dark col-md-3 col-lg-2 vh-100 p-3 sidebar">
@@ -132,9 +127,7 @@ if (!isset($_GET['userEmail'])) {
         </nav>
       </aside>
 
-      <!-- Main Content -->
       <main class="col-12 col-md-9 col-lg-10 px-4 py-3">
-        <!-- Header navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4 rounded">
           <div class="container-fluid">
             <span class="navbar-brand text-warning">
@@ -143,7 +136,6 @@ if (!isset($_GET['userEmail'])) {
           </div>
         </nav>
 
-        <!-- Stats Cards -->
         <div class="row mb-4" id="statsCards">
           <div class="col-12 col-sm-6 col-lg-4 mb-3">
             <div class="card text-white bg-secondary h-100">
@@ -171,7 +163,6 @@ if (!isset($_GET['userEmail'])) {
           </div>
         </div>
 
-        <!-- Filters -->
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 gap-2">
           <h4 class="text-white">Recent Bookings</h4>
           <form class="row gx-2 gy-2" onsubmit="applyFilters(); return false;">
@@ -181,7 +172,7 @@ if (!isset($_GET['userEmail'])) {
                 type="date"
                 id="dateFrom"
                 class="form-control"
-                value="<?= $_GET['dateFrom']?>">
+                value="<?= $_GET['dateFrom'] ?>">
             </div>
             <div class="col-auto">
               <label for="dateTo" class="form-label text-white">To</label>
@@ -189,20 +180,19 @@ if (!isset($_GET['userEmail'])) {
                 type="date"
                 id="dateTo"
                 class="form-control"
-                value="<?= $_GET['dateTo']?>">
+                value="<?= $_GET['dateTo'] ?>">
             </div>
             <div class="col-auto align-self-end">
               <button class="btn btn-primary">Apply</button>
             </div>
             <div class="col-auto align-self-end">
-            <a href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= $userEmail ?>">
-            <i class="btn btn-primary">Clear</i>
-            </a>
+              <a href="/MostWanted/src/app/dashboard/dashboard.php?userEmail=<?= $userEmail ?>">
+                <i class="btn btn-primary">Clear</i>
+              </a>
             </div>
           </form>
         </div>
 
-        <!-- Responsive Table -->
         <div class="table-responsive shadow-sm rounded">
           <table class="table table-dark table-hover mb-0">
             <thead>

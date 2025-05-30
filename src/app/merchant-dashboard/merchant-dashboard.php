@@ -3,7 +3,6 @@ require '../../configDataBase/userDataBaseConnection.php';
 
 $userEmail = $_GET['userEmail'];
 
-// Booking Count
 $stmt = $conn->prepare("SELECT COUNT(*) FROM RecentBookingCars where user_name = :email");
 $stmt->bindParam(':email', $userEmail);
 $stmt->execute();
@@ -14,13 +13,11 @@ $stmt->bindParam(':email', $userEmail);
 $stmt->execute();
 $carCount = (int)$stmt->fetchColumn();
 
-// fetch Merchant
 $stmt = $conn->prepare("SELECT * FROM Users WHERE role_id = 3 AND email = :email");
 $stmt->bindParam(':email', $userEmail);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC) ?: ['email' => '', 'name' => ''];
 
-// Build bookings query for this merchant
 $query  = "SELECT * FROM RecentBookingCars WHERE user_name = :userEmail";
 $params = [':userEmail' => $userEmail];
 
@@ -83,8 +80,6 @@ if (!isset($_GET['userEmail'])) {
 </head>
 
 <body>
-
-  <!-- Mobile navbar to toggle sidebar -->
   <nav class="navbar navbar-dark bg-dark d-md-none">
     <div class="container-fluid">
       <button
@@ -102,7 +97,6 @@ if (!isset($_GET['userEmail'])) {
 
   <div class="container-fluid">
     <div class="row">
-      <!-- Sidebar: collapse on xs, always show on md+ -->
       <aside
         id="sidebar"
         class="collapse d-md-block bg-dark col-md-3 col-lg-2 auto p-3 sidebar">
@@ -127,9 +121,7 @@ if (!isset($_GET['userEmail'])) {
         </nav>
       </aside>
 
-      <!-- Main Content -->
       <main class="col-12 col-md-9 col-lg-10 px-4 py-3">
-        <!-- Header -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4 rounded">
           <div class="container-fluid">
             <span class="navbar-brand text-warning">
@@ -138,7 +130,6 @@ if (!isset($_GET['userEmail'])) {
           </div>
         </nav>
 
-        <!-- Stats Cards -->
         <div class="row mb-4">
           <div class="col-12 col-sm-6 col-lg-4 mb-3">
             <div class="card text-white bg-secondary h-100">
@@ -158,7 +149,6 @@ if (!isset($_GET['userEmail'])) {
           </div>
         </div>
 
-        <!-- Filters -->
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 gap-2">
           <h4 class="text-white">Recent Bookings</h4>
           <form class="row gx-2 gy-2" onsubmit="applyFilters(); return false;">
@@ -184,7 +174,6 @@ if (!isset($_GET['userEmail'])) {
           </form>
         </div>
 
-        <!-- Responsive Table -->
         <div class="table-responsive shadow-sm rounded">
           <table class="table table-dark table-hover mb-0">
             <thead>
@@ -213,7 +202,7 @@ if (!isset($_GET['userEmail'])) {
                       <span class="badge bg-danger">No</span>
                     <?php endif; ?>
                   </td>
-                  <td><span class="badge bg-warning text-dark"><?= (int)$row['count'] ?></span></td>
+                  <td><span class="badge bg-warning text-dark"><?= $row['count'] ?></span></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

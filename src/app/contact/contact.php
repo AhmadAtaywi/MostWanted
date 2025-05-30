@@ -4,62 +4,58 @@ $clearData = new ClearData();
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['fullName'];
-    $email = $_POST['email'];
-    $subject = $_POST['subject'];
-    $message = $_POST['message'];
-    $nameError = $emailError = $subjectError = $messageError = '';
+  $name = $_POST['fullName'];
+  $email = $_POST['email'];
+  $subject = $_POST['subject'];
+  $message = $_POST['message'];
+  $nameError = $emailError = $subjectError = $messageError = '';
 
-    // validate name
-    if (empty($name)) {
-        $nameError = "*Name is required";
-    } else {
-        $name = $clearData->cleanInput($name);
+  if (empty($name)) {
+    $nameError = "*Name is required";
+  } else {
+    $name = $clearData->cleanInput($name);
+  }
+
+  if (empty($email)) {
+    $emailError = "*Email is required";
+  } else {
+    $email = $clearData->cleanInput($email);
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $emailError = "*Invalid email format";
     }
+  }
 
-    // validate email
-    if (empty($email)) {
-        $emailError = "*Email is required";
-    } else {
-        $email = $clearData->cleanInput($email);
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailError = "*Invalid email format";
-        }
-    }
+  if (empty($subject)) {
+    $subjectError = "*Subject is required";
+  } else {
+    $subject = $clearData->cleanInput($subject);
+  }
 
-    // validate subject
-    if (empty($subject)) {
-        $subjectError = "*Subject is required";
-    } else {
-        $subject = $clearData->cleanInput($subject);
-    }
+  if (empty($message)) {
+    $messageError = "*Message is required";
+  } else {
+    $message = $clearData->cleanInput($message);
+  }
 
-    // validate message
-    if (empty($message)) {
-        $messageError = "*Message is required";
-    } else {
-        $message = $clearData->cleanInput($message);
-    }
+  $successSendForm = empty($nameError) && empty($emailError) && empty($subjectError) && empty($messageError);
 
-    $successSendForm = empty($nameError) && empty($emailError) && empty($subjectError) && empty($messageError);
-
-    if ($successSendForm) {
-        try {
-            $stat = $conn->prepare("INSERT INTO Contact (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
-            $stat->bindParam(':name', $name);
-            $stat->bindParam(':email', $email);
-            $stat->bindParam(':subject', $subject);
-            $stat->bindParam(':message', $message);
-            $stat->execute();
-            header("Location: /MostWanted/src/app/contact/contact.php");
-            exit();
-        } catch (PDOException $e) {
-            echo "<script>
+  if ($successSendForm) {
+    try {
+      $stat = $conn->prepare("INSERT INTO Contact (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
+      $stat->bindParam(':name', $name);
+      $stat->bindParam(':email', $email);
+      $stat->bindParam(':subject', $subject);
+      $stat->bindParam(':message', $message);
+      $stat->execute();
+      header("Location: /MostWanted/src/app/contact/contact.php");
+      exit();
+    } catch (PDOException $e) {
+      echo "<script>
                     console.log('Error: " . $e->getMessage() . "');
                 </script>";
-        }
     }
+  }
 }
 ?>
 
@@ -68,197 +64,173 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 
 <head>
-    <title>Contact</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Contact</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+    rel="stylesheet">
 
-    <link rel="stylesheet" href="../../css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/animate.css">
+  <link rel="stylesheet" href="../../css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/animate.css">
 
-    <link rel="stylesheet" href="../../css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../../css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="../../css/magnific-popup.css">
+  <link rel="stylesheet" href="../../css/owl.carousel.min.css">
+  <link rel="stylesheet" href="../../css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="../../css/magnific-popup.css">
 
-    <link rel="stylesheet" href="../../css/aos.css">
+  <link rel="stylesheet" href="../../css/aos.css">
 
-    <link rel="stylesheet" href="../../css/ionicons.min.css">
+  <link rel="stylesheet" href="../../css/ionicons.min.css">
 
-    <link rel="stylesheet" href="../../css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="../../css/jquery.timepicker.css">
+  <link rel="stylesheet" href="../../css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="../../css/jquery.timepicker.css">
 
 
-    <link rel="stylesheet" href="../../css/flaticon.css">
-    <link rel="stylesheet" href="../../css/icomoon.css">
-    <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        section {
-            background-color: #1f2029;
-        }
-
-        .errorMessage {
-            color: red;
-        }
-
-        .successMessage {
-            color: white;
-        }
-
-        .logo {
-            width: 100%;
-        }
-
-        .logo img {
-            width: 100%;
-        }
-
-        .nav-button {
-            font-size: 45px;
-        }
-    </style>
+  <link rel="stylesheet" href="../../css/flaticon.css">
+  <link rel="stylesheet" href="../../css/icomoon.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="./contact.css">
 </head>
 
 <body>
 
-    <div id="nav-placeholder"></div>
+  <div id="nav-placeholder"></div>
 
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');"
-        data-stellar-background-ratio="0.5">
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-                <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs"><span class="mr-2"><a href="/MostWanted/src/app/home/home.php">Home <i
-                                    class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i
-                                class="ion-ios-arrow-forward"></i></span></p>
-                    <h1 class="mb-3 bread">Contact Us</h1>
-                </div>
-            </div>
+  <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/background_img.jpg');"
+    data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+        <div class="col-md-9 ftco-animate pb-5">
+          <p class="breadcrumbs"><span class="mr-2"><a href="/MostWanted/src/app/home/home.php">Home <i
+                  class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i
+                class="ion-ios-arrow-forward"></i></span></p>
+          <h1 class="mb-3 bread">Contact Us</h1>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section class="ftco-section contact-section">
-        <div class="container">
-            <div class="row d-flex mb-5 contact-info">
-                <div class="col-md-4">
-                    <div class="row mb-5">
-                        <div class="col-md-12">
-                            <div class="border w-100 p-4 rounded mb-2 d-flex" style="background-color: #3f3f52;">
-                                <div class="icon mr-3">
-                                    <span class="icon-map-o"></span>
-                                </div>
-                                <p style="color: #d8e2dc;"><span style="color: #ffeba7;">Address:</span>Jordan, Amman,
-                                    Al-Madina
-                                    Al-Monawara St</p>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="border w-100 p-4 rounded mb-2 d-flex" style="background-color: #3f3f52;">
-                                <div class="icon mr-3">
-                                    <span class="icon-mobile-phone"></span>
-                                </div>
-                                <p><span style="color: #ffeba7;">Phone:</span> <a href="tel://1234567920"
-                                        style="color: #d8e2dc;"> +962
-                                        793245678</a></p>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="border w-100 p-4 rounded mb-2 d-flex" style="background-color: #3f3f52;">
-                                <div class="icon mr-3">
-                                    <span class="icon-envelope-o"></span>
-                                </div>
-                                <p><span style="color: #ffeba7;">Email:</span> <a href="info@mostwanted.com"
-                                        style="color: #d8e2dc;">
-                                        info@mostwanted.com</a></p>
-                            </div>
-                        </div>
-                    </div>
+  <section class="ftco-section contact-section">
+    <div class="container">
+      <div class="row d-flex mb-5 contact-info">
+        <div class="col-md-4">
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <div class="border w-100 p-4 rounded mb-2 d-flex" style="background-color: #3f3f52;">
+                <div class="icon mr-3">
+                  <span class="icon-map-o"></span>
                 </div>
-                <div class="col-md-8 block-9 mb-md-5">
-                    <form id="contactForm" method="post" class=" p-5 contact-form" style="background-color: #3f3f52;">
-                        <div class="form-group">
-                            <input type="text" name="fullName" class="form-control" placeholder="Your Name"><span class="errorMessage"><?php if (!empty($nameError)) {
-                                                                                                                                            echo $nameError;
-                                                                                                                                        } ?></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="email" class="form-control" placeholder="Your Email"><span class="errorMessage"><?php if (!empty($emailError)) {
-                                                                                                                                            echo $emailError;
-                                                                                                                                        } ?></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="subject" class="form-control" placeholder="Subject"><span class="errorMessage"><?php if (!empty($subjectError)) {
-                                                                                                                                        echo $subjectError;
-                                                                                                                                    } ?></span>
-                        </div>
-                        <div class="form-group">
-                            <textarea name="message" id="" cols="30" rows="7" class="form-control"
-                                placeholder="Message"></textarea><span class="errorMessage"><?php if (!empty($messageError)) {
-                                                                                                echo $messageError;
-                                                                                            } ?></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Send Message" class="btn  py-3 px-5"
-                                style="background-color: #ffeba7;box-shadow:0 8px 24px 0 rgba(255, 235, 167, 0.2);">
-                        </div>
-                    </form>
-
-                </div>
+                <p style="color: #d8e2dc;"><span style="color: #ffeba7;">Address:</span>Jordan, Amman,
+                  Al-Madina
+                  Al-Monawara St</p>
+              </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class=" logo"> <img src="../../images/logo1.png" width="1150" height="500"></div>
+            <div class="col-md-12">
+              <div class="border w-100 p-4 rounded mb-2 d-flex" style="background-color: #3f3f52;">
+                <div class="icon mr-3">
+                  <span class="icon-mobile-phone"></span>
                 </div>
+                <p><span style="color: #ffeba7;">Phone:</span> <a href="tel://1234567920"
+                    style="color: #d8e2dc;"> +962
+                    793245678</a></p>
+              </div>
             </div>
+            <div class="col-md-12">
+              <div class="border w-100 p-4 rounded mb-2 d-flex" style="background-color: #3f3f52;">
+                <div class="icon mr-3">
+                  <span class="icon-envelope-o"></span>
+                </div>
+                <p><span style="color: #ffeba7;">Email:</span> <a href="info@mostwanted.com"
+                    style="color: #d8e2dc;">
+                    info@mostwanted.com</a></p>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+        <div class="col-md-8 block-9 mb-md-5">
+          <form id="contactForm" method="post" class=" p-5 contact-form" style="background-color: #3f3f52;">
+            <div class="form-group">
+              <input type="text" name="fullName" class="form-control" placeholder="Your Name"><span class="errorMessage"><?php if (!empty($nameError)) {
+                                                                                                                            echo $nameError;
+                                                                                                                          } ?></span>
+            </div>
+            <div class="form-group">
+              <input type="text" name="email" class="form-control" placeholder="Your Email"><span class="errorMessage"><?php if (!empty($emailError)) {
+                                                                                                                          echo $emailError;
+                                                                                                                        } ?></span>
+            </div>
+            <div class="form-group">
+              <input type="text" name="subject" class="form-control" placeholder="Subject"><span class="errorMessage"><?php if (!empty($subjectError)) {
+                                                                                                                        echo $subjectError;
+                                                                                                                      } ?></span>
+            </div>
+            <div class="form-group">
+              <textarea name="message" id="" cols="30" rows="7" class="form-control"
+                placeholder="Message"></textarea><span class="errorMessage"><?php if (!empty($messageError)) {
+                                                                              echo $messageError;
+                                                                            } ?></span>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Send Message" class="btn  py-3 px-5"
+                style="background-color: #ffeba7;box-shadow:0 8px 24px 0 rgba(255, 235, 167, 0.2);">
+            </div>
+          </form>
 
-    <div id="footer-placeholder"></div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class=" logo"> <img src="../../images/logo1.png" width="1150" height="500"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
-            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-                stroke="#F96D00" />
-        </svg></div>
+  <div id="footer-placeholder"></div>
 
-
-    <script src="../../js/jquery.min.js"></script>
-    <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="../../js/popper.min.js"></script>
-    <script src="../../js/bootstrap.min.js"></script>
-    <script src="../../js/jquery.easing.1.3.js"></script>
-    <script src="../../js/jquery.waypoints.min.js"></script>
-    <script src="../../js/jquery.stellar.min.js"></script>
-    <script src="../../js/owl.carousel.min.js"></script>
-    <script src="../../js/jquery.magnific-popup.min.js"></script>
-    <script src="../../js/aos.js"></script>
-    <script src="../../js/jquery.animateNumber.min.js"></script>
-    <script src="../../js/bootstrap-datepicker.js"></script>
-    <script src="../../js/jquery.timepicker.min.js"></script>
-    <script src="../../js/scrollax.min.js"></script>
-    <script src="../../js/main.js"></script>
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+        stroke="#F96D00" />
+    </svg></div>
 
 
-    <script src="../partials/nav.js"></script>
-    <script>
-        fetch('../partials/nav.html')
-            .then(r => r.text())
-            .then(html => {
-                document.getElementById('nav-placeholder').innerHTML = html;
-                initNav();
-            });
-    </script>
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="../../js/popper.min.js"></script>
+  <script src="../../js/bootstrap.min.js"></script>
+  <script src="../../js/jquery.easing.1.3.js"></script>
+  <script src="../../js/jquery.waypoints.min.js"></script>
+  <script src="../../js/jquery.stellar.min.js"></script>
+  <script src="../../js/owl.carousel.min.js"></script>
+  <script src="../../js/jquery.magnific-popup.min.js"></script>
+  <script src="../../js/aos.js"></script>
+  <script src="../../js/jquery.animateNumber.min.js"></script>
+  <script src="../../js/bootstrap-datepicker.js"></script>
+  <script src="../../js/jquery.timepicker.min.js"></script>
+  <script src="../../js/scrollax.min.js"></script>
+  <script src="../../js/main.js"></script>
 
-    <script>
-        fetch('../partials/footer/footer.html')
-            .then(r => r.text())
-            .then(html => {
-                document.getElementById('footer-placeholder').innerHTML = html;
-            })
-            .catch(err => console.error('Footer load failed:', err));
-    </script>
+
+  <script src="../partials/nav.js"></script>
+  <script>
+    fetch('../partials/nav.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('nav-placeholder').innerHTML = html;
+        initNav();
+      });
+  </script>
+
+  <script>
+    fetch('../partials/footer/footer.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Footer load failed:', err));
+  </script>
 </body>
 
 </html>

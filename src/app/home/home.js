@@ -36,8 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   
-
-  // Safely get data from PHP variables with fallbacks
   const regions =
     typeof cities !== "undefined" && Array.isArray(cities)
       ? cities.map((city) => ({
